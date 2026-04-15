@@ -1,0 +1,136 @@
+/* ======= RESET BÁSICO ======= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #666;
+  font-family: Arial, sans-serif;
+  height: 100dvh;
+  overflow: hidden; /* evita scroll en body */
+}
+
+/* ======= CONTENEDOR GENERAL ======= */
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background: linear-gradient(135deg, #a2f4ff, #8ba3ff);
+}
+
+/* ======= HEADER ======= */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #1e1e1e;
+  color: white;
+  flex-shrink: 0;
+}
+
+/* ======= CONTENEDOR DEL CONTENIDO ======= */
+.dashboard-content {
+  display: flex;
+  flex: 1;
+  height: calc(100dvh - 60px);
+  overflow: hidden; /* evita que nav y main se salgan */
+}
+
+/* ======= BOTÓN DEL MENÚ ======= */
+header button {
+  background: #1292c5; /* fondo oscuro */
+  border: none; /* sin borde */
+  color: white; /* color del icono */
+  font-size: 24px; /* tamaño del icono */
+  padding: 8px 12px; /* espacio alrededor */
+  border-radius: 6px; /* esquinas redondeadas */
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+/* ======= SIDEBAR (ORDENADOR) ======= */
+
+/* ======= MAIN ======= */
+.AdminDashboard-main {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  height: 100%;
+}
+/* Sidebar (ordenador) */
+.admin-nav {
+  width: 240px;
+  background: #222;
+  color: white;
+  padding-top: 20px;
+  height: 100%;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.admin-nav ul {
+  list-style: none;
+}
+
+.admin-nav li {
+  padding: 14px 20px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.2s;
+}
+
+/* Responsive móviles */
+@media (max-width: 768px) {
+  .admin-nav {
+    position: fixed;
+    top: 60px;
+    left: -260px; /* fuera de la pantalla */
+    width: 240px;
+    height: calc(100% - 60px);
+    transition: left 0.3s ease;
+    z-index: 10;
+  }
+
+  .admin-nav.open {
+    left: 0; /* visible solo si tiene la clase open */
+  }
+}
+
+/* main ocupa TODO cuando nav está oculto */
+.AdminDashboard-main {
+  width: 100%;
+  padding: 15px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.BotonesCalcularLogros {
+  background: #1292c5;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    transform 0.1s,
+    box-shadow 0.2s;
+}
+
+/* Badge de notificación para comentarios sin leer */
+.badge {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 8px;
+}

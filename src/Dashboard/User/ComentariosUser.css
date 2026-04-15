@@ -1,0 +1,332 @@
+/* ===== CONTENEDOR GENERAL ===== */
+.ComentariosUser-container {
+  padding: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ===== LISTA ===== */
+.ComentariosUser-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  max-height: 400px; /* altura máxima de la lista */
+  overflow-y: auto; /* scroll vertical si hay más comentarios */
+  padding-right: 6px; /* opcional, para que no tape el scroll */
+}
+/* Opcional: estilo del scroll */
+.ComentariosUser-lista::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ComentariosUser-lista::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.ComentariosUser-lista::-webkit-scrollbar-track {
+  background: transparent;
+}
+.ComentariosUser-vacio {
+  text-align: center;
+  color: #666;
+  margin-top: 30px;
+}
+
+/* ===== TARJETA DE COMENTARIO ===== */
+.ComentarioCard {
+  background: white;
+  border-radius: 12px;
+  padding: 14px 16px;
+  border: 2px solid transparent;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Nuevo comentario → borde más vivo */
+.ComentarioCard.nuevo {
+  border-color: #f59e0b;
+  background: linear-gradient(135deg, #fff7e6, #ffe8c7);
+  animation: popIn 0.25s ease;
+}
+
+/* Leído → más suave */
+.ComentarioCard.leido {
+  border-color: #d1d5db;
+  background: #f9fafb;
+}
+/* Comentarios de la nadadora (alineados a la derecha, color azul) */
+.ComentarioCard.desde-nadadora {
+  background: linear-gradient(135deg, #d0ebff, #74c0fc);
+  border-color: #339af0;
+  color: #000;
+  align-self: flex-end; /* los empuja a la derecha */
+  text-align: right;
+}
+
+/* Comentarios del entrenador (alineados a la izquierda, color naranja) */
+.ComentarioCard.desde-entrenador {
+  background: linear-gradient(135deg, #fff3bf, #ffd43b);
+  border-color: #f59e0b;
+  color: #000;
+  align-self: flex-start; /* los empuja a la izquierda */
+  text-align: left;
+}
+
+/* Opcional: diferenciar puntos de no leído según remitente */
+.ComentarioCard.desde-nadadora .ComentarioCard-punto {
+  background: #339af0;
+}
+
+.ComentarioCard.desde-entrenador .ComentarioCard-punto {
+  background: #f59e0b;
+}
+
+/* Animación cuando aparece un nuevo comentario */
+@keyframes popIn {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ===== HEADER DE LA TARJETA ===== */
+.ComentarioCard-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Punto de comentario no leído */
+.ComentarioCard-punto {
+  width: 10px;
+  height: 10px;
+  background: #f59e0b;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse 1s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+.ComentarioCard-fecha {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* ===== CONTENIDO DEL COMENTARIO ===== */
+.ComentarioCard-mensaje {
+  margin-top: 6px;
+  font-size: 1rem;
+  line-height: 1.35;
+  white-space: pre-wrap;
+}
+
+.ComentarioCard-autor {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* ===== MODAL ===== */
+.ComentarioModal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+  z-index: 9999;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ComentarioModal {
+  background: white;
+  padding: 20px;
+  width: 90%;
+  max-width: 380px;
+  border-radius: 14px;
+  animation: slideUp 0.25s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.ComentarioModal-fecha {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.ComentarioModal-mensaje {
+  margin: 0;
+  line-height: 1.45;
+  font-size: 1.05rem;
+  white-space: pre-wrap;
+}
+
+.ComentarioModal-autor {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: #555;
+  font-style: italic;
+  text-align: right;
+}
+
+/* Botón cerrar */
+.ComentarioModal-btn {
+  margin-top: 18px;
+  width: 100%;
+  background: #f59e0b;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.ComentarioModal-btn:active {
+  transform: scale(0.97);
+}
+
+/* ===== CONTENEDOR DE ENVÍO ===== */
+.ComentariosUser-enviar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.ComentariosUser-enviar h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.ComentariosUser-enviar label {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Selector de entrenador */
+.ComentariosUser-enviar select {
+  padding: 8px 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 2px solid #d1d5db;
+  background: #fff;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.ComentariosUser-enviar select:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+}
+
+/* Textarea */
+.ComentariosUser-enviar textarea {
+  width: 100%;
+  min-height: 70px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #d1d5db;
+  resize: vertical;
+  font-size: 1rem;
+  line-height: 1.4;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.ComentariosUser-enviar textarea:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+}
+
+/* Botón enviar */
+.ComentariosUser-enviar button {
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ComentariosUser-enviar button:disabled {
+  background: #007bff;
+  cursor: not-allowed;
+}
+
+.ComentariosUser-enviar button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Mensaje de confirmación */
+.ComentariosUser-confirm {
+  font-size: 0.9rem;
+  margin-top: 3px;
+}
+
+.ComentarioCard-check {
+  font-size: 12px;
+  margin-left: 4px;
+  opacity: 0.6;
+}
+
+.ComentarioCard-check.leido {
+  color: #0f5132;
+  font-size: 20px;
+  opacity: 1;
+}
+
+.ComentarioCard-check.no-leido {
+  color: #9ca3af; /* gris si no se ha leído */
+  opacity: 0.6;
+}

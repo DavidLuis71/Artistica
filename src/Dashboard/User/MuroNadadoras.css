@@ -1,0 +1,492 @@
+.MuroNadadoras-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.MuroNadadoras-inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.MuroNadadoras-inputWrapper textarea {
+  width: 100%;
+  border-radius: 12px;
+  padding: 8px 12px;
+  resize: none;
+  font-size: 14px;
+  border: 1px solid #ccc;
+}
+
+.MuroNadadoras-inputWrapper button {
+  align-self: flex-end;
+  padding: 6px 16px;
+  border: none;
+  background-color: #2f80ed;
+  color: white;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.MuroNadadoras-posts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: calc(100vh - 250px);
+  overflow-y: auto; /* Activa scroll vertical */
+  padding-right: 6px; /* Para que no choque con la barra de scroll */
+}
+
+.MuroNadadoras-posts::-webkit-scrollbar {
+  width: 6px;
+}
+
+.MuroNadadoras-posts::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.MuroNadadoras-posts::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.MuroNadadoras-postCard {
+  background: #f4f6ff;
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.MuroNadadoras-postHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.MuroNadadoras-postFoto {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.MuroNadadoras-postFotoPlaceholder {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: white;
+}
+
+.MuroNadadoras-postTexto {
+  font-size: 14px;
+}
+
+.MuroNadadoras-postActions {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.MuroNadadoras-postActions button {
+  background: none;
+  border: none;
+  color: #ff5a5f;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Popup de emojis */
+.emojiPopup {
+  position: absolute;
+  background: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  z-index: 100;
+  margin-top: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Cada emoji dentro del popup */
+.emojiOption {
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+/* Input para emojis desde teclado móvil */
+.emojiInput {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 18px;
+  margin-top: 6px;
+}
+
+/* Botón de carita que abre el popup */
+.postReacciones > button:last-child {
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Contenedor de reacciones de post */
+.postReacciones {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  position: relative; /* para el popup absolute */
+}
+
+/* Botones de reacciones existentes */
+.postReacciones > button:not(:last-child) {
+  background: #e0e7ff;
+  border-radius: 12px;
+  padding: 4px 8px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.postComentarios {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.comentarioCard {
+  font-size: 13px;
+  background: #e9ebff;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.comentarioNombre {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.nuevoComentarioWrapper {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.nuevoComentarioWrapper input {
+  flex: 1;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+.nuevoComentarioWrapper button {
+  padding: 6px 12px;
+  border: none;
+  background-color: #2f80ed;
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.comentarioFoto {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.comentarioFotoPlaceholder {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: white;
+  font-size: 12px;
+}
+
+.cargandoPosts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  gap: 10px;
+  color: #555;
+  font-size: 14px;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 4px solid #ccc;
+  border-top-color: #2f80ed;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.btnEntrarChat {
+  width: 100%;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #2f80ed, #1c5ccf);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(47, 128, 237, 0.3);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.conversacionesExistentes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+.btnSalirChat {
+  padding: 10px 16px;
+  background-color: #eb5757;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(235, 87, 87, 0.25);
+  transition: transform 0.15s ease;
+  margin-top: -15px;
+  margin-bottom: 10px;
+}
+
+.buscadorNadadoras {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.buscadorNadadoras input {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+}
+
+.resultadoBusqueda {
+  background: white;
+  border: 1px solid #d8e0ff;
+  border-radius: 14px;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+  transition: background 0.15s ease;
+}
+
+.resultadoBusqueda button {
+  padding: 4px 10px;
+  background-color: #2f80ed;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.resultadosScroll {
+  max-height: 200px; /* ajusta según quieras */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+  padding-right: 6px; /* para que no choque con la scrollbar */
+}
+
+.resultadosScroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.resultadosScroll::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.resultadosScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Diferenciar botón según exista conversación */
+.btnCrearChat {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2f80ed, #1c5ccf);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+/* CHAT PRIVADO: Botón estilo tarjeta */
+.btnAbrirChat {
+  width: 100%;
+  background: white;
+  border: 1px solid #d8e0ff;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2f354b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.MuroNadadoras-conteiner-privado {
+  height: 80vh;
+  max-height: 80vh;
+}
+/* Chat privado */
+.chatPrivadoContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  padding: 12px;
+  height: 100%;
+  overflow: hidden;
+  background: #f4f6ff;
+  border: 3px solid green;
+}
+.chatHeader {
+  padding: 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+
+/* Contenedor de mensajes con scroll */
+.mensajesWrapper {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 6px; /* para scrollbar */
+}
+
+/* Mensaje individual */
+.mensaje {
+  max-width: 70%;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  word-wrap: break-word;
+  position: relative;
+}
+
+/* Mensaje propio */
+.mensaje.propio {
+  background-color: #2f80ed;
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 2px;
+}
+
+/* Mensaje de otra persona */
+.mensaje.otro {
+  background-color: #e0e7ff;
+  color: #000;
+  align-self: flex-start;
+  border-bottom-left-radius: 2px;
+}
+
+/* Fecha dentro del mensaje */
+.mensaje .fecha {
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  bottom: -14px;
+  right: 6px;
+}
+
+/* Input + botón enviar */
+.nuevoMensajeWrapper {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.nuevoMensajeWrapper input {
+  flex: 1;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.nuevoMensajeWrapper button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #2f80ed;
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.tick {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-left: 6px;
+}
+
+.notifDot {
+  background: #ff4d4f;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 8px;
+  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.4);
+}

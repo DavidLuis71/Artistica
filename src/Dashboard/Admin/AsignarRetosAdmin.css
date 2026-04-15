@@ -1,0 +1,189 @@
+.AsignarRetosAdmin-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.AsignarRetosAdmin-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1e59a8;
+}
+
+.AsignarRetosAdmin-form {
+  background: #f4f6ff;
+  padding: 18px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.AsignarRetosAdmin-selectGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.AsignarRetosAdmin-selectGroup label {
+  font-weight: bold;
+  color: #444;
+}
+
+.AsignarRetosAdmin-selectGroup select {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  font-size: 14px;
+}
+
+.AsignarRetosAdmin-button {
+  padding: 10px 14px;
+  background: #1e59a8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.AsignarRetosAdmin-button:disabled {
+  background: #9ab3d1;
+  cursor: not-allowed;
+}
+
+.AsignarRetosAdmin-mensaje {
+  margin-top: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* === GRID DE TARJETAS === */
+.AsignarRetosAdmin-retosGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* ✅ Móvil: mínimo 2 columnas */
+  gap: 12px;
+  margin-top: 6px;
+}
+
+/* ✅ Tablet */
+@media (min-width: 500px) {
+  .AsignarRetosAdmin-retosGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ✅ Pantallas grandes */
+@media (min-width: 900px) {
+  .AsignarRetosAdmin-retosGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+/* === TARJETA DE RETO === */
+.AsignarRetosAdmin-retoCard {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+/* Seleccionado */
+.AsignarRetosAdmin-retoCard.selected {
+  border-color: #1e59a8;
+  background: #eaf1ff;
+}
+
+/* Titular */
+.AsignarRetosAdmin-retoNombre {
+  font-size: 15px;
+  font-weight: bold;
+  color: #1e59a8;
+  margin: 0;
+}
+
+/* Descripción */
+.AsignarRetosAdmin-retoDesc {
+  font-size: 12px;
+  color: #333;
+  margin: 0;
+  min-height: 40px;
+  overflow: hidden;
+  line-clamp: 3;
+  box-orient: vertical;
+
+  /* ✅ Versión WebKit (soporta Chrome, Edge, Safari, Android, iOS) */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Footer: dificultad + puntos */
+.AsignarRetosAdmin-retoFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  font-size: 13px;
+}
+
+/* Dificultad por colores */
+.AsignarRetosAdmin-dificultad {
+  padding: 2px 6px;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.dif-facil {
+  background: #4caf50; /* Verde */
+}
+
+.dif-medio {
+  background: #ffb300; /* Naranja más visible */
+}
+
+.dif-dificil {
+  background: #e53935; /* Rojo */
+}
+
+.dif-muy_dificil {
+  background: #8e24aa; /* Morado intenso */
+}
+
+/* Puntos */
+.AsignarRetosAdmin-puntos {
+  font-weight: bold;
+  color: #1e59a8;
+}
+
+/* Tarjeta de reto ya asignado */
+.AsignarRetosAdmin-retoCard.asignado {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.AsignarRetosAdmin-completado {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* centra el texto exactamente */
+  background: rgba(30, 89, 168, 0.85); /* semitransparente */
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 6px 4px;
+  border-radius: 8px;
+
+  z-index: 10; /* aseguramos que quede por encima */
+  text-align: center;
+}

@@ -1,0 +1,167 @@
+/* Contenedor principal */
+.juegosCartas-Admin-container {
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+  color: #222;
+}
+
+/* Títulos */
+.juegosCartas-Admin-title {
+  font-size: 24px;
+  color: #1e90ff;
+  margin-bottom: 15px;
+}
+.juegosCartas-Admin-subtitle {
+  font-size: 18px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.juegosCartas-Admin-text {
+  margin: 4px 0;
+}
+
+/* Botones */
+.juegosCartas-Admin-btns {
+  margin-bottom: 10px;
+}
+.juegosCartas-Admin-btn {
+  margin-right: 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1e90ff, #00bfff);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.juegosCartas-Admin-btn:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+.juegosCartas-Admin-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+/* Lista de cartas */
+.juegosCartas-Admin-cartas-list {
+  margin-top: 10px;
+}
+.juegosCartas-Admin-carta {
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  background: #e6f0ff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+/* Estadísticas del juego */
+.juegosCartas-Admin-resumen {
+  margin-top: 15px;
+  background: #f0f4ff;
+  padding: 12px 15px;
+  border-radius: 12px;
+}
+.juegosCartas-Admin-pre {
+  background: #e0e8ff;
+  padding: 8px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 14px;
+}
+
+/* Cartas nadadoras */
+.juegosCartas-Admin-nadadora-carta-group {
+  margin-bottom: 12px;
+  padding: 8px 2px;
+  background-color: #00bfff59;
+  border: 2px solid #000000;
+}
+.juegosCartas-Admin-nadadora-cartas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* Nombre de la nadadora */
+.juegosCartas-Admin-nadadora-nombre {
+  font-size: 20px; /* un poco más grande que los chips */
+  font-weight: bold;
+  margin-bottom: 6px; /* separación de los chips */
+}
+.juegosCartas-Admin-carta-chip {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 13px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+}
+/* Colores por rareza */
+.juegosCartas-Admin-carta-chip.comun {
+  background-color: #ccc; /* gris claro */
+  color: #333;
+}
+.juegosCartas-Admin-carta-chip.rara {
+  background-color: #1e90ff; /* azul */
+  color: white;
+}
+.juegosCartas-Admin-carta-chip.epica {
+  background-color: #8a2be2; /* morado */
+  color: white;
+}
+.juegosCartas-Admin-carta-chip.legendaria {
+  background-color: #ffd700; /* dorado */
+  color: #333;
+}
+.juegosCartas-Admin-carta-chip.especial {
+  background-color: #33ff99; /* dorado */
+  color: #333;
+}
+/* Modal detalle carta */
+.juegosCartas-Admin-carta-detalle {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #f0f4ff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 999;
+  min-width: 250px;
+  border: 4px solid transparent;
+  border-image-slice: 1;
+  text-align: left;
+}
+
+/* Bordes por rareza modal */
+.juegosCartas-Admin-carta-detalle.comun {
+  border-image: linear-gradient(45deg, #aaa, #888) 1;
+}
+.juegosCartas-Admin-carta-detalle.rara {
+  border-image: linear-gradient(45deg, #1e90ff, #00bfff) 1;
+}
+.juegosCartas-Admin-carta-detalle.epica {
+  border-image: linear-gradient(45deg, #c399ff, #8a2be2) 1;
+}
+.juegosCartas-Admin-carta-detalle.legendaria {
+  border-image: linear-gradient(45deg, #ffd700, #ffa500) 1;
+}
+.juegosCartas-Admin-carta-detalle.especial {
+  border-image: linear-gradient(45deg, #33ff99, #24da7f) 1;
+}
+
+.juegosCartas-Admin-close-btn {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #444;
+}

@@ -1,0 +1,198 @@
+/* CONTENEDOR GENERAL */
+.CoreografiasMovimientos-Container {
+  font-family: "Inter", Arial, sans-serif;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+/* TITULOS */
+.CoreografiasMovimientos-Titulo {
+  text-align: center;
+  color: #1d3557;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+/* SELECT */
+.CoreografiasMovimientos-Select {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccd0d5;
+  background-color: #f7f9fa;
+  transition: border 0.2s;
+}
+.CoreografiasMovimientos-Select:focus {
+  outline: none;
+  border-color: #457b9d;
+}
+
+/* CONTENEDOR DE LA COREO */
+.CoreografiasMovimientos-Seleccionada {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  margin-top: 10px;
+}
+
+.CoreografiasMovimientos-Nombre {
+  color: #1d3557;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+/* BOTÓN NUEVO BLOQUE */
+.CoreografiasMovimientos-Crear-NuevoBloque {
+  background-color: #2a9d8f;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+/* FORMULARIO DEL BLOQUE */
+.CoreografiasMovimientos-Crear-Formulario {
+  border: 1px solid #e0e0e0;
+  padding: 15px;
+  border-radius: 12px;
+  background-color: #fafafa;
+  margin-bottom: 22px;
+}
+
+.CoreografiasMovimientos-Crear-Titulo {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #264653;
+  font-weight: 600;
+}
+
+/* INPUTS */
+.CoreografiasMovimientos-Crear-Input,
+.CoreografiasMovimientos-Crear-Textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d0d4d8;
+  background-color: #ffffff;
+  margin-top: 4px;
+  font-size: 14px;
+}
+.CoreografiasMovimientos-Crear-Input:focus,
+.CoreografiasMovimientos-Crear-Textarea:focus {
+  outline: none;
+  border-color: #457b9d;
+}
+
+/* ITEM DE ACCIÓN */
+.CoreografiasMovimientos-Crear-AccionItem {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #ececec;
+}
+
+/* BOTONES */
+.CoreografiasMovimientos-Crear-BtnAccion {
+  background-color: #457b9d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.CoreografiasMovimientos-Crear-BtnEliminar {
+  background-color: #e63946;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.CoreografiasMovimientos-Crear-BtnGuardar {
+  background-color: #2a9d8f;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+/* ESQUEMA ACTUAL */
+.CoreografiasMovimientos-EsquemaTitulo {
+  margin-top: 25px;
+  color: #1d3557;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.CoreografiasMovimientos-EsquemaBloque {
+  border: 1px solid #dde1e4;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: #f1f5f7;
+  transition: transform 0.15s ease, background 0.2s;
+}
+
+.CoreografiasMovimientos-EsquemaBtnEditar {
+  background-color: #457b9d;
+  color: white;
+  border-radius: 8px;
+  padding: 5px 9px;
+  border: none;
+  cursor: pointer;
+}
+
+.CoreografiasMovimientos-EsquemaBtnEliminar {
+  background-color: #e63946;
+  color: white;
+  border-radius: 8px;
+  padding: 5px 9px;
+  border: none;
+  cursor: pointer;
+}
+
+/* BOTÓN GUARDAR EN DB */
+.CoreografiasMovimientos-GuardarDB button {
+  background-color: #2a9d8f;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+/* Contenedor scroll para los bloques */
+.CoreografiasMovimientos-EsquemaScroll {
+  max-height: 350px; /* ← ajusta para mostrar 3–4 tarjetas */
+  overflow-y: auto;
+  padding-right: 8px;
+  margin-top: 10px;
+}
+
+/* Scroll bonito (opcional) */
+.CoreografiasMovimientos-EsquemaScroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.CoreografiasMovimientos-EsquemaScroll::-webkit-scrollbar-thumb {
+  background: #bfc5ca;
+  border-radius: 10px;
+}

@@ -1,0 +1,197 @@
+/* src/pages/RetosAdmin.css */
+
+.RetosAdmin-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  background-color: #f7f9fc;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.RetosAdmin-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.RetosAdmin-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.RetosAdmin-form textarea {
+  grid-column: span 2;
+}
+
+.RetosAdmin-input,
+.RetosAdmin-textarea,
+.RetosAdmin-select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.RetosAdmin-textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+.RetosAdmin-checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  grid-column: span 1;
+}
+
+.RetosAdmin-checkbox {
+  width: 18px;
+  height: 18px;
+}
+
+.RetosAdmin-submit {
+  grid-column: span 2;
+  padding: 12px;
+  background-color: #4f9fff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.RetosAdmin-loading {
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.RetosAdmin-table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* para scroll suave en iOS */
+}
+.RetosAdmin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.RetosAdmin-table th,
+.RetosAdmin-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.RetosAdmin-table th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  color: #333;
+}
+
+.RetosAdmin-editButton,
+.RetosAdmin-deleteButton {
+  padding: 6px 12px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.RetosAdmin-editButton {
+  background-color: #ffca28;
+  color: #fff;
+}
+
+.RetosAdmin-deleteButton {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.RetosAdmin-radioGroup {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.RetosAdmin-radioGroup label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.RetosAdmin-radioDesc {
+  font-size: 0.85rem;
+  color: #555;
+  margin-left: 26px; /* espacio para que quede alineado con el radio */
+}
+
+.RetosAdmin-resumen {
+  grid-column: span 2;
+  background-color: #eef6ff;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.RetosAdmin-resumen h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.RetosAdmin-resumen p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+}
+
+/* Estilos específicos por tipo de condición */
+.RetosAdmin-resumen-tiempo,
+.RetosAdmin-resumen-coreografia {
+  border-left: 4px solid #4f9fff;
+  background-color: #f0f6ff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  margin: 4px 0;
+  font-size: 0.94rem;
+}
+
+/* Diferentes colores según tipo */
+.RetosAdmin-resumen-tiempo {
+  border-color: #4f9fff;
+  background-color: #e6f0ff;
+}
+
+.RetosAdmin-resumen-coreografia {
+  border-color: #81c784;
+  background-color: #e8f5e9;
+}
+
+.RetosAdmin-assignButton {
+  background: #0077ff;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 16px;
+  font-weight: bold;
+  transition: 0.2s;
+}

@@ -1,0 +1,519 @@
+/* CONTENEDOR GENERAL */
+.coreografias-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* HEADER */
+/* Buscador debajo del título */
+.coreografias-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.coreografias-search {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 250px;
+}
+
+/* Wrapper para scroll horizontal */
+.coreografias-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Tabla completa */
+.coreografias-table {
+  width: 100%;
+  min-width: 800px; /* Ajusta según columnas */
+  border-collapse: collapse;
+  background-color: #ffffff; /* Fondo sólido blanco */
+}
+
+.coreografias-table th,
+.coreografias-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  vertical-align: middle; /* Alinea contenido verticalmente */
+  background-color: #f9f9f9;
+}
+
+.coreografias-table th {
+  background: #f4f4f4;
+  font-weight: 600;
+}
+.coreografias-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+.coreografias-actions-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: nowrap; /* Evita que se vayan a otra línea */
+  align-items: center; /* Centra verticalmente */
+  min-height: 36px; /* Altura mínima */
+}
+
+/* GRID DE TARJETAS */
+.coreografias-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* TARJETA */
+.coreografias-card {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e6e6e6;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.coreografias-card-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* DESCRIPCIÓN */
+.coreografias-descripcion {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* BOTONES */
+.coreografias-btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.coreografias-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
+}
+/* Botón principal */
+.coreografias-btn-primary {
+  background: #1a8cd8;
+  color: white;
+  margin-left: 20px;
+  height: 36px;
+  width: 120px;
+}
+
+/* Botón editar */
+.coreografias-btn-edit {
+  background: #f4c542;
+  color: #333;
+}
+
+/* Botón eliminar */
+.coreografias-btn-delete {
+  background: #e74c3c;
+  color: white;
+}
+
+/* TEXTO DE CARGA */
+.coreografias-loading {
+  font-size: 1.1rem;
+  text-align: center;
+  color: #555;
+}
+
+/* LISTA DE NADADORAS */
+.coreografias-nadadoras {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.coreografias-subtitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.coreografias-nadadoras-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.coreografias-nadadora-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fafafa;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  border: 1px solid #eee;
+}
+
+.coreografias-nadadora-nombre {
+  font-weight: 500;
+}
+
+.coreografias-nadadora-rol {
+  font-size: 0.85rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+/* COLORES POR ROL */
+.coreografias-rol-titular .coreografias-nadadora-rol {
+  background: #4caf50;
+  color: white;
+}
+
+.coreografias-rol-reserva .coreografias-nadadora-rol {
+  background: #f4c542;
+  color: #333;
+}
+
+/* --- OVERLAY --- */
+.coreografias-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  backdrop-filter: blur(2px);
+}
+
+/* --- CONTENEDOR DEL DIÁLOGO --- */
+.coreografias-dialog {
+  background: white;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.18s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* --- TITULO --- */
+.coreografias-dialog-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+/* --- FORMULARIO --- */
+.coreografias-dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.coreografias-dialog-input,
+.coreografias-dialog-textarea,
+.coreografias-dialog-select {
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.coreografias-dialog-textarea {
+  min-height: 90px;
+}
+
+/* --- SECCIÓN DE NADADORAS --- */
+.coreografias-dialog-nadadoras {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.coreografias-dialog-subtitle {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.coreografias-dialog-nadadora-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fafafa;
+  border: 1px solid #ececec;
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+.coreografias-dialog-nadadora-nombre {
+  flex: 1;
+  font-weight: 500;
+}
+
+.coreografias-dialog-remove {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 2px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* --- BOTONES --- */
+.coreografias-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.coreografias-btn-primary {
+  background: #007bff;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+}
+
+.coreografias-btn-gray {
+  background: #ddd;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+}
+
+/* --- ANIMACIÓN --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* AUTOCOMPLETE */
+.coreografias-autocomplete-results {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 6px;
+}
+
+.coreografias-autocomplete-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+/* CHIPS */
+.coreografias-chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.coreografias-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #e8f0ff;
+  padding: 6px 10px;
+  border-radius: 20px;
+  border: 1px solid #b5ceff;
+}
+
+.coreografias-chip-select {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+
+.coreografias-chip-remove {
+  background: none;
+  border: none;
+  color: #d33;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* === AUDIO PLAYER ESTILIZADO === */
+
+.coreografias-audio-player {
+  width: 100%;
+  margin: 10px 0 15px 0;
+  background: #f9fbff;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #d9e6ff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+}
+
+.coreografias-audio-player audio {
+  width: 100%;
+  outline: none;
+}
+
+/* Barra de progreso */
+.coreografias-audio-player audio::-webkit-media-controls-timeline {
+  border-radius: 8px;
+  margin: 0 10px;
+}
+
+/* Botones */
+.coreografias-audio-player audio::-webkit-media-controls-play-button {
+  filter: invert(40%);
+  transform: scale(1.2);
+}
+
+.coreografias-audio-player audio::-webkit-media-controls-volume-slider {
+  border-radius: 8px;
+}
+.coreografias-btn-musica {
+  background: #1a8cd8;
+  color: white;
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin: 12px 0;
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+.audio-wrapper {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f0f4ff;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #d0dcff;
+  position: relative;
+}
+
+.play-btn {
+  font-size: 20px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.audio-seek {
+  flex: 1;
+}
+
+.audio-time {
+  font-size: 0.85rem;
+  color: #444;
+}
+
+.audio-menu-container {
+  position: relative;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.audio-menu {
+  position: absolute;
+  right: 0;
+  top: 28px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 6px 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.audio-menu button {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 8px 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.coreografias-btn-musica {
+  background: #1a8cd8;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+}
+
+/* === AUDIO + ELIMINAR === */
+.audio-with-delete {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Botón borrar música */
+.coreografias-btn-delete-music {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+  color: #e74c3c;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.coreografias-btn-delete-music:hover {
+  transform: scale(1.15);
+  opacity: 0.85;
+}

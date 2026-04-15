@@ -1,0 +1,657 @@
+/* Contenedor general */
+.NadadoraDashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px;
+  font-family: sans-serif;
+  background: #f9f9f9;
+}
+
+/* Secciones del dashboard */
+.NadadoraDashboard-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+/* Títulos de acordeón */
+.NadadoraDashboard-section h3 {
+  cursor: pointer;
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+}
+
+/* Contenido interno de cada sección */
+.NadadoraDashboard-section .content {
+  padding: 8px 0;
+}
+
+/* Información general */
+.NadadoraDashboard-section.general {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+/* Foto de la nadadora */
+.NadadoraDashboard-section.general .foto {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto;
+}
+
+/* Info textual */
+.NadadoraDashboard-section.general .info {
+  text-align: center;
+}
+
+.NadadoraDashboard-section.general .info h2 {
+  font-size: 1.2rem;
+  margin: 5px 0;
+}
+
+.NadadoraDashboard-section.general .info p {
+  font-size: 0.9rem;
+  margin: 2px 0;
+}
+
+/* Indicadores */
+.NadadoraDashboard-section.general .indicadores {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.NadadoraDashboard-section.general .indicador {
+  background: #f0f0f0;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+
+/* Adaptaciones para pantallas más grandes */
+@media (min-width: 600px) {
+  .NadadoraDashboard-section.general {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .NadadoraDashboard-section.general .info {
+    flex: 1;
+  }
+
+  .NadadoraDashboard-section.general .indicadores {
+    justify-content: flex-start;
+  }
+
+  .NadadoraDashboard-section.general .foto {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/*-----------------------------------------CALENDARIO------------------------------------------------------ */
+/* Contenedor general del calendario */
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+  padding: 8px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Calendario base */
+.calendar {
+  width: 100%;
+  border: none;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Oculta el número predeterminado del calendario */
+.react-calendar__tile abbr {
+  display: none;
+}
+
+/* Día individual */
+.calendar-tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px; /* esquinas redondeadas */
+  font-weight: bold;
+  font-size: 0.85rem;
+  box-sizing: border-box; /* importante para padding */
+}
+
+/* Selector de mes y año */
+.react-calendar__navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 5px 10px;
+}
+
+.react-calendar__navigation button {
+  background: none;
+  border: none;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* Día de hoy destacado */
+.calendar-tile.today {
+  border: 2px solid #333;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Leyenda */
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
+}
+.asistencia-leyend span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+}
+
+.asistencia-leyend .color-box {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  display: inline-block;
+  border: 1px solid #ccc;
+}
+
+.legend-label {
+  font-size: 0.85rem;
+  color: #333;
+}
+/*--------------------------------------HISTORIAL PUNTOS------------------------------------------------------ */
+/* Timeline del historial de puntos */
+.historial-puntos {
+  max-height: 350px; /* ajusta según prefieras */
+  overflow-y: auto; /* scroll vertical */
+  padding-right: 8px; /* evita que el contenido toque el scrollbar */
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: #fafafa;
+  padding: 10px;
+}
+
+/* Timeline general */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeline-marker {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Contenido del evento */
+.timeline-content {
+  background: #f5f5f5;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+/* Colores según tipo */
+/* Colores por tipo */
+.timeline-item.asistencia .timeline-marker {
+  background: #4caf50;
+} /* verde */
+.timeline-item.retraso .timeline-marker {
+  background: #ffeb3b;
+} /* amarillo */
+.timeline-item.falta .timeline-marker {
+  background: #f44336;
+} /* rojo */
+.timeline-item.logro-semanal .timeline-marker {
+  background: #2196f3;
+} /* azul */
+.timeline-item.logro-mensual .timeline-marker {
+  background: #9c27b0;
+} /* morado */
+.timeline-item.logro .timeline-marker {
+  background: #ff9800;
+}
+
+/* Fecha y puntos */
+.timeline-content .fecha {
+  font-weight: 600;
+  color: #555;
+}
+
+.timeline-content .detalle {
+  color: #333;
+}
+
+.timeline-content .puntos {
+  font-weight: bold;
+  color: #007bff;
+  align-self: flex-end;
+}
+
+/* Adaptación móvil */
+@media (max-width: 600px) {
+  .timeline {
+    padding-left: 15px;
+  }
+
+  .timeline-content {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+
+  .timeline-marker {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/*--------------------------------------HISTORIAL TIEMPOS------------------------------------------------------ */
+
+/* Grid tiempos */
+.tiempos-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Card individual */
+.tiempo-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid #0077b6;
+}
+
+/* Header */
+.tiempo-header {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* Bloques mejor/último */
+.tiempo-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tiempo-bloque {
+  flex: 1;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+}
+
+.tiempo-bloque.mejor {
+  background: #e6f4ea;
+}
+
+.tiempo-bloque.ultimo {
+  background: #e7f1ff;
+}
+
+.tiempo-bloque .label {
+  font-size: 0.7rem;
+  color: #666;
+}
+
+.tiempo-bloque .valor {
+  font-size: 1.1rem;
+  font-weight: bold;
+  display: block;
+  margin: 4px 0;
+}
+
+.tiempo-bloque .fecha {
+  font-size: 0.7rem;
+  color: #777;
+}
+
+.tiempo-header.clickable {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.ver-mas {
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+.historial-tiempos {
+  margin-top: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+  border-top: 1px solid #eee;
+  padding-top: 8px;
+}
+.diff-tiempo {
+  font-size: 0.75rem;
+  color: #888;
+  margin-right: 4px;
+}
+
+.fila-tiempo {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 14px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+/* Grid de valoraciones */
+.valoraciones-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 300px; /* altura máxima antes de scroll */
+  overflow-y: auto;
+  padding-right: 8px; /* evita que el contenido toque el scrollbar */
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: #fafafa;
+  padding: 10px;
+}
+
+/* Card individual */
+.valoracion-card {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Header */
+.valoracion-header {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+/* Barra de cada valoración */
+.barra-valoracion {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.barra-valoracion span {
+  font-size: 0.75rem;
+  color: #555;
+}
+
+.barra {
+  width: 100%;
+  height: 8px;
+  background: #eee;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barra-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Colores por tipo */
+.barra-fill.cansancio {
+  background: #f44336; /* rojo */
+}
+
+.barra-fill.general {
+  background: #ff9800; /* naranja */
+}
+
+.barra-fill.motivacion {
+  background: #4caf50; /* verde */
+}
+
+.barra-fill.productividad {
+  background: #2196f3; /* azul */
+}
+
+/* Comentarios */
+.comentario {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* Adaptación móvil */
+@media (max-width: 600px) {
+  .valoracion-card {
+    padding: 10px;
+  }
+
+  .barra {
+    height: 6px;
+  }
+
+  .barra-valoracion span {
+    font-size: 0.7rem;
+  }
+}
+
+/* Grid de logros */
+.Secion-admin-logros-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* Tarjeta individual de logro */
+.Secion-admin-logro-card {
+  background: linear-gradient(135deg, #2196f3, #21cbf3);
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 12px;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  cursor: default;
+}
+
+/* Icono del logro */
+.Secion-admin-logro-icon {
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+}
+
+/* Nombre del logro */
+.Secion-admin-logro-nombre {
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* Puntos extra */
+.Secion-admin-logro-puntos {
+  font-size: 0.75rem;
+  margin-top: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+/* Grid de retos */
+.Seccion-Retos-Admin-retos-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* Tarjeta individual de reto */
+.Seccion-Retos-Admin-reto-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  min-width: 140px;
+  flex: 1 1 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.Seccion-Retos-Admin-reto-card.cumplido {
+  border-left: 4px solid #4caf50; /* verde */
+}
+
+.Seccion-Retos-Admin-reto-card.pendiente {
+  border-left: 4px solid #ff9800; /* naranja */
+}
+
+/* Nombre del reto */
+.Seccion-Retos-Admin-reto-nombre {
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+/* Puntos del reto */
+.Seccion-Retos-Admin-reto-puntos {
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+  color: #007bff;
+}
+
+/* Estado */
+.Seccion-Retos-Admin-reto-estado {
+  font-size: 0.75rem;
+  color: #555;
+}
+
+/* Grid de coreografías */
+.Seccion-Coreos-Admin-coreografias-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* Tarjeta individual de coreografía */
+.Seccion-Coreos-Admin-coreografia-card {
+  background: linear-gradient(135deg, #b5dbff, #839cff);
+  color: #000000;
+  padding: 12px 16px;
+  border-radius: 12px;
+  min-width: 70px;
+  flex: 1 1 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  cursor: default;
+}
+
+.Seccion-Coreos-Admin-coreografia-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}
+
+.Seccion-Coreos-Admin-coreografia-icon {
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+}
+
+.Seccion-Coreos-Admin-coreografia-nombre {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Adaptación móvil */
+@media (max-width: 600px) {
+  .Seccion-Coreos-Admin-coreografias-grid {
+    flex-direction: column;
+  }
+
+  .Seccion-Coreos-Admin-coreografia-card {
+    min-width: 100%;
+  }
+}

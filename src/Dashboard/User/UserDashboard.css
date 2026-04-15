@@ -1,0 +1,527 @@
+.userDashboard-container {
+  width: 100%;
+  height: 100dvh;
+}
+
+/* HEADER */
+.userDashboard-header {
+  background: var(--color-header);
+  color: var(--color-texto-header);
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 60;
+  /* height: 100px; */
+}
+.userDashboard-header-contenedorNombre-hijas {
+  display: flex;
+  flex-direction: column; /* h1 arriba, chips abajo */
+  flex-shrink: 1; /* permite encoger si falta espacio */
+  min-width: 0; /* 🔥 importante para que h1 se encoja */
+  overflow: hidden; /* evita que se salga del header */
+}
+
+.userDashboard-header-Perfil-Nombre {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  gap: 12px;
+  flex-shrink: 1; /* permite que se reduzca si hace falta */
+  min-width: 0;
+}
+.userDashboard-header-Perfil-Nombre h1 {
+  font-size: 26px; /* más pequeño */
+  margin: 0;
+  white-space: nowrap; /* evita que se rompa en varias líneas */
+  overflow: hidden;
+  text-overflow: ellipsis; /* añade "..." si no cabe */
+  max-width: 100%;
+}
+.userDashboard-hamburguer {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: white;
+}
+
+/* ICONO DEL PERFIL */
+.userDashboard-perfilIcono {
+  width: 38px;
+  height: 38px;
+  background: white;
+  color: #6db1ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* MENÚ DEL PERFIL (dropdown) */
+.userDashboard-perfilMenu {
+  /* position: absolute;
+  top: 60px;
+  right: 20px; */
+  position: fixed;
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  width: 150px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.userDashboard-perfilMenu p {
+  margin: 8px 0;
+  cursor: pointer;
+  color: #333;
+  padding: 12px 10px;
+  border-radius: 8px;
+  font-size: 15px;
+  background: #f5f5f5; /* suave */
+}
+
+.userDashboard-cerrarSesion {
+  font-weight: bold;
+  color: red;
+}
+
+/* LAYOUT */
+.userDashboard-content {
+  display: flex;
+  flex: 1;
+  height: calc(100dvh - 80px);
+  overflow: hidden; /* evita que nav y main se salgan */
+}
+
+/* NAV LATERAL */
+.userDashboard-nav {
+  position: fixed; /* para superponerse al contenido */
+  top: var(--header-height, 120px);
+  left: 0;
+  width: 220px;
+  height: calc(100dvh - 60px);
+  background: var(--color-menu-lateral);
+  padding: 10px;
+  transform: translateX(-100%); /* fuera de pantalla */
+  transition: transform 0.3s ease;
+  z-index: 50; /* por encima del contenido */
+}
+
+.userDashboard-nav.nadadora {
+  top: 80px;
+  height: calc(100dvh - 80px);
+}
+
+.userDashboard-nav.padre {
+  top: 80px;
+  height: calc(100dvh - 80px);
+}
+.userDashboard-nav li {
+  display: flex;
+  flex-direction: column; /* antes era row */
+  gap: 0;
+  font-size: 15px;
+  padding: 0; /* lo manejamos con .nav-item */
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+
+  cursor: pointer;
+  font-weight: 500;
+}
+.userDashboard-nav li.active {
+  background: var(--color-menu-activo);
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Submenú oculto por defecto */
+.submenu {
+  list-style: none;
+  padding: 0 0 0 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.submenu li {
+  padding: 6px 10px;
+  cursor: pointer;
+  font-weight: 400;
+  border-radius: 6px;
+  transition: background 0.2s;
+  margin-left: 20px;
+}
+
+.submenu li.active {
+  background: var(--color-menu-activo);
+  font-weight: 600;
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* separación entre icono y texto */
+}
+
+.submenu-item .navIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.submenu-label {
+  display: inline-block;
+}
+
+.navIcon {
+  display: flex;
+  align-items: center;
+}
+
+.userDashboard-nav.open {
+  transform: translateX(0);
+}
+
+.userDashboard-nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.userDashboard-nav li {
+  padding: 10px 0;
+  cursor: pointer;
+  font-weight: 500;
+}
+.userDashboard-nav li.active {
+  background: var(--color-menu-activo);
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* MAIN */
+.userDashboard-main {
+  padding: 20px;
+  flex: 1;
+  background: var(--color-fondo-dashboard);
+  width: 100vw;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.userDashboard-toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #4ce751dd;
+  color: #053b0d;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  animation: fadeInOut 2.5s ease;
+  z-index: 999;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+}
+
+.userDashboard-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px; /* altura del área de contenido */
+}
+
+.userDashboard-loader-circle {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #d0d0d0;
+  border-top-color: #4ce751;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.userDashboard-hijasSelector {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  width: 80%;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+
+  /* opcional: ocultar scrollbar en la mayoría de navegadores */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.userDashboard-hijasSelector::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+.hijaChip {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: #f5f5f5;
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.hijaChip.selected {
+  background: #4ce751;
+  color: #000000;
+  border-color: #4ce751;
+}
+
+.navIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.navNotificacionPunto {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+
+  width: 10px;
+  height: 10px;
+
+  background: #ef4444;
+  border-radius: 50%;
+
+  animation: notifPulse 1.1s ease-in-out infinite;
+}
+
+.navNotificacionPunto.juegoHoy {
+  background-color: #ff4d4f; /* rojo para resaltar */
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.navNotificacionPunto.eventoHoy {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ff4d4f; /* rojo para resaltar */
+}
+
+.navNotificacionPunto.mensajesNuevosComunidad {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ff4d4f; /* rojo para resaltar */
+}
+.navNotificacionPunto.mensajesNuevos {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background-color: #ff4d4f;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  animation: notifPulse 1.1s ease-in-out infinite;
+}
+
+/* Notificación para botón hamburguesa */
+.userDashboard-hamburguer .hamburguerNotificacion {
+  position: absolute;
+  top: 10px; /* ajustar según tamaño del botón */
+  right: 10px; /* ajustar según tamaño del botón */
+  width: 12px;
+  height: 12px;
+  background-color: #ff4d4f;
+  border-radius: 50%;
+  border: 1px solid white; /* opcional, para que resalte */
+  animation: notifPulse 1.1s ease-in-out infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  color: white;
+  font-weight: bold;
+  padding: 0;
+}
+
+@keyframes notifPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+.userDashboard-loader-logoSpin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
+}
+
+.userDashboard-loader-logoSpin img {
+  width: 90px;
+  height: 90px;
+  animation: logoSpin 1.2s linear infinite;
+  opacity: 0.9;
+}
+
+@keyframes logoSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.userDashboard-loader-rippleLogo {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 80px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.userDashboard-loader-rippleLogo .circle {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 3px solid var(--color-header);
+  border-radius: 50%;
+  animation: rippleLogo 1.4s infinite ease-out;
+}
+
+.userDashboard-loader-rippleLogo .circle:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.userDashboard-loader-rippleLogo img {
+  width: 80px;
+  height: 80px;
+  z-index: 2;
+}
+
+@keyframes rippleLogo {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+/* /Login/splash.css */
+
+.splash-container {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+
+  /* 🔥 Usa el MISMO color que la app */
+  background: var(--color-fondo-dashboard);
+
+  animation: fadeOutSplash 0.4s ease-out forwards;
+  animation-delay: 1.2s; /* el tiempo que dura tu auth */
+}
+
+/* Efecto de onda */
+.splash-ripple {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.15);
+  animation: ripple 1.4s ease-out infinite;
+}
+
+/* Logo */
+.splash-logo {
+  width: 120px;
+  height: auto;
+  z-index: 2;
+}
+
+/* Animación onda */
+@keyframes ripple {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* Desvanecido suave */
+@keyframes fadeOutSplash {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

@@ -1,0 +1,85 @@
+.Coreografias-User-container {
+  padding: 24px;
+  font-family: "Inter", sans-serif;
+  background: #f9fafb;
+  color: #1f2937;
+}
+
+.Coreografias-User-title {
+  font-size: 1.8rem;
+  margin-bottom: 16px;
+}
+
+.Coreografias-User-filtro {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.Coreografias-User-select {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background-color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.Coreografias-User-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.Coreografias-User-card {
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+/* Rol Titular: verde */
+.Coreografias-User-card-titular {
+  background-color: #d1fae5; /* verde claro */
+  border-color: #10b981; /* verde más fuerte */
+}
+
+/* Rol Reserva: amarillo-naranja */
+.Coreografias-User-card-reserva {
+  background-color: #fff7e0; /* amarillo claro */
+  border-color: #f59e0b; /* naranja */
+}
+
+.Coreografias-User-NombreCoreografia {
+  margin-bottom: 5px;
+}
+.Coreografias-User-botonEsquema {
+  padding: 10px 16px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: #3b82f6; /* azul primario */
+  color: white;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.Coreografias-User-AudioPlayer {
+  margin-top: 12px;
+  padding: 12px;
+  background: #f0f7ff;
+  border: 1px solid #c7dcff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.Coreografias-User-AudioPlayer audio {
+  width: 100%;
+  outline: none;
+}

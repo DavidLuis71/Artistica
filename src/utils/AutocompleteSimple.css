@@ -1,0 +1,195 @@
+.Auto-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* ICONO */
+.Auto-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6;
+  pointer-events: none;
+  font-size: 18px;
+}
+
+.Auto-input {
+  width: 100%;
+  padding: 10px 10px 10px 35px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.Auto-input:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
+}
+
+.Auto-list {
+  position: absolute;
+  top: 43px;
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  max-height: 240px;
+  overflow-y: auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 20;
+}
+
+.Auto-item {
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.Auto-avatar {
+  width: 28px;
+  height: 28px;
+  background: #2563eb;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.Auto-highlight {
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.Auto-empty {
+  padding: 10px;
+  color: #888;
+  background: #fafafa;
+}
+
+/* Contenedor principal */
+.Auto-Multiple-wrapper {
+  position: relative;
+  width: 100%;
+  font-family: sans-serif;
+}
+
+/* Contenedor de chips + input */
+.Auto-Multiple-chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; /* Más espacio entre chips */
+  padding: 6px 10px; /* Más padding para móvil */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  min-height: 48px; /* Más alto para tocar fácilmente */
+  align-items: center;
+  cursor: text;
+  background-color: #fff;
+}
+
+/* Chip individual */
+.Auto-Multiple-chip {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px; /* Chips más grandes */
+  background-color: #007bff;
+  color: white;
+  border-radius: 20px;
+  font-size: 1rem; /* Texto más legible */
+  font-weight: 500;
+}
+
+/* Botón de eliminar chip */
+.Auto-Multiple-chip-remove {
+  display: inline-block;
+  margin-left: 6px; /* Más espacio al icono de eliminar */
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Input dentro del contenedor */
+.Auto-Multiple-input {
+  flex: 1;
+  min-width: 80px;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  padding: 4px 0;
+}
+
+/* Lista desplegable */
+.Auto-Multiple-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Item de la lista */
+.Auto-Multiple-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+/* Avatar inicial */
+.Auto-Multiple-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+/* Mensaje de lista vacía */
+.Auto-Multiple-empty {
+  padding: 6px 10px;
+  color: #888;
+  font-style: italic;
+}
+
+/* Botón X para borrar la nadadora */
+.Auto-clear {
+  position: absolute;
+  right: 10px; /* distancia del borde derecho */
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: red;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Badge de mensaje pendiente */
+.Auto-badge {
+  width: 20px;
+  height: 20px;
+  background-color: #ff3b3b; /* rojo para destacar */
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: auto; /* lo empuja al final del item */
+}

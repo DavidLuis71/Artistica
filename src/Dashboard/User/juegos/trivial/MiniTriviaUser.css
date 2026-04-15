@@ -1,0 +1,159 @@
+.Trivial-User-Container {
+  max-width: 650px;
+  margin: 10px auto;
+  padding: 25px 15px;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(145deg, #fdfdfd, #f0f4f8);
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.Trivial-User-Title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #34495e;
+  letter-spacing: 0.5px;
+}
+
+.Trivial-User-Pregunta {
+  margin-bottom: 25px;
+  padding: 18px 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.Trivial-User-PreguntaTexto {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #2c3e50;
+}
+
+.Trivial-User-PreguntaImagen {
+  max-width: 220px;
+  display: block;
+  margin: 0 auto 12px auto; /* centrado horizontal y margen inferior */
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.Trivial-User-Opciones {
+  gap: 12px;
+}
+
+.Trivial-User-Opcion {
+  width: 100%; /* Ocupa toda la línea */
+  margin-top: 10px;
+  padding: 10px 8px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #3498db;
+  color: #fff;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  flex: 1 1 calc(50% - 12px);
+  text-align: center;
+}
+
+.Trivial-User-Opcion-Correcta {
+  background-color: #27ae60 !important;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+}
+
+.Trivial-User-Opcion-Incorrecta {
+  background-color: #c0392b !important;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(192, 57, 43, 0.3);
+}
+
+.Trivial-User-Enviar {
+  display: block;
+  margin: 25px auto 0 auto;
+  padding: 12px 28px;
+  font-size: 17px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(90deg, #f39c12, #e67e22);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.Trivial-User-Preguntas-Container {
+  margin-top: 20px;
+}
+
+.Trivial-User-RankingTitle {
+  margin-top: 35px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #34495e;
+}
+
+.Trivial-User-Ranking {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+.Trivial-User-Ranking li {
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  background-color: #f1f5f9;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  color: #2c3e50;
+  transition: background-color 0.2s;
+  align-items: center; /* centrado vertical */
+  text-align: left; /* alinea texto a la izquierda */
+}
+
+.Trivial-User-Ranking-Texto {
+  flex: 1; /* ocupa todo el espacio restante */
+}
+
+.Trivial-User-Ranking-Usuario {
+  font-weight: 600;
+  color: #1e90ff;
+  background-color: #d8edff;
+  box-shadow: 0 2px 6px rgba(30, 144, 255, 0.2);
+}
+
+.Trivial-User-Ranking-Puntos {
+  font-weight: 700;
+  color: #e67e22; /* un color más llamativo */
+  background-color: #fff3e0; /* ligero resaltado */
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.Trivial-User-Ranking-Oro {
+  border: 2px solid gold;
+  background-color: #fff8dc; /* suave dorado */
+}
+
+.Trivial-User-Ranking-Plata {
+  border: 2px solid silver;
+  background-color: #f0f0f0; /* suave plateado */
+}
+
+.Trivial-User-Ranking-Bronce {
+  border: 2px solid #cd7f32;
+  background-color: #f9f4f1; /* suave bronce */
+}
+
+.Trivial-User-RespuestaCorrecta {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #27ae60;
+  font-weight: 600;
+}

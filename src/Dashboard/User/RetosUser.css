@@ -1,0 +1,266 @@
+/* Container */
+.RetosUser-container {
+  padding: 20px;
+  font-family: "Inter", sans-serif;
+}
+
+/* Grid */
+.RetosUser-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+/* Card general */
+.RetosUser-card {
+  position: relative;
+  padding: 8px 4px;
+  border-radius: 16px;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  min-height: 80px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s, box-shadow 0.25s, background 0.3s;
+  background: #f4f6ff;
+}
+
+/* Card states */
+.RetosUser-card.cumplido {
+  background: linear-gradient(135deg, #56ccf2, #2f80ed);
+  color: #fff;
+}
+
+.RetosUser-card.no-cumplido {
+  background: #f0f0f0;
+  color: #555;
+  filter: grayscale(30%);
+}
+
+/* Card texts */
+.RetosUser-cardNombre {
+  font-weight: 700;
+  font-size: 16px;
+  margin: 0 0 6px 0;
+}
+
+.RetosUser-cardTipo,
+.RetosUser-cardPuntos {
+  font-size: 13px;
+  margin: 2px 0;
+}
+
+/* Badge "COMPLETADO" */
+.RetosUser-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 13px;
+  transform: translate(-50%, -50%) rotate(-25deg);
+  font-weight: 700;
+  background: rgba(30, 89, 168, 0.95);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 6px;
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: badgePop 0.3s ease-out;
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Modal overlay */
+.RetosUser-modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal content */
+.RetosUser-modalContent {
+  background-color: #fff;
+  padding: 24px 20px;
+  border-radius: 16px;
+  max-width: 460px;
+  width: 90%;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  transform: translateY(-20px);
+  animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.RetosUser-modalContent h3 {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.RetosUser-modalContent p {
+  font-size: 15px;
+  margin: 6px 0;
+}
+
+/* Modal close button */
+.RetosUser-modalClose {
+  margin-top: 18px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #2f80ed;
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+/* Completed text inside modal */
+.RetosUser-cardCompletado {
+  display: inline-block;
+  margin-top: 6px;
+  font-weight: 700;
+  color: #2f80ed;
+  font-size: 14px;
+}
+.RetosUser-dificultadTag {
+  display: flex;
+  font-size: 11px;
+  font-weight: 700;
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.RetosUser-card.dificultad-facil {
+  background: #a8e6cf;
+  color: #056608;
+}
+.RetosUser-card.dificultad-medio {
+  background: #ffd3b6;
+  color: #805400;
+}
+.RetosUser-card.dificultad-dificil {
+  background: #ff8b94;
+  color: #7a0000;
+}
+.RetosUser-card.dificultad-muy_dificil {
+  background: #d291bc;
+  color: #4a0073;
+}
+
+.RetosUser-card.dificultad-dificil {
+  background: linear-gradient(135deg, #ff8b94, #ff4b6e);
+  animation: gradientMove 5s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Contenedor de filtros */
+.RetosUser-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+/* Botones de filtro generales */
+.RetosUser-filtros button {
+  padding: 4px 12px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+  transition: all 0.2s;
+  background: #e0e0e0;
+  color: #333;
+}
+
+/* Botones activos */
+.RetosUser-filtros button.active {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Colores según dificultad */
+.RetosUser-filtros button[data-dificultad="facil"] {
+  background: #a8e6cf;
+  color: #056608;
+}
+
+.RetosUser-filtros button[data-dificultad="medio"] {
+  background: #ffd3b6;
+  color: #805400;
+}
+
+.RetosUser-filtros button[data-dificultad="dificil"] {
+  background: linear-gradient(135deg, #ff8b94, #ff4b6e);
+  color: #7a0000;
+}
+
+.RetosUser-filtros button[data-dificultad="muy_dificil"] {
+  background: #d291bc;
+  color: #4a0073;
+}
+
+/* Botón "Todos" */
+.RetosUser-filtros button[data-dificultad="todos"] {
+  background: #ccc;
+  color: #333;
+}

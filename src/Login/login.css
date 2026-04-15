@@ -1,0 +1,165 @@
+/* Contenedor principal centrado */
+.pruebadelogin {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #89f7fe, #66a6ff);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Título */
+.pruebadelogin h2 {
+  margin-bottom: 25px;
+  font-size: 2rem;
+  color: #0f2e50;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Formulario */
+.pruebadelogin form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 300px;
+  background: white;
+  padding: 30px 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Inputs */
+.pruebadelogin input {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.pruebadelogin input:focus {
+  border-color: #144166;
+  box-shadow: 0 0 5px rgba(20, 65, 102, 0.5);
+  outline: none;
+}
+
+/* Botón */
+.pruebadelogin button {
+  padding: 12px;
+  background-color: #144166;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    transform 0.1s ease;
+}
+
+/* Mensaje de error */
+.pruebadelogin p {
+  color: #ff4d4f;
+  font-weight: 500;
+  text-align: center;
+  margin-top: -5px;
+}
+
+/* Navegación de registro */
+.login-nav {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #0f2e50;
+}
+
+.login-nav a {
+  text-decoration: none;
+  padding: 8px 16px;
+  background-color: #144166;
+  color: white;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+/* PARA EL REGISTRO */
+
+.pruebadelogin select {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.pruebadelogin select:focus {
+  border-color: #144166;
+  box-shadow: 0 0 5px rgba(20, 65, 102, 0.5);
+  outline: none;
+}
+
+.pruebadelogin .error-message {
+  color: #ff4d4f;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.pruebadelogin .success-message {
+  color: #28a745;
+  font-weight: 500;
+  text-align: center;
+  margin-top: -5px;
+}
+
+/* Contenedor del input + botón */
+.pruebadelogin-password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pruebadelogin-password-container input {
+  width: 100%;
+  padding-right: 40px; /* Espacio para el botón */
+}
+
+.pruebadelogin-toggle-password {
+  position: absolute;
+  right: 10px;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  opacity: 0.7;
+  color: #333; /* Puedes ajustarlo si quieres */
+}
+
+/* Estilo de "olvidé mi contraseña" debajo del formulario */
+.pruebadelogin-forgot {
+  margin-top: 10px;
+  background: none; /* Sin fondo */
+  border: none; /* Sin borde */
+  padding: 0; /* Sin padding */
+  color: #144166; /* Color del enlace */
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: underline; /* Subrayado como enlace */
+  cursor: pointer; /* Mano al pasar por encima */
+  transition: color 0.2s ease;
+  margin: auto;
+}

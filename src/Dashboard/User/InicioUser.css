@@ -1,0 +1,309 @@
+.InicioUser-container {
+  max-width: 500px;
+  margin: 0 auto;
+  margin-top: -10px;
+  padding: 10px;
+  background-color: #ffffffcc;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.InicioUser-saludo {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.InicioUser-nivelContainer {
+  margin-bottom: 20px;
+}
+
+.InicioUser-nivel,
+.InicioUser-puntos,
+.InicioUser-categoria {
+  font-weight: bold;
+  margin: 5px 0;
+}
+.InicioUser-nivelCategoria {
+  display: flex;
+  align-items: center; /* Centra verticalmente */
+  gap: 16px; /* Espacio entre nivel y categoría */
+}
+
+.InicioUser-barraFondo {
+  width: 100%;
+  height: 20px;
+  background-color: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.InicioUser-barraProgreso {
+  height: 100%;
+  background-color: #4ce751ff;
+  border-radius: 10px;
+  transition: width 0.5s;
+}
+
+.InicioUser-progreso {
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #555;
+  text-align: right;
+}
+
+.InicioUser-estadisticas {
+  margin-top: 20px;
+  text-align: center;
+  color: #666;
+  font-size: 0.9em;
+}
+
+/* CONTENEDOR GENERAL */
+.InicioUser-logrosContainer {
+  margin-top: 28px;
+  margin-bottom: 28px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.InicioUser-logrosContainer h3 {
+  margin-bottom: 14px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222;
+}
+
+/* SIN LOGROS */
+.InicioUser-sinLogros {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+  padding: 6px 0;
+}
+
+/* LISTA DE LOGROS */
+.InicioUser-logrosLista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ITEM DE LOGRO */
+.InicioUser-logroItem {
+  display: flex;
+  flex-direction: column;
+  background: #f7f7f7;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border-left: 4px solid #48e46b;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease;
+}
+
+/* TEXTO DEL LOGRO */
+.InicioUser-logroNombre {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #222;
+}
+
+.InicioUser-logroTipo {
+  font-size: 0.85rem;
+  color: #48a060;
+  margin-top: 2px;
+}
+
+.InicioUser-logroFecha {
+  font-size: 0.8rem;
+  color: #777;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.InicioUser-asistenciaCard {
+  margin: 0 auto 14px auto;
+  padding: 10px;
+  background: #f8fbff;
+  border-left: 5px solid #4ce751;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.InicioUser-asistenciaTitulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.InicioUser-asistenciaEstado {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.InicioUser-asistenciaFecha {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* ALERTA DE VALORACION */
+/* ALERTA DE VALORACION MÓVIL */
+.InicioUser-valoracionAlertMobile {
+  display: flex;
+  align-items: center;
+  background: #fff7e6;
+  border-left: 6px solid #ffc107;
+  padding: 16px 20px;
+  margin: 18px 0;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s ease;
+  animation: bounce 2.5s infinite;
+}
+
+.InicioUser-valoracionAlertMobile:active {
+  transform: scale(0.97);
+}
+
+.InicioUser-valoracionIcon {
+  font-size: 1.8rem;
+  margin-right: 14px;
+  animation: pulse 2s infinite;
+}
+
+.InicioUser-valoracionTextContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.InicioUser-valoracionText {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #8a4b00;
+}
+
+.InicioUser-valoracionTap {
+  font-size: 0.85rem;
+  color: #c77c00;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* ANIMACION ICONO PULSO */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ANIMACION BOUNCE SUAVE DE LA TARJETA */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* InicioUser.css */
+.InicioUser-carrusel {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.TarjetaInicio {
+  min-width: 200px;
+  background: #fff;
+  border-left: 5px solid;
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+/* FRASE MOTIVADORA DIARIA */
+.InicioUser-fraseDiariaCard {
+  background: #e0f7fa; /* un color suave y motivador */
+  border-left: 5px solid #00acc1;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin: 20px 0;
+  text-align: center;
+  font-style: italic;
+  color: #006064;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease;
+}
+
+.InicioUser-fraseDiariaCard:active {
+  transform: scale(0.97);
+}
+
+.InicioUser-circuloRacha {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto;
+}
+.InicioUser-textoRacha {
+  text-align: center;
+  margin-top: 4px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.InicioUser-circuloRacha {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes pulseRacha {
+  0% {
+    box-shadow: 0 0 5px rgba(0, 191, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 calc(var(--glow-intensity, 15px)) rgba(0, 191, 255, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(0, 191, 255, 0.3);
+  }
+}
+
+.InicioUser-circuloRacha.pulsing {
+  animation: pulseRacha 2s infinite;
+  background-color: #00bfff;
+}

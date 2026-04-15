@@ -1,0 +1,315 @@
+/* ==========================
+   ESTILO UI DE VIDEOJUEGO
+   ========================== */
+
+/* Layout principal */
+.geo-container {
+  font-family: "Orbitron", sans-serif;
+  text-align: center;
+  color: #e6e6e6;
+  position: relative; /* necesario para posicionar el inventario */
+  height: 100%;
+}
+
+/* MAPA */
+.geo-map-container {
+  border: 2px solid #4ec9ff;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #4ec9ff55;
+  width: 100%;
+}
+
+/* ==========================
+   INVENTARIO LATERAL (HUD)
+   ========================== */
+
+/* .geo-inventario {
+  position: absolute;
+  right: 8px;
+  top: 45%;
+  transform: translateY(-50%);
+  background: rgba(20, 30, 60, 0.55);
+  border: 1px solid #4ec9ff;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px #4ec9ff55;
+  backdrop-filter: blur(4px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 12; 
+}
+
+.inv-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.geo-inventario svg {
+  stroke: #bfeaff;
+  filter: drop-shadow(0 0 4px #000);
+}
+
+.geo-inventario span {
+  color: #e6f7ff;
+  font-size: 13px;
+  font-weight: bold;
+  text-shadow: 0 0 6px #000;
+} */
+/* ==========================
+   INVENTARIO LATERAL (HUD) FINAL
+   ========================== */
+
+/* ==========================
+   INVENTARIO SUPERIOR (HUD)
+   ========================== */
+
+.geo-inventario-top {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(20, 30, 60, 0.7);
+  padding: 6px 12px;
+  border-radius: 12px;
+  border: 2px solid #4ec9ff;
+  box-shadow: 0 0 12px #4ec9ff55;
+  backdrop-filter: blur(4px);
+  z-index: 15;
+}
+
+.geo-inventario-top .inv-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.geo-inventario-top .inv-item span {
+  color: #e6f7ff;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 0 0 6px #000;
+}
+
+.geo-inventario-top svg {
+  stroke: #bfeaff;
+  filter: drop-shadow(0 0 4px #000);
+}
+
+/* Botón + */
+.geo-inventario-top .inv-mas {
+  background: linear-gradient(135deg, #4ec9ff, #2980b9);
+  border: 2px solid #4ec9ff;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 8px;
+  padding: 4px 10px;
+  cursor: pointer;
+  box-shadow: 0 0 8px #4ec9ff55;
+  transition: all 0.2s ease;
+}
+
+.geo-inventario-top .inv-mas:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 6px #4ec9ff55;
+}
+
+/* POPUP INVENTARIO COMPLETO */
+.geo-inventario-popup {
+  position: absolute;
+  top: 60px; /* justo debajo de la barra */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 30, 60, 0.9);
+  border: 2px solid #4ec9ff;
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-width: 280px;
+  max-width: 90%;
+  box-shadow: 0 0 15px #4ec9ff55;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  backdrop-filter: blur(4px);
+}
+
+.geo-inventario-popup .inv-item {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 14px;
+  color: #e6f7ff;
+}
+
+.geo-inventario-popup button {
+  background: linear-gradient(135deg, #4ec9ff, #2980b9);
+  border: 2px solid #4ec9ff;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 6px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.geo-inventario-popup button:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 6px #4ec9ff55;
+}
+
+/* PANEL VEHÍCULOS */
+.vehiculo-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1c1f26;
+  color: #fff;
+  border: 2px solid #4ec9ff;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.vehiculo-btn.seleccionado {
+  border-color: #4caf50;
+  background: #2e7d32;
+}
+
+.vehiculo-btn.viaje {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* DIÁLOGO */
+.geo-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #10131a;
+  border: 2px solid #4ec9ff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 340px;
+  box-shadow: 0 0 25px #4ec9ff88;
+  animation: geo-pop 0.2s ease-out;
+  z-index: 15; /* 👈 agregar */
+}
+
+/* Contenedor interno del diálogo con scroll */
+.geo-dialog .vehiculos-lista {
+  max-height: 500px; /* altura máxima del contenedor */
+  overflow-y: auto; /* habilitar scroll vertical */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+@keyframes geo-pop {
+  0% {
+    transform: scale(0.8) translate(-50%, -50%);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+  }
+}
+
+.geo-dialog h3 {
+  color: #4ec9ff;
+}
+
+/* Inputs */
+.geo-dialog input,
+.geo-dialog select {
+  background: #1c1f26;
+  color: white;
+  border: 1px solid #4ec9ff;
+  padding: 5px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+/* Botones tipo HUD futurista */
+.geo-dialog button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px;
+  font-weight: bold;
+  border-radius: 5px;
+  color: #fff;
+  background: linear-gradient(#4ec9ff, #2980b9);
+  border: 1px solid #4ec9ff;
+  box-shadow: 0 0 10px #4ec9ff55;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+/* Botón rojo */
+.geo-dialog .geo-btn-cerrar {
+  background: linear-gradient(#ff4e4e, #b92929);
+  border-color: #ff4e4e;
+}
+
+/* Botones HUD principales */
+/* Contenedor HUD de botones */
+/* Barra inferior HUD */
+.geo-barra-inferior {
+  position: relative;
+  bottom: 12px;
+  display: flex;
+  flex-wrap: wrap; /* 👈 Esto permite que los botones pasen a otra línea */
+  gap: 12px;
+  background: rgba(20, 30, 60, 0.7);
+  border: 2px solid #4ec9ff;
+  border-radius: 12px;
+  padding: 10px 16px;
+  box-shadow: 0 0 15px #4ec9ff55;
+  backdrop-filter: blur(4px);
+}
+
+/* Ajuste de botones en barra inferior */
+.geo-barra-inferior .geo-btn-hud {
+  flex: 1;
+  justify-content: center;
+  padding: 8px 14px;
+  font-size: 14px;
+  gap: 8px;
+}
+
+.geo-barra-inferior .geo-btn-hud img {
+  border-radius: 4px;
+}
+
+.geo-btn-hud {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #4ec9ff, #2980b9);
+  color: #fff;
+  font-weight: bold;
+  border: 2px solid #4ec9ff;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 8px #4ec9ff55;
+}
+
+.geo-btn-hud:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 6px #4ec9ff55;
+}

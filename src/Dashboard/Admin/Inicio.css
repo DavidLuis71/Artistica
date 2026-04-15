@@ -1,0 +1,232 @@
+/* ======= CONTENEDOR PRINCIPAL ======= */
+.inicio-container {
+  width: 100%;
+  max-width: 700px;
+  margin: 20px auto;
+  overflow-y: auto;
+  padding: 10px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ======= PANEL ======= */
+.inicio-panel {
+  background: #f9f9f9;
+  color: #333;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  width: 100%;
+}
+
+/* ======= HEADER DEL PANEL ======= */
+.inicio-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.inicio-panel-header span {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* ======= PANEL CONTENT ======= */
+.panel-content p {
+  margin: 8px 0;
+  font-weight: 500;
+}
+
+/* ======= BARRA DE ESTADÍSTICAS ======= */
+.stat-bar {
+  margin-bottom: 10px;
+}
+
+.stat-bar p {
+  margin: 0 0 4px 0;
+  font-size: 0.95rem;
+}
+
+.stat-bar-container {
+  width: 100%;
+  height: 14px;
+  background: #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.5s ease, background 0.3s ease;
+}
+
+/* ======= LISTA DE COMPETICIONES ======= */
+.competicion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.95rem;
+  text-transform: uppercase; /* Nombre en mayúsculas */
+}
+
+.competicion-item:last-child {
+  border-bottom: none;
+}
+
+/* ======= TEXTO DE COREOGRAFÍAS ======= */
+.coreografia-text {
+  margin-top: 10px;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* ======= TRANSICIÓN PARA EXPANDIR Y COLAPSAR ======= */
+.panel-content {
+  animation: fadeIn 0.3s ease;
+}
+
+/* ======= CONTENEDOR DE COREOGRAFÍAS ======= */
+.coreografias-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+/* ======= TARJETA DE COREOGRAFÍA ======= */
+.coreografia-card {
+  /* background: #ffffff; */
+  border: solid 2px #13495e;
+  width: 100%;
+  border-radius: 10px;
+  padding: 12px 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ======= HEADER DE CATEGORÍA Y TIPO ======= */
+.coreografia-header {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+  color: #555;
+}
+.coreografia-nombre {
+  margin-bottom: 15px;
+}
+
+.coreografia-categoria {
+  color: #144166;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.coreografia-tipo {
+  color: #144166;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* ======= Borde de competiciones ======= */
+/* Borde para competiciones en inicio según tipo */
+.competicion-item.rutinas {
+  border-left: 4px solid #6c5ce7;
+  border-right: 4px solid #6c5ce7;
+  padding: 8px;
+}
+
+.competicion-item.figuras {
+  border-left: 4px solid #00b894;
+  border-right: 4px solid #00b894;
+  padding: 8px;
+}
+
+.competicion-item.tiempos {
+  border-left: 4px solid #fd79a8;
+  border-right: 4px solid #fd79a8;
+  padding: 8px;
+}
+
+.competicion-item.niveles {
+  border-left: 4px solid #f1c40f;
+  border-right: 4px solid #f1c40f;
+  padding: 8px;
+}
+/* ======= LISTA DE NADADORAS ======= */
+/* Nadadoras en dos columnas */
+.nadadoras-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
+  gap: 6px 12px; /* Espacio entre filas y columnas */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Cada nadadora */
+.nadadora-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+}
+
+/* Chip del rol */
+.rol-chip {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Colores según rol */
+.rol-titular .rol-chip {
+  background-color: #4caf50; /* verde */
+}
+
+.rol-reserva .rol-chip {
+  background-color: #f39c12; /* naranja */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.kpi-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.kpi-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inicio-selectorNadadora-Asistencias {
+  height: 400px;
+}

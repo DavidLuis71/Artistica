@@ -1,0 +1,377 @@
+/* InicioUser2.css */
+
+.InicioUser2-container {
+  padding: 16px;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  background: #e0f7ff; /* fondo suave azul */
+  min-height: 100vh;
+}
+
+/* HERO */
+.InicioUser2-hero {
+  background: linear-gradient(135deg, #6db1ff, #a2d2ff);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.InicioUser2-hero h2 {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+.InicioUser2-racha {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+}
+
+/* Barra de progreso hero */
+.InicioUser2-barraProgreso {
+  width: 100%;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.InicioUser2-barraProgreso > div {
+  height: 100%;
+  background: #00f0ff;
+  width: 0;
+  border-radius: 8px;
+  transition: width 0.5s ease;
+}
+
+/* Frase diaria */
+.InicioUser2-frase {
+  background: #ffffffaa;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Secciones (Entrenamientos, Competiciones, Retos) */
+.InicioUser2-seccion {
+  margin-bottom: 24px;
+}
+
+.InicioUser2-seccion h3 {
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+  color: #0077cc;
+}
+
+/* Card individual */
+.InicioUser2-card {
+  background: #ffffffcc;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.InicioUser2-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.InicioUser2-card p {
+  margin: 0;
+  font-weight: 500;
+}
+
+.InicioUser2-card small {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+/* Animaciones opcionales para hero */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+.InicioUser2-hero.pulsing {
+  animation: pulse 2s infinite;
+}
+
+/* Borde y estilo para última asistencia */
+.InicioUser2-card:last-asistencia {
+  border-left-width: 6px;
+  border-right-width: 6px;
+}
+
+.InicioUser2-valoracionAlert {
+  display: flex;
+  align-items: center;
+  background: #fff8e1;
+  padding: 12px 16px;
+  border-left: 6px solid #f9a825;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.InicioUser2-valoracionIcon {
+  font-size: 1.8rem;
+  margin-right: 12px;
+}
+
+.InicioUser2-valoracionTextContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.InicioUser2-valoracionText {
+  font-weight: 500;
+}
+
+.InicioUser2-valoracionTap {
+  font-size: 0.85rem;
+  color: #f9a825;
+  font-weight: bold;
+}
+
+/* Tarjetas de tiempos */
+.InicioUser2-container .Tiempo-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* centra verticalmente */
+  border-left: 4px solid #0077cc;
+  border-right: 4px solid #0077cc;
+  background: #ffffffdd;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.Tiempo-card-left {
+  display: flex;
+  flex-direction: column;
+  max-width: 65%; /* ocupa la izquierda */
+}
+
+.Tiempo-card-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 30%; /* asegura que el tiempo tenga espacio */
+}
+
+.InicioUser2-container .Tiempo-card-prueba {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #0077cc;
+  margin-bottom: 4px;
+}
+
+.InicioUser2-container .Tiempo-card-tiempo {
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: #2811ff;
+  margin-bottom: 4px;
+}
+
+.InicioUser2-container .Tiempo-card small {
+  color: #555;
+  font-size: 1rem;
+}
+
+.Historial-puntos-card {
+  max-height: 300px; /* Ajusta según prefieras */
+  overflow-y: auto;
+}
+
+.Historial-puntos-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.Historial-puntos-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffffdd;
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.Historial-puntos-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.Historial-puntos-detalle {
+  flex-grow: 1;
+  margin-left: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.Historial-puntos-number {
+  font-weight: 700;
+  color: #0077cc;
+}
+
+/* Próximo entrenamiento y vacaciones */
+.InicioUser2-seccion h3 {
+  font-size: 1.3rem;
+  color: #0077cc;
+  margin-bottom: 12px;
+}
+
+/* Card de entrenamiento simple */
+.InicioUser2-card.entrenamiento {
+  border-left: 4px solid #00aaff;
+  border-right: 4px solid #00aaff;
+  background: #ffffffee;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.InicioUser2-card.entrenamiento:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+/* Card de vacaciones */
+.InicioUser2-card.vacaciones {
+  border-left: 4px solid #f9c74f;
+  border-right: 4px solid #f9c74f;
+  background: #fff8e1;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  font-weight: 500;
+  color: #555;
+}
+
+.InicioUser2-card.vacaciones strong {
+  color: #c98b00;
+}
+.InicioUser2-card.vacaciones p {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.InicioUser2-card.vacaciones small {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+/* Siguiente entrenamiento tras vacaciones */
+.InicioUser2-card.siguiente-entrenamiento {
+  background: #e0f7ff;
+  border-left: 5px solid #00aaff;
+  border-right: 5px solid #00aaff;
+  margin-top: 10px;
+}
+
+.InicioUser2-card.siguiente-entrenamiento strong {
+  color: #0077cc;
+  text-transform: capitalize;
+}
+/* Contenedor ranking móvil */
+.InicioUser2-rankingMovil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0;
+  width: 100%;
+}
+
+/* Barra de fondo */
+.InicioUser2-rankingBarMovil {
+  width: 100%;
+  height: 22px; /* más alto que la versión desktop */
+  background: #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Barra de progreso */
+
+.InicioUser2-rankingFillMovil {
+  height: 100%;
+  border-radius: 12px;
+  transition:
+    width 0.5s ease,
+    background 0.5s ease;
+  background: red; /* default */
+}
+
+/* Texto encima de la barra */
+.InicioUser2-rankingTextMovil {
+  font-size: 1rem; /* legible en móvil */
+  font-weight: 600;
+  color: #222;
+}
+
+/* Halo tipo sol detrás de la barra */
+.InicioUser2-rankingFillMovil.top {
+  position: relative;
+  z-index: 1;
+}
+
+.InicioUser2-rankingFillMovil.top::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%; /* un poco más grande que la barra */
+  height: 200%; /* suficiente para los “rayos” */
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(76, 231, 81, 0.6) 0%,
+    rgba(76, 231, 81, 0.2) 30%,
+    rgba(76, 231, 81, 0) 70%
+  );
+  pointer-events: none;
+  z-index: -1; /* detrás de la barra */
+  box-shadow:
+    0 0 8px rgba(76, 231, 81, 0.5),
+    0 0 16px rgba(76, 231, 81, 0.3),
+    0 0 24px rgba(76, 231, 81, 0.2);
+}

@@ -1,0 +1,431 @@
+.ComentariosAdmin-container {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ComentariosAdmin-container h2 {
+  text-align: center;
+}
+
+.ComentariosAdmin-container select,
+.ComentariosAdmin-container textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.ComentariosAdmin-container textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.ComentariosAdmin-container button {
+  background: #2563eb;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.ComentariosAdmin-container button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ComentariosAdmin-confirm {
+  margin-top: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* ---------------------------
+   WRAPPER DEL AUTOCOMPLETE
+--------------------------- */
+.ComentariosAdmin-autocomplete-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* ICONO DE BÚSQUEDA */
+.ComentariosAdmin-autocomplete-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6;
+  pointer-events: none;
+  font-size: 18px;
+}
+
+/* INPUT */
+.ComentariosAdmin-autocomplete-input {
+  width: 100%;
+  padding: 10px 10px 10px 35px; /* espacio para el icono */
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
+}
+
+.ComentariosAdmin-autocomplete-input:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
+}
+
+/* ---------------------------
+   LISTA DESPLEGABLE
+--------------------------- */
+.ComentariosAdmin-autocomplete-list {
+  position: absolute;
+  top: 43px;
+  left: 0;
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  max-height: 240px;
+  overflow-y: auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 30;
+
+  /* Animación */
+  opacity: 0;
+  transform: translateY(5px);
+  animation: ComentariosAdmin-fadeIn 0.18s ease forwards;
+}
+
+@keyframes ComentariosAdmin-fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ITEM */
+.ComentariosAdmin-autocomplete-item {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.2s;
+}
+
+/* AVATAR INICIAL */
+.ComentariosAdmin-autocomplete-avatar {
+  width: 28px;
+  height: 28px;
+  background: #2563eb;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* TEXTO RESALTADO */
+.ComentariosAdmin-highlight {
+  font-weight: bold;
+  color: #2563eb;
+}
+
+/* ITEM SIN RESULTADOS */
+.ComentariosAdmin-autocomplete-item-empty {
+  padding: 10px;
+  color: #888;
+  background: #fafafa;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .ComentariosAdmin-autocomplete-input {
+    font-size: 14px;
+  }
+
+  .ComentariosAdmin-autocomplete-item {
+    padding: 8px;
+  }
+}
+
+.ComentariosAdmin-chat-bubble {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  position: relative;
+  word-wrap: break-word;
+}
+
+/* Nadadora */
+.ComentariosAdmin-chat-bubble.nadadora {
+  background-color: #e5e7eb; /* gris claro por defecto */
+  align-self: flex-start; /* izquierda */
+}
+
+/* Nadadora no leída */
+.ComentariosAdmin-chat-bubble.nadadora:not(.leido) {
+  border-color: #f59e0b;
+  background: linear-gradient(135deg, #fff7e6, #ffe8c7);
+  animation: popIn 0.25s ease;
+  font-weight: bold; /* opcional: resaltar el texto */
+}
+
+/* Nadadora leída */
+.ComentariosAdmin-chat-bubble.nadadora.leido {
+  background-color: #e5e7eb; /* volver al gris claro */
+  font-weight: normal;
+  border: none;
+  opacity: 0.7; /* tenue para indicar que ya se leyó */
+}
+
+/* Animación cuando aparece un nuevo comentario */
+@keyframes popIn {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.ComentariosAdmin-chat-bubble.entrenador {
+  background-color: #2563eb; /* azul */
+  color: white;
+  align-self: flex-end; /* derecha */
+}
+
+.ComentariosAdmin-chat-bubble .fecha {
+  font-size: 10px;
+  opacity: 0.6;
+  margin-top: 4px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+}
+
+.check {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.check.leido {
+  color: #4ade80; /* verde si ya fue leído */
+  font-size: 16px;
+  opacity: 1;
+}
+
+.check.no-leido {
+  color: #9ca3af; /* gris si no se ha leído */
+  font-size: 16px;
+  opacity: 0.6;
+}
+
+.ComentariosAdmin-new-message {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-color: #4ade80;
+  border-radius: 50%;
+  margin-left: 8px;
+}
+
+.ComentariosAdmin-send-container {
+  background-color: #f9fafb;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.ComentariosAdmin-send-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #1f2937;
+}
+
+.ComentariosAdmin-send-header p {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.ComentariosAdmin-textarea {
+  width: 100%;
+  min-height: 100px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  padding: 12px;
+  font-size: 14px;
+  resize: vertical;
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
+}
+
+.ComentariosAdmin-textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.25);
+}
+
+.ComentariosAdmin-send-button {
+  background-color: #2563eb;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.1s;
+}
+
+.ComentariosAdmin-send-button:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}
+
+.ComentariosAdmin-confirm {
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: #2563eb;
+  margin-top: 4px;
+}
+
+.ComentariosAdmin-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* ocupa todo el espacio del wrapper padre */
+  border-radius: 12px;
+  background: #f3f4f6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* Nadadora seleccionada / chip */
+.ComentariosAdmin-nadadoras {
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.ComentariosAdmin-chip-selected {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* un poco más de separación */
+  background-color: #2563eb;
+  color: white;
+  padding: 10px 18px; /* más grande */
+  border-radius: 24px; /* más redondeado */
+  font-weight: 600;
+  font-size: 16px; /* letra más visible */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* sombra ligera */
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+  cursor: default;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ComentariosAdmin-chip-remove {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+/* Chat con scroll */
+.ComentariosAdmin-chat-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* ocupa todo el espacio disponible */
+  height: 100%;
+  border-radius: 12px;
+  background: #f3f4f6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.ComentariosAdmin-chat {
+  flex: 1; /* ocupa todo el espacio disponible arriba de la barra */
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  margin-top: 15px;
+  margin-bottom: 0;
+}
+
+/* Área de escritura tipo barra inferior */
+.ComentariosAdmin-send-bar {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid #d1d5db;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.ComentariosAdmin-send-bar textarea {
+  flex: 1;
+  min-height: 50px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  padding: 8px 12px;
+  font-size: 14px;
+  resize: none;
+}
+
+.ComentariosAdmin-send-bar textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.25);
+}
+
+.ComentariosAdmin-send-bar button {
+  background-color: #2563eb;
+  color: white;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ComentariosAdmin-send-bar button:hover:not(:disabled) {
+  background-color: #1e40af;
+}
+
+.ComentariosAdmin-send-bar button:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}

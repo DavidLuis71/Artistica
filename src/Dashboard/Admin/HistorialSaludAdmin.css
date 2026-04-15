@@ -1,0 +1,39 @@
+.historialSaludAdmin-container {
+  padding: 20px;
+}
+
+.historialSaludAdmin-lista {
+  list-style: none;
+  padding: 0;
+}
+
+.historialSaludAdmin-lista li {
+  background: #f5f7ff;
+  padding: 12px 14px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.historialSaludAdmin-lista li strong {
+  color: #1e59a8;
+}
+
+.historialSaludAdmin-lista li small {
+  color: #444;
+}
+
+.historialSaludAdmin-filtros {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.historialSaludAdmin-filtros > input,
+.historialSaludAdmin-filtros > select {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}

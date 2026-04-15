@@ -1,0 +1,205 @@
+.calendario-container {
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 900px;
+  margin: auto;
+}
+.calendario-container h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-align: center;
+}
+.calendario-filtro {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: #f7f7f7;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.calendario-filtro select {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+.calendario-calendar {
+  max-width: 100%;
+  margin-bottom: 30px;
+} /* Calendario eventos en cada día */
+.calendario-admin .calendario-tile-eventos {
+  margin-top: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.calendario-admin .calendario-evento {
+  font-size: 10px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: #000;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+.calendario-evento-general {
+  background-color: #a0c4ff;
+}
+.calendario-evento-nadadora {
+  background-color: #ffadad;
+} /* Modal */
+.calendario-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  padding: 10px;
+}
+.calendario-modal-panel {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+.calendario-modal-panel h3 {
+  margin-bottom: 15px;
+  text-align: center;
+}
+.calendario-modal-panel input,
+.calendario-modal-panel textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+} /* Eventos en tarjetas */
+.calendario-evento-card {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.calendario-evento-card-general {
+  background-color: #d0e8ff;
+}
+.calendario-evento-card-nadadora {
+  background-color: #ffd0d0;
+}
+.calendario-evento-card h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+.calendario-evento-card p {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: #555;
+} /* Botones */
+.calendario-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+.calendario-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.calendario-btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+/* Calendario general estilo */
+.react-calendar {
+  border: none;
+  font-family: inherit;
+}
+.calendario-admin .react-calendar__tile {
+  border-radius: 8px;
+  padding: 6px;
+  transition: background 0.2s;
+  background: #f9f9f9;
+  position: relative;
+}
+/* Hoy */
+.calendario-admin .react-calendar__tile--now {
+  background: #e0f7fa;
+  color: #89b6ff;
+  font-weight: 600;
+}
+/* Día activo */
+.calendario-admin .react-calendar__tile--active {
+  background: #00bcd4;
+  color: white;
+  font-weight: 600;
+}
+
+.calendario-agenda {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+.calendario-admin .calendario-tile-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Número del día dentro de tileContent */
+.calendario-admin .calendario-day-number {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1e293b;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.calendario-autocomplete-wrapper {
+  position: relative;
+  width: 200px;
+}
+
+.calendario-autocomplete-wrapper input {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.calendario-autocomplete-list {
+  position: absolute;
+  width: 100%;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-top: 4px;
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 20;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.calendario-autocomplete-item {
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+}

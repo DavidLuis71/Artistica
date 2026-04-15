@@ -1,0 +1,408 @@
+/* Ocultar el número por defecto de react-calendar */
+.AsistenciasUsuarios-Calendario .react-calendar__tile > abbr {
+  display: none;
+}
+.AsistenciasUsuarios-Calendario .react-calendar__tile--active,
+.AsistenciasUsuarios-Calendario .react-calendar__tile:focus,
+.AsistenciasUsuarios-Calendario .react-calendar__tile:active {
+  background: none !important;
+  color: inherit !important;
+  box-shadow: none !important;
+}
+
+.AsistenciasUsuarios-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centra el calendario y la leyenda */
+  padding: 0 10px 20px; /* margen lateral para móviles */
+}
+
+.AsistenciasUsuarios-Calendario .react-calendar {
+  width: 100% !important; /* que ocupe todo el ancho disponible */
+  font-size: 3vw; /* tamaño base relativo al ancho de la pantalla */
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.AsistenciasUsuarios-Calendario .react-calendar__navigation {
+  background-color: #278cff33; /* azul suave */
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.AsistenciasUsuarios-tituloAsistencias {
+  margin-bottom: 20px;
+}
+.AsistenciasUsuarios-tile {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 35px;
+  position: relative;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.AsistenciasUsuarios-tile-dia {
+  display: inline-block;
+  min-width: 20px;
+  min-height: 10px;
+  padding: 1px 8px;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.AsistenciasUsuarios-today {
+  border: 2px solid #278cff;
+  border-radius: 4px;
+  animation: pulsea 2s infinite;
+}
+@keyframes pulsea {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.8;
+  }
+}
+
+.AsistenciasUsuarios-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.AsistenciasUsuarios-legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.AsistenciasUsuarios-legendColor {
+  width: auto; /* ancho mínimo */
+  min-width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  color: white;
+  font-weight: 700;
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.AsistenciasUsuarios-legendLabel {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Modal */
+.modalAsisteciasJustificar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modalAsisteciasJustificar-content {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  min-width: 350px;
+  max-width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: "Inter", sans-serif;
+}
+
+.modalAsisteciasJustificar-content h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.modalAsisteciasJustificar-label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+  color: #555;
+  gap: 4px;
+}
+
+.modalAsisteciasJustificar-input,
+.modalAsisteciasJustificar-select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.modalAsisteciasJustificar-input:focus,
+.modalAsisteciasJustificar-select:focus {
+  border-color: #278cff;
+  box-shadow: 0 0 0 2px rgba(39, 140, 255, 0.2);
+}
+
+.modalAsisteciasJustificar-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.modalAsisteciasJustificar-button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+}
+
+.modalAsisteciasJustificar-button-cancel {
+  background: #ccc;
+  color: #333;
+}
+
+.modalAsisteciasJustificar-button-save {
+  background: #278cff;
+  color: white;
+}
+
+/* Multi-select styling */
+.modalAsisteciasJustificar-select[multiple] {
+  height: 100px;
+  overflow-y: auto;
+}
+
+.modalAsisteciasJustificar-rango {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.modalAsisteciasJustificar-rango .modalAsisteciasJustificar-label {
+  flex: 1;
+}
+
+/* Multi-select como badges */
+.modalAsisteciasJustificar-select[multiple] option:checked {
+  background-color: #278cff;
+  color: white;
+  font-weight: bold;
+}
+
+.AsistenciasUsuarios-container {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.AsistenciasUsuarios-dashboard {
+  width: 100%;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.dashboard-kpi {
+  color: white;
+  padding: 28px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  transition: background 0.6s ease;
+}
+
+.kpi-porcentaje {
+  font-size: 3.5rem;
+  font-weight: 800;
+}
+
+.kpi-texto {
+  font-size: 1rem;
+  opacity: 0.9;
+  text-align: center;
+}
+
+.kpi-texto span {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+.dashboard-metricas {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.metric-card {
+  flex: 1;
+  min-width: 140px;
+  background: white;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-3px);
+}
+
+.metric-title {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.metric-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-top: 6px;
+}
+.dashboard-mensaje {
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.dashboard-cta-button {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 16px auto 24px;
+  padding: 14px 0;
+  background: #278cff;
+  color: white;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(39, 140, 255, 0.2);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Modal de detalle del día usando clases existentes */
+.modalAsisteciasJustificar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5); /* semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* encima de todo */
+  animation: fadeIn 0.25s ease-out;
+}
+
+.modalAsisteciasJustificar-content {
+  background: #ffffff;
+  padding: 24px 28px;
+  border-radius: 14px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: "Inter", sans-serif;
+  animation: slideUp 0.3s ease-out;
+}
+
+.modalAsisteciasJustificar-content h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #0f172a;
+}
+
+.modalAsisteciasJustificar-content p {
+  font-size: 0.95rem;
+  color: #334155;
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+.modalAsisteciasJustificar-content p strong {
+  color: #0f172a;
+}
+
+/* Botones del modal */
+.modalAsisteciasJustificar-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.modalAsisteciasJustificar-button.modalAsisteciasJustificar-button-cancel {
+  background: #e5e7eb; /* gris claro */
+  color: #0f172a;
+}
+
+.modalAsisteciasJustificar-button.modalAsisteciasJustificar-button-cancel:hover {
+  background: #d1d5db;
+  transform: translateY(-2px);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive: texto más grande en móviles */
+@media (max-width: 480px) {
+  .modalAsisteciasJustificar-content h3 {
+    font-size: 1.25rem;
+  }
+  .modalAsisteciasJustificar-content p {
+    font-size: 0.9rem;
+  }
+  .modalAsisteciasJustificar-button {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+}

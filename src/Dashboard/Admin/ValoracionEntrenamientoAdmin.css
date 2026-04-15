@@ -1,0 +1,238 @@
+/* Contenedor principal */
+.Valoracion-Admin-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 25px;
+  font-family: "Inter", sans-serif;
+  color: #1e293b;
+}
+
+/* Título */
+.Valoracion-Admin-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+/* Botones */
+.Valoracion-Admin-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.Valoracion-Admin-buttons button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Card de resumen */
+.Valoracion-Admin-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px 25px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  margin-top: 15px;
+}
+
+.Valoracion-Admin-card-title {
+  margin-bottom: 15px;
+  color: #334155;
+  font-size: 1.3rem;
+}
+
+/* Modal */
+.Valoracion-Admin-modal {
+  padding: 20px;
+  border: none;
+  border-radius: 12px;
+  width: 320px;
+  max-width: 90%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.Valoracion-Admin-modal h3 {
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+/* Botón cerrar modal */
+.Valoracion-Admin-btn {
+  margin-top: 12px;
+  display: block;
+  width: 100%;
+  padding: 8px 0;
+  border-radius: 8px;
+  border: none;
+  background-color: #ef4444;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Calendar Styles */
+
+/* Solo afecta al calendario de ResumenEntrenamientoAdmin */
+.Valoracion-Admin-Calendar {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  font-family: "Inter", sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Días normales */
+.Valoracion-Admin-Calendar .react-calendar__tile {
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  color: #1e293b; /* texto oscuro para que se vea */
+  font-weight: 500;
+}
+
+/* Día de hoy */
+.Valoracion-Admin-Calendar .react-calendar__tile--now {
+  background: #3b82f6;
+  color: white;
+  font-weight: 600;
+}
+
+/* Día seleccionado */
+.Valoracion-Admin-Calendar .react-calendar__tile--active {
+  background: #2563eb;
+  color: white;
+}
+
+/* Día con valoraciones */
+.dia-con-datos {
+  background-color: #dbeafe !important;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Mejor visibilidad números */
+.Valoracion-Admin-Calendar button {
+  color: #1e293b !important;
+  font-size: 0.9rem;
+}
+
+.Valoracion-Admin-tile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Valoracion-Admin-tile-number {
+  font-weight: 600;
+}
+
+.Valoracion-Admin-tile-count {
+  font-size: 0.7rem;
+  color: #2563eb;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.Valoracion-Admin-item-header {
+  font-size: 1rem;
+  color: #334155;
+  font-weight: 600;
+}
+
+.Valoracion-Admin-item-media {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.Valoracion-Admin-item-extremo {
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.Valoracion-Admin-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.Valoracion-Admin-card {
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  background: #ffffff;
+  margin-top: 15px;
+}
+
+.Valoracion-Admin-card-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.Valoracion-Admin-card-title {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.Valoracion-Admin-card-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.Valoracion-Admin-card-interpretation {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* Colores según rango */
+.Valoracion-Admin-card-green {
+  background-color: #daf5e2;
+  border-left: 4px solid #34d399;
+}
+
+.Valoracion-Admin-card-yellow {
+  background-color: #fff9db;
+  border-left: 4px solid #facc15;
+}
+
+.Valoracion-Admin-card-red {
+  background-color: #ffe1e1;
+  border-left: 4px solid #f87171;
+}
+
+.Valoracion-Admin-card-extremo {
+  font-size: 0.85rem;
+  color: #334155;
+  margin-top: 4px;
+}
+
+.Valoracion-Admin-card-desviaciones {
+  font-size: 0.8rem;
+  margin-top: 6px;
+  text-align: left;
+}
+
+.Valoracion-Admin-card-desviaciones ul {
+  padding-left: 18px;
+  margin: 2px 0 0 0;
+}
+
+.Valoracion-Admin-card-desviaciones li {
+  line-height: 1.2;
+}

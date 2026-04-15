@@ -1,0 +1,106 @@
+.notifSlider-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    #e0f2fe,
+    #bae6fd
+  ); /* azul muy claro, distinto al fondo de la app */
+  color: #1f2937;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  animation: slideDown 0.3s ease;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.notifSlider-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center; /* centrado vertical */
+  gap: 16px;
+}
+
+.notifSlider-logo {
+  width: 50px; /* más grande */
+  height: 50px;
+  flex-shrink: 0;
+}
+
+.notifSlider-text {
+  flex: 1;
+}
+
+.notifSlider-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.notifSlider-message {
+  font-size: 14px;
+  margin: 4px 0 10px 0;
+}
+
+.notifSlider-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.notifSlider-nav {
+  background-color: #60a5fa;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.notifSlider-nav:disabled {
+  background-color: #bfdbfe;
+  cursor: not-allowed;
+  color: #6b7280;
+}
+
+.notifSlider-button {
+  padding: 6px 16px;
+  background-color: #34d399;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s;
+}
+
+.notifSlider-button:hover {
+  background-color: #22c55e;
+}
+
+.notifSlider-counter {
+  font-size: 12px;
+  color: #374151;
+  text-align: center;
+  margin-top: 4px;
+}

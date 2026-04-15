@@ -1,0 +1,130 @@
+.AjustesTema-User-container {
+  padding: 28px;
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 640px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.AjustesTema-User-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.AjustesTema-User-container p {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.AjustesTema-User-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.AjustesTema-User-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: #f9fbff;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+  gap: 12px; /* espacio entre label y select/input */
+}
+
+.AjustesTema-User-item:hover {
+  background: #eef4ff;
+}
+
+.AjustesTema-User-item label {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.AjustesTema-User-grid h3 {
+  margin-top: 10px;
+  margin-bottom: -5px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.AjustesTema-User-colorInput {
+  width: 52px;
+  height: 32px;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.AjustesTema-User-select {
+  flex: 1; /* ocupa todo el espacio restante */
+  min-width: 0; /* importante para que no se desborde */
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #dcdcdc;
+  font-size: 0.95rem;
+  background: white;
+  cursor: pointer;
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.AjustesTema-User-select:focus {
+  outline: none;
+  border-color: #6db1ff;
+  box-shadow: 0 0 0 3px rgba(109, 177, 255, 0.2);
+}
+
+/* Botón principal */
+.AjustesTema-User-btnGuardar {
+  margin-top: 24px;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, #6db1ff, #4f8cff);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.AjustesTema-User-btnGuardar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(79, 140, 255, 0.35);
+}
+
+.AjustesTema-User-btnGuardar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Botón secundario */
+.AjustesTema-User-btnReset {
+  margin-top: 12px;
+  padding: 10px 22px;
+  background: transparent;
+  color: #ff5555;
+  border: 1px solid #ff5555;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.AjustesTema-User-btnReset:hover {
+  background: #ff5555;
+  color: white;
+}

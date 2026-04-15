@@ -1,0 +1,165 @@
+.NadadorasLogros-Admin-container {
+  padding: 25px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+}
+.NadadorasLogros-Admin-cards-wrapper {
+  max-height: 600px; /* Ajusta la altura deseada */
+  overflow-y: auto; /* Scroll vertical */
+  padding-right: 10px; /* Evita que se corte el contenido por el scrollbar */
+  margin-top: 5px;
+}
+
+/* Opcional: scrollbar más bonito */
+.NadadorasLogros-Admin-cards-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.NadadorasLogros-Admin-cards-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.NadadorasLogros-Admin-card {
+  border-radius: 14px;
+  margin-bottom: 20px;
+  background: #ffffff;
+  transition: all 0.3s ease, transform 0.2s;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.NadadorasLogros-Admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: linear-gradient(90deg, #e3f2fd, #bbdefb);
+}
+
+.NadadorasLogros-Admin-subheader {
+  background: linear-gradient(90deg, #e3f2fd, #bbdefb);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+}
+
+.NadadorasLogros-Admin-nombre {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.NadadorasLogros-Admin-nivel-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.NadadorasLogros-Admin-toggle-icon {
+  font-size: 1.4rem;
+  transition: transform 0.3s;
+  margin-left: 10px;
+}
+
+.NadadorasLogros-Admin-toggle-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.NadadorasLogros-Admin-expanded {
+  padding: 15px 20px;
+  border-top: 1px solid #ddd;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.4s ease;
+}
+
+.NadadorasLogros-Admin-card.expanded .NadadorasLogros-Admin-expanded {
+  max-height: 1000px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.NadadorasLogros-Admin-logros,
+.NadadorasLogros-Admin-historial {
+  list-style: none;
+  padding-left: 0;
+  margin: 10px 0;
+  max-height: 200px; /* ajusta como quieras */
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* Scrollbar bonito */
+.NadadorasLogros-Admin-historial::-webkit-scrollbar {
+  width: 6px;
+}
+
+.NadadorasLogros-Admin-historial::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+}
+
+.NadadorasLogros-Admin-logro-item,
+.NadadorasLogros-Admin-historial-item {
+  background-color: #f1f5f9;
+  padding: 8px 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column; /* esto coloca la fecha debajo */
+  gap: 4px; /* espacio entre contenido y fecha */
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+
+.NadadorasLogros-Admin-no-logros,
+.NadadorasLogros-Admin-no-historial {
+  font-style: italic;
+  color: #888;
+  padding: 8px 12px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+.NadadorasLogros-Admin-fecha {
+  display: block; /* Hace que vaya a otra línea */
+  font-size: 0.8rem; /* Más pequeña */
+  color: #666; /* Color más tenue */
+  margin-top: 2px; /* Separación del contenido principal */
+}
+
+.NadadorasLogros-Admin-footer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 20px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #ddd;
+}
+
+.NadadorasLogros-Admin-extra-input {
+  width: 100px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  font-size: 0.95rem;
+}
+
+.NadadorasLogros-Admin-extra-button {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.NadadorasLogros-Admin-extra-button:hover {
+  background-color: #0056b3;
+}

@@ -1,0 +1,210 @@
+/* src/components/PerfilUsuario.css */
+
+/* Contenedor principal */
+.Perfil-User-container {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
+  overflow-y: auto;
+  height: 100%;
+}
+
+/* Header con foto y info */
+.Perfil-User-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Foto de perfil circular */
+.Perfil-User-foto {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #eee;
+  flex-shrink: 0;
+  position: relative; /* importante para el img absoluto */
+  border: 1px solid #000000;
+}
+
+.editor-overlay canvas {
+  border-radius: 50%;
+  border: 3px solid #10b981; /* mismo borde que el contenedor */
+}
+
+.Perfil-User-foto img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Placeholder inicial si no hay foto */
+.Perfil-User-fotoPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #555;
+}
+
+/* Contenedor de la info (nombre, rol, código) */
+.Perfil-User-info {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Nombre del usuario */
+.Perfil-User-info h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: #1f2937;
+}
+
+/* Rol y código */
+.Perfil-User-info p {
+  margin: 2px 0;
+  font-size: 1rem;
+  color: #4b5563;
+}
+
+.Perfil-User-info p strong {
+  font-weight: 600;
+  color: #111827;
+}
+/* Estadísticas */
+.Perfil-User-stats {
+  margin-bottom: 20px;
+}
+
+.Perfil-User-stats h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.Perfil-User-statsGrid {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.Perfil-User-statCard {
+  flex: 1 1 45%; /* grow:1, shrink:1, base:45% */
+  text-align: center;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  min-width: 100px;
+}
+
+.Perfil-User-statNumber {
+  font-size: 20px;
+  font-weight: bold;
+  color: #10b981; /* verde agradable */
+  margin-bottom: 4px;
+}
+
+/* Botón de logout */
+.Perfil-User-btnLogout {
+  width: 100%;
+  padding: 12px 0;
+  background-color: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.asistencia-Asistencia {
+  background: #a8f4ab;
+}
+.asistencia-Falta {
+  background: #ffb3ac;
+}
+.asistencia-Retraso {
+  background: #f7d49a;
+}
+.asistencia-Enferma {
+  background: #e5bbf5;
+}
+.asistencia-FaltaJustificada {
+  background: #bde9ff;
+}
+
+/* Responsive: en pantallas muy pequeñas, las stats se apilan */
+@media (max-width: 350px) {
+  .Perfil-User-statsGrid {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.Perfil-User-logros {
+  margin-top: 20px;
+}
+
+.Perfil-User-logros h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.Perfil-User-logrosGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.Perfil-User-logroCard {
+  flex: 1 1 45%;
+  background: #e0f7fa;
+  border-radius: 8px;
+  padding: 10px;
+  min-width: 140px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.Perfil-User-logroCard h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: #00796b;
+}
+
+.Perfil-User-logroCard p {
+  margin: 2px 0;
+  font-size: 12px;
+  color: #004d40;
+}
+
+.logro-fecha {
+  font-size: 11px;
+  color: #666;
+}
+
+.logro-mejoras {
+  font-size: 11px;
+  color: #00796b;
+}
+
+.logro-perdido {
+  font-size: 12px;
+  color: #d32f2f;
+  font-weight: bold;
+}

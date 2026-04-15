@@ -1,0 +1,109 @@
+.historialTiempos-container {
+  padding: 16px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.historialTiempos-titulo {
+  font-size: 20px;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.historialTiempos-loader {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.historialTiempos-vacio {
+  text-align: center;
+  opacity: 0.7;
+  margin-top: 20px;
+}
+
+.historialTiempos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+  max-height: 400px; /* ajusta según convenga */
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.historialTiempos-lista::-webkit-scrollbar {
+  width: 6px;
+}
+
+.historialTiempos-lista::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.historialTiempos-card {
+  background: #ffffffcc;
+  backdrop-filter: blur(4px);
+  padding: 14px;
+  border-radius: 10px;
+  border-left: 6px solid #4fc3f7;
+  transition: transform 0.15s;
+}
+
+.historialTiempos-card-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.historialTiempos-tiempo {
+  color: #0288d1;
+  font-family: "Courier New", monospace;
+}
+
+.historialTiempos-detalles {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.historialTiempos-filtros {
+  margin-bottom: 16px;
+}
+
+.historialTiempos-filtros select {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #bbb;
+  background-color: #f5f5f5;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.historialTiempos-filtros select:focus {
+  outline: none;
+  border-color: #0288d1;
+  box-shadow: 0 0 5px rgba(2, 136, 209, 0.5);
+}
+
+.historialTiempos-grafica {
+  background: #ffffffcc;
+  backdrop-filter: blur(4px);
+  padding: 16px;
+  border-radius: 10px;
+  border-left: 6px solid #4fc3f7;
+  margin-bottom: 16px;
+}
+
+.recharts-cartesian-grid line {
+  stroke: #e0e0e0;
+}
+
+.recharts-tooltip-wrapper {
+  font-size: 14px;
+  border-radius: 6px;
+  background-color: #f5f5f5cc;
+  border: 1px solid #ccc;
+}

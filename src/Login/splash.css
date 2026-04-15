@@ -1,0 +1,59 @@
+.splash-container {
+  position: fixed;
+  inset: 0;
+  background: #66a6ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeOut 0.7s ease 1.8s forwards;
+}
+
+.splash-logo {
+  width: 150px;
+  animation: logoAnimation 1.5s ease forwards;
+  opacity: 0;
+}
+
+@keyframes logoAnimation {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.splash-loader {
+  margin-top: 25px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+
+  background: white;
+  animation: pulse 0.9s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

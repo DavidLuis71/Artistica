@@ -1,0 +1,83 @@
+.GruposAdmin-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: #f7f8fa;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e2e2;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.GruposAdmin-tabla-container {
+  max-height: 400px; /* ajusta la altura máxima */
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  padding: 5px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.GruposAdmin-title {
+  font-size: 26px;
+  font-weight: bold;
+  color: #333;
+}
+
+.GruposAdmin-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.GruposAdmin-campo label {
+  font-weight: 500;
+  color: #444;
+}
+
+.GruposAdmin-input-select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #cfcfcf;
+  background-color: #fff;
+  font-size: 15px;
+  transition: all 0.2s;
+}
+
+.GruposAdmin-input-select:focus {
+  outline: none;
+  border-color: #2175ff;
+  box-shadow: 0 0 4px rgba(33, 117, 255, 0.4);
+}
+
+.GruposAdmin-tabla {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.GruposAdmin-tabla th {
+  background: #e9edf2;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+}
+
+.GruposAdmin-tabla td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.GruposAdmin-tabla tbody tr:nth-child(even) {
+  background: #f6f8fa;
+}

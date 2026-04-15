@@ -1,0 +1,246 @@
+.CompeticionesUser-container {
+  margin: 0 auto;
+  padding: 20px;
+  height: 100vh; /* ✅ ocupa toda la altura */
+  overflow-y: auto;
+}
+
+.CompeticionesUser-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.CompeticionesUser-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  width: 100%;
+  justify-items: center;
+}
+
+.CompeticionesUser-card {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.15s ease;
+  justify-content: center;
+  width: 100%;
+  border-left: 16px solid transparent; /* default */
+}
+
+.CompeticionesUser-estado {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.CompeticionesUser-estado-programada {
+  background: #3498db;
+}
+.CompeticionesUser-estado-curso {
+  background: #f1c40f;
+}
+.CompeticionesUser-estado-finalizada {
+  background: #2ecc71;
+}
+.CompeticionesUser-nombre {
+  margin-top: 15px;
+}
+
+/* Borde según tipo */
+.competicion-tipo-rutinas {
+  border-left-color: #6c5ce7;
+}
+
+.competicion-tipo-figuras {
+  border-left-color: #00b894;
+}
+
+.competicion-tipo-tiempos {
+  border-left-color: #fd79a8;
+}
+.competicion-tipo-niveles {
+  border-left-color: #f1c40f;
+}
+
+.CompeticionesUser-botonVer {
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px;
+  font-weight: bold;
+  background: #278cff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Overlay suave con blur */
+.CompeticionesUser-modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeInModal 0.25s ease forwards;
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal centrado con sombras y padding */
+.CompeticionesUser-modal {
+  background: #ffffff;
+  width: 95%;
+  max-width: 600px;
+  padding: 30px 25px;
+  border-radius: 16px;
+  max-height: 85vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.25s ease forwards;
+  font-family: "Inter", sans-serif;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Títulos */
+.CompeticionesUser-modal h2 {
+  margin-top: 0;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+.CompeticionesUser-subtitle {
+  margin-top: 25px;
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #34495e;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 4px;
+}
+/* Textos */
+.CompeticionesUser-modal p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #555;
+  margin: 6px 0;
+}
+
+.CompeticionesUser-modal a {
+  color: #3498db;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+/* Resaltar strong dentro del modal */
+.CompeticionesUser-modal strong {
+  font-weight: 700; /* Negrita más fuerte */
+  color: #2c3e50; /* Color principal oscuro */
+  background: rgba(46, 134, 222, 0.1); /* Fondo muy suave */
+  padding: 2px 6px; /* Pequeño padding para destacar */
+  border-radius: 4px; /* Bordes redondeados */
+  display: inline-block; /* Que respete el padding */
+  margin-right: 4px; /* Separación del texto siguiente */
+}
+
+/* Opcional: pequeños detalles para resultados específicos */
+.CompeticionesUser-resultadoBox strong {
+  color: #1b4f72; /* Azul más intenso */
+  background: rgba(52, 152, 219, 0.15);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+/* Caja de resultados */
+.CompeticionesUser-resultadoBox {
+  background: linear-gradient(135deg, #f7f9fc, #eaf1f8);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border-left: 4px solid #3498db;
+  transition: transform 0.2s;
+}
+.CompeticionesUser-resultadoBox p {
+  margin: 4px 0;
+}
+.CompeticionesUser-botonCerrar {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px 0;
+  font-weight: 700;
+  font-size: 15px;
+  background: linear-gradient(135deg, #ff7e5f, #ff6161);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+/* Próxima competición */
+.competicion-proxima {
+  box-shadow:
+    0 0 0 2px rgba(52, 152, 219, 0.4),
+    0 10px 25px rgba(52, 152, 219, 0.25);
+  transform: scale(1.03);
+  animation: pulseProxima 2.5s infinite;
+  border-left-width: 20px;
+}
+
+@keyframes pulseProxima {
+  0% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+  }
+}
+
+.CompeticionesUser-proximaBadge {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background: linear-gradient(135deg, #3498db, #6c5ce7);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 6px 10px;
+  border-radius: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+.CompeticionesUser-countdown {
+  margin-top: 8px;
+  font-weight: 700;
+  color: #2980b9;
+}

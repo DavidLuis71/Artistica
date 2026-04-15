@@ -1,0 +1,240 @@
+/* Contenedor general */
+.estado-equipo-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+  font-family: "Inter", sans-serif;
+  background: #f9f9f9;
+  border-radius: 12px;
+}
+
+/* Secciones */
+.estado-equipo-container section {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 0.8rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos de sección */
+.estado-equipo-container h3 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Team Health Score */
+.EstadoEquipo-Admin-TeamHealth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* Tendencias gráficas */
+.EstadoEquipo-Admin-Tendencias {
+  width: 100%;
+  height: 300px;
+}
+
+/* Estado físico / historial */
+.EstadoEquipo-Admin-EstadoFisico div {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+}
+
+.EstadoEquipo-Admin-EstadoFisico div:last-child {
+  border-bottom: none;
+}
+
+.EstadoEquipo-Admin-EstadoFisico strong {
+  color: #4a90e2;
+}
+
+/* Alertas rápidas */
+.EstadoEquipo-Admin-Alertas div {
+  padding: 0.5rem;
+  font-weight: 500;
+  color: #d9534f;
+}
+
+.EstadoEquipo-Admin-Alertas div span {
+  margin-left: 0.5rem;
+}
+
+/* ALERTAS */
+.alerta-linea {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  align-items: center;
+  transition: all 0.2s ease;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+}
+
+/* Moderada */
+.alerta-moderada {
+  background-color: #fff8e1; /* amarillo muy suave */
+  color: #856404; /* marrón oscuro */
+  border-left-color: #ffb300; /* borde amarillo intenso */
+  border-right-color: #ffb300; /* borde amarillo intenso */
+}
+
+/* Grave */
+.alerta-grave {
+  background-color: #ffebee; /* rojo muy suave */
+  color: #b71c1c; /* rojo oscuro más legible */
+  font-weight: bold;
+  border-left-color: #f44336; /* borde rojo intenso */
+  border-right-color: #f44336; /* borde rojo intenso */
+}
+
+/* Comentario adicional */
+.alerta-comentario {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin-top: 2px;
+  width: 100%;
+  color: #333;
+}
+/* ===== RESUMEN PRUEBAS VISUAL ===== */
+
+.EstadoEquipo-Admin-ResumenPruebas div strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Línea visual */
+.resumen-linea {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 500;
+  width: fit-content;
+  transition: all 0.2s ease;
+}
+
+/* Mejora */
+.tendencia-mejora {
+  background-color: rgba(46, 204, 113, 0.12);
+  color: #27ae60;
+}
+
+/* Empeora */
+.tendencia-empeora {
+  background-color: rgba(255, 97, 80, 0.12);
+  color: #e74c3c;
+}
+
+/* Estable */
+.tendencia-estable {
+  background-color: rgba(120, 120, 120, 0.1);
+  color: #666;
+}
+
+/* Flecha un poco más marcada */
+.flecha {
+  font-weight: 600;
+}
+
+/* Botón de ver todas las alertas */
+.alerta-linea button {
+  margin-left: 8px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* Variante según gravedad */
+.alerta-linea.alerta-moderada button {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.alerta-linea.alerta-grave button {
+  background-color: #f8d7da;
+  color: #b71c1c;
+}
+
+.TeamHealth-Desglose {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.TeamHealth-Item {
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+  margin: 0 auto;
+}
+
+/* Modal overlay */
+.estado-equipo-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content */
+.estado-equipo-modal-content {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  text-align: left;
+}
+
+.estado-equipo-modal-content h3 {
+  margin-bottom: 1rem;
+}
+
+.estado-equipo-modal-content ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.estado-equipo-modal-content li {
+  margin-bottom: 0.5rem;
+}
+
+/* Botón cerrar */
+.estado-equipo-modal-close {
+  margin-top: 1rem;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #4a90e2;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}

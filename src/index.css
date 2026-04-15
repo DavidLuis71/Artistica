@@ -1,0 +1,7 @@
+:root {
+  --color-header: #6db1ff;
+  --color-texto-header: #ffffff;
+  --color-fondo-dashboard: linear-gradient(135deg, #a2d2ff, #8ba3ff);
+  --color-menu-lateral: #f5f5f5;
+  --color-menu-activo: #e4edff;
+}

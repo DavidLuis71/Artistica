@@ -1,0 +1,78 @@
+.usuarios-pendientes-container {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.usuarios-pendientes-title {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.UsuarioP-usuarios-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.UsuarioP-usuario-item {
+  display: flex;
+  justify-content: space-between; /* nombre a la izq, botones a la der */
+  align-items: center;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.UsuarioP-usuario-nombre {
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 4px;
+}
+
+.UsuarioP-usuario-hijas {
+  margin-bottom: 8px;
+}
+.UsuarioP-usuario-info {
+  display: flex;
+  flex-direction: column;
+}
+.UsuarioP-usuario-botones {
+  display: flex;
+  gap: 8px;
+}
+.UsuarioP-btn-aceptar {
+  align-self: flex-end; /* botón a la derecha */
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.2s;
+}
+.UsuarioP-btn-denegar {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: 0.2s;
+}
+
+.loading-text,
+.no-usuarios {
+  text-align: center;
+  font-style: italic;
+  color: #555;
+}
