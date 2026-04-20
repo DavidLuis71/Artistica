@@ -29,27 +29,49 @@ export default function NotificacionesAdmin() {
     fetchNotificaciones();
   }, []);
 
-  const handleSend = async () => {
-    if (!titulo.trim() || !mensaje.trim()) return;
-    setSending(true);
-    setSuccess(false);
+const handleSend = async () => {
+  if (!titulo.trim() || !mensaje.trim()) return;
 
-    const { error } = await supabase
-      .from("notificaciones")
-      .insert([{ mensaje, estado: "activa", titulo }]);
+  setSending(true);
+  setSuccess(false);
 
-    if (error) {
-      console.error(error);
-      alert("Error creando la notificación");
-    } else {
-      setSuccess(true);
-      setTitulo("");
-      setMensaje("");
-      fetchNotificaciones();
-    }
+  // 1. Guardar en Supabase
+  const { error } = await supabase
+    .from("notificaciones")
+    .insert([{ mensaje, estado: "activa", titulo }]);
 
+  if (error) {
+    console.error(error);
+    alert("Error creando la notificación");
     setSending(false);
-  };
+    return;
+  }
+
+  try {
+    // 2. Disparar push al backend ( render)
+    await fetch("https://push-server-u52s.onrender.com/send-all", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: titulo,
+        body: mensaje,
+         url: "/",
+      }),
+    });
+
+    setSuccess(true);
+    setTitulo("");
+    setMensaje("");
+    fetchNotificaciones();
+
+  } catch (err) {
+    console.error("Error enviando push:", err);
+  }
+
+  setSending(false);
+};
 
   const toggleEstado = async (id: number, currentEstado: string) => {
     const nuevoEstado = currentEstado === "activa" ? "inactiva" : "activa";

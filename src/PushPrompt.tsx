@@ -1,5 +1,18 @@
 // PushPrompt.tsx
 
+import { supabase } from "./lib/supabaseClient";
+
+
+function getDeviceId() {
+  let id = localStorage.getItem("device_id");
+
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem("device_id", id);
+  }
+
+  return id;
+}
 // Helper para convertir la VAPID key de Base64 a Uint8Array
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -10,38 +23,83 @@ function urlBase64ToUint8Array(base64String: string) {
 
 export default function PushPrompt() {
   const subscribePush = async () => {
-    if (!("serviceWorker" in navigator)) return;
+    try {
+      if (!("serviceWorker" in navigator)) {
+        console.error("Service Worker no soportado");
+        return;
+      }
 
-    const registration = await navigator.serviceWorker.ready;
+      const { data: userData } = await supabase.auth.getUser();
+      const user = userData?.user;
 
-    const vapidPublicKey = "TU_VAPID_PUBLIC_KEY_BASE64"; // Pon tu clave de Supabase
-    const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+      if (!user) {
+        console.error("Usuario no autenticado");
+        return;
+      }
 
-    const subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: convertedVapidKey,
-    });
+      const registration = await navigator.serviceWorker.ready;
 
-    console.log("Push subscription:", subscription);
-    return subscription;
+      const vapidPublicKey =
+        "BPJRwqT3HrGjkMR33gNtDhwu2syRz_3_Zk0lF0fnCMCTgleTbXipHsdvfE5i08zFN1jhxsWEeu4pl0bAW17WlnE";
+
+      const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: convertedVapidKey,
+      });
+
+      console.log("Push subscription creada:", subscription);
+
+      // 💾 Guardar en Supabase
+     const device_id = getDeviceId();
+
+const { error } = await supabase.from("push_subscriptions").upsert(
+  [
+    {
+      user_id: user.id,
+      device_id,
+      subscription: subscription.toJSON(),
+    },
+  ],
+  {
+    onConflict: "user_id,device_id",
+  }
+);
+
+      if (error) {
+        console.error("Error guardando subscription:", error);
+      } else {
+        console.log("Subscription guardada en Supabase ✅");
+      }
+
+      return subscription;
+    } catch (err) {
+      console.error("Error en push:", err);
+    }
   };
 
   const requestPushPermission = async () => {
-    if (Notification.permission === "granted") {
-      console.log("Notificaciones ya activadas");
-      return;
+    try {
+      const permission = await Notification.requestPermission();
+
+      console.log("Permiso de notificación:", permission);
+
+      if (permission !== "granted") {
+        console.log("Permiso denegado");
+        return;
+      }
+
+      console.log("Permiso concedido, creando subscription...");
+      await subscribePush();
+    } catch (err) {
+      console.error("Error pidiendo permiso:", err);
     }
-
-    const permission = await Notification.requestPermission();
-    console.log("Permiso de notificación:", permission);
-
-    if (permission !== "granted") return;
-
-    console.log("Usuario aceptó recibir notificaciones");
-    await subscribePush(); // <-- ahora sí se encuentra
   };
 
   return (
-    <button onClick={requestPushPermission}>Activar notificaciones 🔔</button>
+    <button onClick={requestPushPermission}>
+      Activar notificaciones 🔔
+    </button>
   );
 }

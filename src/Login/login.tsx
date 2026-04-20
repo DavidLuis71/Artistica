@@ -180,6 +180,9 @@ export default function Login() {
         <img src="/logo.png" className="splash-logo" />
       </div>
     );
+
+    const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
   return (
     <div className="pruebadelogin">
       {/* <SnowEffect /> */}
@@ -242,6 +245,32 @@ export default function Login() {
           📲 Instalar NatArt
         </button>
       )}
+      {isIOS && !isStandalone && (
+  <div className="install-button" style={{
+            marginTop: "15px",
+            backgroundColor: "#1e90ff",
+            color: "white",
+            padding: "10px 20px",
+            border: "none",
+            borderRadius: "8px",
+            fontWeight: "600",
+            cursor: "pointer",
+          }}>
+   <div className="ios-install-content">
+      <h3>📲 Instalar la app</h3>
+
+      <h3 style={{ marginBottom: "10px" }}>
+        Para poder recibir notificaciones en iPhone:
+      </h3>
+
+      <ol style={{ textAlign: "left" }}>
+        <li>Pulsa el botón <strong>Compartir</strong> 📤</li>
+        <li>Selecciona <strong>"Añadir a pantalla de inicio"</strong></li>
+        <li>Abre la app desde el icono instalado</li>
+      </ol>
+    </div>
+  </div>
+)}
 
       <nav className="login-nav">
         <span>¿No tienes cuenta?</span>

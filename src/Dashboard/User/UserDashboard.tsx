@@ -37,6 +37,14 @@ import UserNotificationsSlider from "./Notificacion/Notificacion";
 import AlbumCartas, { type CartaNadadora } from "./Cartas/CartasUser2";
 import MiniTriviaUser from "./juegos/trivial/MiniTriviaUser";
 import TableroCoreografia from "./Cartas/TableroCoreografia";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+
+import { enablePush } from "../../pushService";
+// import PushPrompt from "../../PushPrompt";
 // import SnowEffect from "./SnowEffect";
 
 interface Nadadora {
@@ -78,7 +86,42 @@ export default function UserDashboard() {
   const [cartasCoreografia, setCartasCoreografia] = useState<CartaNadadora[]>(
     [],
   );
+const [showPushModal, setShowPushModal] = useState(false);
 
+
+
+useEffect(() => {
+  let deviceId = localStorage.getItem("device_id");
+
+  if (!deviceId) {
+    deviceId = crypto.randomUUID();
+    localStorage.setItem("device_id", deviceId);
+  }
+}, []);
+
+useEffect(() => {
+  if (!user?.id || !rol) return;
+
+  const checkPush = async () => {
+    const deviceId = localStorage.getItem("device_id");
+
+    const { data, error } = await supabase
+      .from("push_subscriptions")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("device_id", deviceId)
+      .maybeSingle();
+
+    if (error) return console.error(error);
+
+    // Si este dispositivo no existe → pedir permiso
+    if (!data) {
+      setShowPushModal(true);
+    }
+  };
+
+  checkPush();
+}, [user?.id, rol]);
   // const [hayJuegoHoy, setHayJuegoHoy] = useState(false);
   const [openSubmenus, setOpenSubmenus] = useState<Record<string, boolean>>({});
 
@@ -963,7 +1006,38 @@ export default function UserDashboard() {
               }
             })()}
         </main>
+              {showPushModal && (
+<Dialog
+  open={showPushModal}
+  onClose={() => setShowPushModal(false)}
+  fullWidth
+  maxWidth="xs"
+>
+  <DialogTitle>Activar notificaciones</DialogTitle>
+
+  <DialogContent>
+    Te avisaremos de eventos importantes y mensajes relevantes.
+  </DialogContent>
+
+  <DialogActions>
+    <Button onClick={() => setShowPushModal(false)} color="inherit">
+      Ahora no
+    </Button>
+
+    <Button
+      variant="contained"
+      onClick={async () => {
+        const ok = await enablePush(user.id);
+        if (ok) setShowPushModal(false);
+      }}
+    >
+      Activar 🔔
+    </Button>
+  </DialogActions>
+</Dialog>
+)}
       </div>
+
     </div>
   );
 }

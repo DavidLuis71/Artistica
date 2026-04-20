@@ -1,12 +1,11 @@
-// src/auth/context.ts
-import type { Session, User } from "@supabase/supabase-js";
 
+import type { Session, User } from "@supabase/supabase-js";
+import { createContext } from "react";
 export type Profile = {
   id: string;
   nombre?: string;
   rol_id?: number;
   aprobado?: boolean;
-  // añade campos que guardes en tu tabla users
 } | null;
 
 export type AuthContextType = {
@@ -25,7 +24,7 @@ export const AUTH_CONTEXT_DEFAULT: AuthContextType = {
   signOut: async () => {},
 };
 
-// src/auth/context.ts (añadir al final)
-import { createContext } from "react";
+
+
 
 export const AuthContext = createContext<AuthContextType>(AUTH_CONTEXT_DEFAULT);

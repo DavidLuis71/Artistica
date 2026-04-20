@@ -2,15 +2,21 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     VitePWA({
       registerType: "autoUpdate",
+
+      strategies: "injectManifest",
+
+      srcDir: "src",
+      filename: "sw.ts",
+
       devOptions: {
         enabled: true,
       },
+
       manifest: {
         name: "NatArt",
         short_name: "NatArt",
@@ -33,12 +39,10 @@ export default defineConfig({
           },
         ],
       },
-      workbox: {
-        globPatterns: ["**/*.{js,css,html,png,svg}"],
-      },
     }),
   ],
+
   server: {
-    port: 2222, // <--- Aquí defines el puerto
+    port: 2222,
   },
 });

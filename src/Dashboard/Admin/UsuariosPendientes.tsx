@@ -48,6 +48,52 @@ export default function UsuariosPendientes() {
     [userId: string]: number | "";
   }>({});
 
+const [pushStats, setPushStats] = useState<
+  Record<string, { nombre: string; count: number }>
+>({});
+
+useEffect(() => {
+  const fetchPushStats = async () => {
+    const { data, error } = await supabase
+      .from("push_subscriptions")
+      .select("user_id, device_id, users(nombre, apellido)");
+
+    if (error || !data) return;
+
+    const stats: Record<string, { nombre: string; devices: Set<string> }> = {};
+
+    data.forEach((row: any) => {
+      if (!row.user_id) return;
+
+      const nombre =
+        row.users?.nombre +
+        (row.users?.apellido ? " " + row.users.apellido : "");
+
+      if (!stats[row.user_id]) {
+        stats[row.user_id] = {
+          nombre,
+          devices: new Set(),
+        };
+      }
+
+      stats[row.user_id].devices.add(row.device_id);
+    });
+
+    const result: Record<string, { nombre: string; count: number }> = {};
+
+    Object.keys(stats).forEach((userId) => {
+      result[userId] = {
+        nombre: stats[userId].nombre,
+        count: stats[userId].devices.size,
+      };
+    });
+
+    setPushStats(result);
+  };
+
+  fetchPushStats();
+}, []);
+
   const fetchNadadorasVirtuales = async () => {
     const { data, error } = await supabase
       .from("nadadoras")
@@ -300,6 +346,21 @@ export default function UsuariosPendientes() {
           ))}
         </ul>
       )}
+      <div className="push-stats-block">
+  <h3>📲 Notificaciones push activas</h3>
+
+  {Object.keys(pushStats).length === 0 ? (
+    <p>Nadie tiene notificaciones activadas todavía.</p>
+  ) : (
+    <ul>
+     {Object.entries(pushStats).map(([userId, value]) => (
+  <li key={userId}>
+    <strong>{value.nombre}</strong> → {value.count} dispositivo(s)
+  </li>
+))}
+    </ul>
+  )}
+</div>
     </div>
   );
 }

@@ -280,6 +280,13 @@ const CHANGELOG: Record<string, Cambio[]> = {
       tipo: "general",
     },
   ],
+  "1.3.2": [
+    {
+      descripcion: "Creacion de logica para poder tener notificaciones Push",
+      tipo: "general",
+    },
+    
+  ],
 };
 
 export default function VersionInfo() {

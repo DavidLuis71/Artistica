@@ -525,3 +525,97 @@
     visibility: hidden;
   }
 }
+
+
+/* =========================
+   MODAL NOTIFICACIONES
+========================= */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  width: min(420px, 90%);
+  background: var(--color-fondo-dashboard);
+  color: var(--color-texto-header);
+  border-radius: 16px;
+  padding: 24px 20px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: modalIn 0.25s ease-out;
+  text-align: center;
+}
+
+/* Título */
+.modal-content h2 {
+  margin: 0 0 10px 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Texto */
+.modal-content p {
+  margin: 0 0 18px 0;
+  font-size: 14px;
+  opacity: 0.85;
+  line-height: 1.4;
+}
+
+/* Botones */
+.modal-content button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+/* Botón principal (Aceptar) */
+.modal-content button:first-of-type {
+  background: var(--color-menu-activo);
+  color: #000;
+}
+
+/* Hover aceptar */
+.modal-content button:first-of-type:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+/* Botón secundario (Ahora no) */
+.modal-content button:last-of-type {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-texto-header);
+}
+
+/* Hover secundario */
+.modal-content button:last-of-type:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Animación entrada */
+@keyframes modalIn {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
