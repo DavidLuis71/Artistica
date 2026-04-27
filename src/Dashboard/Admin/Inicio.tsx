@@ -1,623 +1,327 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
-
 import "./Inicio.css";
 
-interface CompeticionResumen {
-  id: number;
-  nombre: string;
+interface DiaResumen {
   fecha: string;
-  tipo: string;
-}
-interface NadadoraResumen {
-  nadadora_id: number;
-  nombre: string;
-  rol: string;
+  asistencia: number;
+  total: number;
 }
 
-interface CoreografiaResumen {
-  id: number;
+interface Ranking {
   nombre: string;
-  categoria: string;
-  tipo: string;
-  nadadoras: NadadoraResumen[];
+  apellido: string;
+  porcentaje: number;
 }
-interface KpiCircleProps {
-  label: string;
-  value: number;
-  total: number;
-  color: string; // ✅ añadimos color
-  icon?: string; // ✅ opcional: icono
-}
-// Colores (ponlos justo después de los imports)
-const asistenciaColor: Record<string, string> = {
-  Asistencia: "#4ce751ff", // verde
-  Falta: "#ff6150ff", // rojo
-  Retraso: "#f39c12", // naranja
-  Enferma: "#c873e9ff", // morado
-  FaltaJustificada: "#35aeffff", // azul
-  NoLeTocabaEntrenar: "#afafafff", // gris
-};
 
 export default function Inicio() {
-  const [stats, setStats] = useState<{
-    asistenciasHoy: number;
-    faltasHoy: number;
-    faltasJustificadasHoy: number;
-    retrasosHoy: number;
-    enfermasHoy: number;
-    totalHoy: number;
-    totalNoVinieron: number;
-    proximasCompeticiones: CompeticionResumen[];
-    coreografiasActivas: CoreografiaResumen[];
-    asistenciasMes: number;
-    faltasMes: number;
-    faltasJustificadasMes: number;
-    retrasosMes: number;
-    enfermasMes: number;
-    totalMes: number;
-  }>({
-    asistenciasHoy: 0,
-    faltasHoy: 0,
-    enfermasHoy: 0,
-    faltasJustificadasHoy: 0,
-    retrasosHoy: 0,
-    totalHoy: 0,
-    totalNoVinieron: 0,
-    proximasCompeticiones: [],
-    coreografiasActivas: [],
-    asistenciasMes: 0,
-    faltasMes: 0,
-    faltasJustificadasMes: 0,
-    retrasosMes: 0,
-    enfermasMes: 0,
-    totalMes: 0,
-  });
-
-  const [open, setOpen] = useState<string | null>(null);
-  const toggle = (section: string) =>
-    setOpen(open === section ? null : section);
-  const [nadadoras, setNadadoras] = useState<
-    { id: number; nombre: string; apellido: string }[]
-  >([]);
-  const [selectedNadadoraId, setSelectedNadadoraId] = useState<number | null>(
-    null,
-  );
-  const [mensajeSemana, setMensajeSemana] = useState<string | null>(null);
+  const [totalNadadoras, setTotalNadadoras] = useState(0);
+  const [hoy, setHoy] = useState({ asistencia: 0, total: 0 });
+  const [ultimosDias, setUltimosDias] = useState<DiaResumen[]>([]);
+  const [ranking, setRanking] = useState<Ranking[]>([]);
+  const [rankingMesCompleto, setRankingMesCompleto] = useState<Ranking[]>([]);
 
   useEffect(() => {
-    const fetchNadadoras = async () => {
-      const { data, error } = await supabase
-        .from("nadadoras")
-        .select("id, nombre,apellido");
-      if (error) {
-        console.error("Error cargando nadadoras:", error);
-      } else {
-        setNadadoras(data || []);
-      }
-    };
-    fetchNadadoras();
-  }, []);
-
-  useEffect(() => {
-    async function loadData() {
-      function getTodayLocal() {
-        const d = new Date();
-        d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-        return d.toISOString().split("T")[0];
-      }
-      const todayStr = getTodayLocal();
-      const firstOfMonth = todayStr.slice(0, 8) + "01";
-
-      // =========================
-      // ASISTENCIAS DE HOY
-      // =========================
-      const { data: asistenciasHoyData, error } = await supabase
-        .from("asistencias")
-        .select("*")
-        .eq("fecha", todayStr);
-
-      if (error) {
-        console.error("Error cargando asistencias:", error);
-        return;
-      }
-
-      // =========================
-      // ASISTENCIAS DEL MES
-      // =========================
-      const { data: asistenciasMesData, error: errorMes } = await supabase
-        .from("asistencias")
-        .select("*")
-        .gte("fecha", firstOfMonth)
-        .lte("fecha", todayStr);
-
-      if (errorMes) {
-        console.error("Error cargando asistencias mes:", errorMes);
-        return;
-      }
-
-      // Función para contar tipos
-      const countTypes = (data: any[]) => {
-        const asistencias = data.filter(
-          (a) => a.asistencia === "Asistencia",
-        ).length;
-        const faltasJustificadas = data.filter(
-          (a) => a.asistencia === "FaltaJustificada",
-        ).length;
-        const faltas = data.filter((a) => a.asistencia === "Falta").length;
-        const retrasos = data.filter((a) => a.asistencia === "Retraso").length;
-        const enfermas = data.filter((a) => a.asistencia === "Enferma").length;
-        const noLeTocaba = data.filter(
-          (a) => a.asistencia === "NoLeTocabaEntrenar",
-        ).length;
-        const total = data.length - noLeTocaba;
-        const totalNoVinieron = faltas + faltasJustificadas + enfermas;
-        return {
-          asistencias,
-          faltas,
-          faltasJustificadas,
-          retrasos,
-          enfermas,
-          total,
-          totalNoVinieron,
-        };
-      };
-
-      const mes = countTypes(asistenciasMesData);
-
-      // Contadores
-      const asistenciasHoy = asistenciasHoyData.filter(
-        (a) => a.asistencia === "Asistencia",
-      ).length;
-      const faltasJustificadasHoy = asistenciasHoyData.filter(
-        (a) => a.asistencia === "FaltaJustificada",
-      ).length;
-      const faltasHoy = asistenciasHoyData.filter(
-        (a) => a.asistencia === "Falta",
-      ).length;
-      const retrasosHoy = asistenciasHoyData.filter(
-        (a) => a.asistencia === "Retraso",
-      ).length;
-      const noLeTocabaHoy = asistenciasHoyData.filter(
-        (a) => a.asistencia === "NoLeTocabaEntrenar",
-      ).length;
-      const enfermasHoy = asistenciasHoyData.filter(
-        (a) => a.asistencia === "Enferma",
-      ).length;
-
-      const totalHoy = asistenciasHoyData.length - noLeTocabaHoy;
-      const totalNoVinieron = faltasHoy + faltasJustificadasHoy + enfermasHoy;
-
-      // Guardamos en el estado
-      setStats((prev) => ({
-        ...prev,
-        asistenciasHoy,
-        faltasHoy,
-        faltasJustificadasHoy,
-        retrasosHoy,
-        enfermasHoy,
-        totalHoy,
-        totalNoVinieron,
-        asistenciasMes: mes.asistencias,
-        faltasMes: mes.faltas,
-        faltasJustificadasMes: mes.faltasJustificadas,
-        retrasosMes: mes.retrasos,
-        enfermasMes: mes.enfermas,
-        totalMes: mes.total,
-      }));
-
-      // =========================
-      // PRÓXIMAS COMPETICIONES
-      // =========================
-      const { data: competicionesData, error: competicionesError } =
-        await supabase
-          .from("competiciones")
-          .select("*")
-          .gte("fecha", todayStr)
-          .order("fecha", { ascending: true })
-          .limit(3);
-
-      if (competicionesError) {
-        console.error("Error cargando competiciones:", competicionesError);
-      }
-
-      // Actualizamos el estado
-      setStats((prev) => ({
-        ...prev,
-        proximasCompeticiones: competicionesData || [],
-      }));
-      // =========================
-      // COREOGRAFÍAS DETALLADAS
-      // =========================
-      const { data: coreografiasData } = await supabase.from("coreografias")
-        .select(`
-          id,
-          nombre,
-          categoria,
-          tipo,
-          coreografia_nadadora (
-            rol,
-            nadadora_id,
-            nadadora: nadadora_id ( nombre )
-          )
-        `);
-
-      const coreografias: CoreografiaResumen[] = (coreografiasData || []).map(
-        (c: any) => ({
-          id: c.id,
-          nombre: c.nombre,
-          categoria: c.categoria,
-          tipo: c.tipo,
-          nadadoras: (c.coreografia_nadadora || []).map((cn: any) => ({
-            nadadora_id: cn.nadadora_id,
-            nombre: cn.nadadora?.nombre || "Sin nombre",
-            rol: cn.rol,
-          })),
-        }),
-      );
-
-      setStats((prev) => ({
-        ...prev,
-        coreografiasActivas: coreografias,
-      }));
-
-      // =========================
-      // COMPROBAR ENTRENAMIENTOS DE LA PRÓXIMA SEMANA
-      // =========================
-      const today = new Date();
-      const dayOfWeek = today.getDay(); // 0 = domingo, 1 = lunes, ..., 6 = sábado
-
-      // Mostramos aviso solo a partir del jueves (día 4)
-      if (dayOfWeek >= 4) {
-        const nextMonday = new Date(today);
-        // Calculamos lunes siguiente
-        nextMonday.setDate(today.getDate() + ((8 - dayOfWeek) % 7));
-        const nextMondayStr = nextMonday.toISOString().split("T")[0];
-
-        const nextSunday = new Date(nextMonday);
-        nextSunday.setDate(nextMonday.getDate() + 6);
-        const nextSundayStr = nextSunday.toISOString().split("T")[0];
-
-        // Consulta de entrenamientos (asistencias) para la semana siguiente
-        const { data: entrenamientosProxSemana } = await supabase
-          .from("sesiones_entrenamiento")
-          .select("*")
-          .gte("fecha", nextMondayStr)
-          .lte("fecha", nextSundayStr);
-
-        if (
-          !entrenamientosProxSemana ||
-          entrenamientosProxSemana.length === 0
-        ) {
-          setMensajeSemana(
-            "⚠️No se han programado entrenamientos para la próxima semana. Por favor, genere la planificación semanal para garantizar la continuidad de los entrenamientos.",
-          );
-        } else {
-          setMensajeSemana(null);
-        }
-      }
-    }
-
     loadData();
   }, []);
 
-  const KpiCircle: React.FC<KpiCircleProps> = ({
-    label,
-    value,
-    total,
-    color,
-    icon,
-  }) => {
-    const percent = total > 0 ? Math.round((value / total) * 100) : 0;
-    const radius = 45;
-    const circumference = 2 * Math.PI * radius;
+  const getToday = () => new Date().toISOString().split("T")[0];
 
-    const [offset, setOffset] = useState(circumference); // empieza vacío
+  const loadData = async () => {
+    const today = getToday();
 
-    useEffect(() => {
-      // Actualizamos offset al montar para activar la transición
-      const newOffset = circumference - (percent / 100) * circumference;
-      // retraso corto para que la transición funcione
-      setTimeout(() => setOffset(newOffset), 50);
-    }, [circumference, percent]);
+    const { data: nadadoras } = await supabase
+      .from("nadadoras")
+      .select("id");
 
-    return (
-      <div className="kpi-item">
-        <svg width="120" height="120">
-          <circle
-            r={radius}
-            cx={60}
-            cy={60}
-            fill="transparent"
-            stroke="#e0e0e0"
-            strokeWidth="10"
-          />
-          <circle
-            r={radius}
-            cx={60}
-            cy={60}
-            fill="transparent"
-            stroke={color}
-            strokeWidth="10"
-            strokeDasharray={circumference}
-            strokeDashoffset={offset}
-            strokeLinecap="round"
-            style={{ transition: "stroke-dashoffset 1s ease-out" }}
-          />
-          <text
-            x="60"
-            y="60"
-            textAnchor="middle"
-            dy="-5"
-            fontSize="18"
-            fill="#333"
-            fontWeight="bold"
-          >
-            {Math.round(percent)}%
-          </text>
-          {icon && (
-            <text
-              x="60"
-              y="80"
-              textAnchor="middle"
-              fontSize="16"
-              fill={color}
-              fontWeight="bold"
-            >
-              {icon}
-            </text>
-          )}
-        </svg>
+    setTotalNadadoras(nadadoras?.length || 0);
 
-        <p style={{ textAlign: "center" }}>{label}</p>
-      </div>
-    );
+    const { data: asistenciasHoy } = await supabase
+      .from("asistencias")
+      .select("*")
+      .eq("fecha", today);
+
+    if (asistenciasHoy) {
+      const asistencia = asistenciasHoy.filter(
+        (a) =>
+          a.asistencia === "Asistencia" ||
+          a.asistencia === "Retraso"
+      ).length;
+
+      setHoy({
+        asistencia,
+        total: asistenciasHoy.length,
+      });
+    }
+
+    const dias: DiaResumen[] = [];
+    let i = 0;
+
+    while (dias.length < 7) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const fecha = d.toISOString().split("T")[0];
+
+      const { data } = await supabase
+        .from("asistencias")
+        .select("*")
+        .eq("fecha", fecha);
+
+      if (!data || data.length === 0) {
+        i++;
+        continue;
+      }
+
+      const validas = data.filter(
+        (a) => a.asistencia !== "NoLeTocabaEntrenar"
+      );
+
+      const asistencia = validas.filter(
+        (a) =>
+          a.asistencia === "Asistencia" ||
+          a.asistencia === "Retraso"
+      ).length;
+
+      dias.push({
+        fecha,
+        asistencia,
+        total: validas.length,
+      });
+
+      i++;
+    }
+
+    setUltimosDias(dias.reverse());
+
+    const buildRanking = (rows: any[]) => {
+      const map: Record<string, any> = {};
+
+      rows.forEach((a: any) => {
+        const nombre = a.nadadora_grupos?.nadadoras?.nombre;
+        const apellido = a.nadadora_grupos?.nadadoras?.apellido ?? "";
+
+        if (!nombre) return;
+        if (a.asistencia === "NoLeTocabaEntrenar") return;
+
+        const key = `${nombre} ${apellido}`;
+
+        if (!map[key]) {
+          map[key] = {
+            nombre,
+            apellido,
+            total: 0,
+            asistencia: 0,
+          };
+        }
+
+        map[key].total++;
+
+        if (
+          a.asistencia === "Asistencia" ||
+          a.asistencia === "Retraso"
+        ) {
+          map[key].asistencia++;
+        }
+      });
+
+      return Object.values(map)
+        .map((v: any) => ({
+          nombre: v.nombre,
+          apellido: v.apellido,
+          porcentaje:
+            v.total === 0
+              ? 0
+              : Math.round((v.asistencia / v.total) * 100),
+        }))
+        .sort((a, b) => b.porcentaje - a.porcentaje);
+    };
+
+    const firstDay = today.slice(0, 8) + "01";
+
+    const { data: mes } = await supabase
+      .from("asistencias")
+      .select(`
+        asistencia,
+        nadadora_grupo_id,
+        nadadora_grupos (
+          nadadora_id,
+          nadadoras ( nombre, apellido )
+        )
+      `)
+      .gte("fecha", firstDay)
+      .lte("fecha", today);
+
+    if (mes) {
+      const rankingMes = buildRanking(mes);
+      setRanking(rankingMes.slice(0, 5));
+      setRankingMesCompleto(rankingMes);
+    }
+  };
+
+  const porcentajeHoy =
+    hoy.total > 0
+      ? Math.round((hoy.asistencia / hoy.total) * 100)
+      : 0;
+
+  const getDayName = (dateStr: string) => {
+    const today = new Date().toISOString().split("T")[0];
+    if (dateStr === today) return "Hoy";
+
+    return new Date(dateStr).toLocaleDateString("es-ES", {
+      weekday: "long",
+    });
+  };
+
+  const getColor = (p: number) => {
+    if (p < 60) return "#e74c3c";
+    if (p < 75) return "#f39c12";
+    if (p < 90) return "#2ecc71";
+    return "#1e8449";
+  };
+
+  const getMedal = (i: number) => {
+    if (i === 0) return "🥇";
+    if (i === 1) return "🥈";
+    if (i === 2) return "🥉";
+    return `${i + 1}.`;
   };
 
   return (
     <div className="inicio-container">
-      {/* ASISTENCIAS */}
 
-      {/* ASISTENCIAS - KPI */}
-      <section className="inicio-panel">
-        <div
-          className="inicio-panel-header"
-          onClick={() => toggle("asistenciasKpi")}
-        >
-          <strong>🟢 Asistencias (KPI)</strong>
-          <span>{open === "asistenciasKpi" ? "▲" : "▼"}</span>
-        </div>
+      {/* GENERAL */}
+      <section className="inicio-section">
+        <h2>🏊 Vista general</h2>
 
-        {open === "asistenciasKpi" && (
-          <div className="panel-content kpi-container">
-            {/* ✅ Asistencias HOY */}
-            <KpiCircle
-              label="Asistencias Hoy"
-              value={stats.asistenciasHoy + stats.retrasosHoy}
-              total={stats.totalHoy}
-              color={asistenciaColor.Asistencia}
-              icon="✅"
-            />
-
-            {/* ✅ Retrasos HOY */}
-            <KpiCircle
-              label="Retrasos Hoy"
-              value={stats.retrasosHoy}
-              total={stats.asistenciasHoy + stats.retrasosHoy}
-              color={asistenciaColor.Retraso}
-              icon="⏱️"
-            />
-
-            {/* ❌ Faltas HOY */}
-            <KpiCircle
-              label="Faltas Hoy"
-              value={stats.totalNoVinieron}
-              total={stats.totalHoy}
-              color={asistenciaColor.Falta}
-              icon="❌"
-            />
-
-            {/* ✅ Asistencias MES */}
-            <KpiCircle
-              label="Asistencias Mes"
-              value={stats.asistenciasMes + stats.retrasosMes}
-              total={stats.totalMes}
-              color={asistenciaColor.Asistencia}
-              icon="📆"
-            />
-
-            {/* 🟠 Retrasos MES */}
-            <KpiCircle
-              label="Retrasos Mes"
-              value={stats.retrasosMes}
-              total={stats.asistenciasMes + stats.retrasosMes}
-              color={asistenciaColor.Retraso}
-              icon="⏳"
-            />
-
-            {/* ❌ Faltas MES */}
-            <KpiCircle
-              label="Faltas Mes"
-              value={
-                stats.faltasMes +
-                stats.faltasJustificadasMes +
-                stats.enfermasMes
-              }
-              total={stats.totalMes}
-              color={asistenciaColor.Falta}
-              icon="🚫"
-            />
+        <div className="inicio-grid">
+          <div className="inicio-card total">
+            <h3>{totalNadadoras}</h3>
+            <p>Nadadoras</p>
           </div>
-        )}
+
+          <div className="inicio-card ok">
+            <h3>{porcentajeHoy}%</h3>
+            <p>Asistencia hoy</p>
+          </div>
+
+          <div className="inicio-card warning">
+            <h3>{hoy.asistencia}/{hoy.total}</h3>
+            <p>Hoy</p>
+          </div>
+        </div>
       </section>
 
-      {/* COMPETICIONES */}
-      <section className="inicio-panel">
-        <div
-          className="inicio-panel-header"
-          onClick={() => toggle("competiciones")}
-        >
-          <strong>📅 Próximas competiciones</strong>
-          <span>{open === "competiciones" ? "▲" : "▼"}</span>
-        </div>
-        {open === "competiciones" && (
-          <div style={{ marginTop: "10px" }}>
-            {stats.proximasCompeticiones.length === 0 && (
-              <p>No hay competiciones próximamente.</p>
-            )}
-            {stats.proximasCompeticiones.map((c) => (
-              <div key={c.id} className={`competicion-item ${c.tipo}`}>
-                <strong style={{ textTransform: "uppercase" }}>
-                  {c.nombre}
-                </strong>
-                <span>{new Date(c.fecha).toLocaleDateString()}</span>
+      {/* ÚLTIMOS 7 DÍAS */}
+      <section className="inicio-section">
+        <h3>📅 Últimos 7 días</h3>
+
+        <div className="inicio-list">
+          {ultimosDias.map((d, i) => {
+            const p = Math.round((d.asistencia / d.total) * 100);
+
+            return (
+              <div key={i} className="inicio-list-item vertical">
+
+                <div className="row">
+                  <span className="day">{getDayName(d.fecha)}</span>
+                  <span>{p}%</span>
+                </div>
+
+                <div className="bar-bg">
+                  <div
+                    className="bar-fill"
+                    style={{
+                      width: `${p}%`,
+                      background: getColor(p),
+                    }}
+                  />
+                </div>
+
               </div>
-            ))}
-          </div>
-        )}
+            );
+          })}
+        </div>
       </section>
 
-      {/* COREOGRAFÍAS / CALENDARIO ASISTENCIAS */}
-      <section className="inicio-panel">
-        <div
-          className="inicio-panel-header"
-          onClick={() => toggle("coreografias")}
-        >
-          <strong> ⏱️ Asistencias</strong>
-          <span>{open === "coreografias" ? "▲" : "▼"}</span>
-        </div>
-        {open === "coreografias" && (
-          <div className="coreografias-container">
-            {stats.coreografiasActivas.length === 0 && (
-              <p>No hay coreografías activas.</p>
-            )}
+      {/* RANKING VISUAL */}
+      <section className="inicio-section">
+        <h3>🏆 Top asistencia del mes</h3>
 
-            {/* Selector de nadadora */}
-            <div className="inicio-selectorNadadora-Asistencias">
-              <AutocompleteSimple
-                options={nadadoras.map((n) => ({
-                  id: n.id,
-                  label: `${n.nombre} ${n.apellido}`,
-                }))}
-                value={selectedNadadoraId}
-                onChange={(id) => setSelectedNadadoraId(id ?? null)}
-                placeholder="Selecciona una nadadora"
+        <div className="ranking">
+          {ranking.map((r, i) => (
+            <div key={i} className="ranking-card">
+
+              <div className="left">
+                <div className="avatar">
+                  {r.nombre[0]}{r.apellido?.[0] || ""}
+                </div>
+
+                <div>
+                  <div className="name">
+                    {getMedal(i)} {r.nombre} {r.apellido}
+                  </div>
+
+                  <div className="mini-bar-bg">
+                    <div
+                      className="mini-bar-fill"
+                      style={{
+                        width: `${r.porcentaje}%`,
+                        background: getColor(r.porcentaje),
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="percent">
+                {r.porcentaje}%
+              </div>
+
+            </div>
+          ))}
+        </div>
+      </section>
+
+{/* MES COMPLETO */}
+<section className="inicio-section">
+  <h3>📊 Mes completo</h3>
+
+  <div className="ranking-container">
+    {rankingMesCompleto.map((r, i) => {
+      const isTop3 = i < 3;
+
+      return (
+        <div key={i} className="ranking-item">
+          
+          {/* Posición */}
+          <div className={`ranking-pos ${isTop3 ? "top" : ""}`}>
+            {i + 1}
+          </div>
+
+          {/* Info */}
+          <div className="ranking-info">
+            <div className="ranking-name">
+              {r.nombre} {r.apellido}
+            </div>
+
+            <div className="ranking-bar">
+              <div
+                className="ranking-fill"
+                style={{ width: `${r.porcentaje}%` }}
               />
-              {/* Calendario */}
-              {selectedNadadoraId && (
-                <AsistenciasCalendario nadadoraId={selectedNadadoraId} />
-              )}
             </div>
           </div>
-        )}
-      </section>
 
-      {mensajeSemana && (
-        <div
-          style={{
-            backgroundColor: "#fff4e5", // fondo suave naranja
-            border: "1px solid #ffa500", // borde naranja profesional
-            color: "#333",
-            fontWeight: "500",
-            padding: "12px 15px",
-            borderRadius: "8px",
-            marginTop: "15px",
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            fontSize: "0.95rem",
-          }}
-        >
-          <span style={{ fontSize: "18px", color: "#ffa500" }}>ℹ️</span>
-          {mensajeSemana}
-        </div>
-      )}
-    </div>
-  );
-}
-
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import AutocompleteSimple from "../../utils/AutocompleteSimple";
-
-interface Asistencia {
-  id: number;
-  fecha: string;
-  asistencia: string;
-}
-
-interface Props {
-  nadadoraId: number;
-}
-
-function AsistenciasCalendario({ nadadoraId }: Props) {
-  const [asistencias, setAsistencias] = useState<Asistencia[]>([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
-  useEffect(() => {
-    const fetchAsistencias = async () => {
-      const { data: grupoData } = await supabase
-        .from("nadadora_grupos")
-        .select("id")
-        .eq("nadadora_id", nadadoraId)
-        .single();
-
-      if (!grupoData) return;
-
-      // Obtener asistencias
-      const { data: asistenciasData } = await supabase
-        .from("asistencias")
-        .select("*")
-        .eq("nadadora_grupo_id", grupoData.id);
-
-      setAsistencias(asistenciasData || []);
-    };
-
-    if (nadadoraId) fetchAsistencias();
-  }, [nadadoraId]);
-
-  const tileContent = ({ date, view }: { date: Date; view: string }) => {
-    if (view === "month") {
-      const fechaStr = date.toLocaleDateString("sv-SE");
-      const asistencia = asistencias.find((a) => a.fecha === fechaStr);
-
-      const isToday = date.toDateString() === new Date().toDateString();
-      if (asistencia) {
-        return (
-          <div
-            className={`AsistenciasUsuarios-tile ${
-              isToday ? "AsistenciasUsuarios-today" : ""
-            }`}
-          >
-            {asistencia ? (
-              <div
-                className="AsistenciasUsuarios-tile-dia"
-                style={{
-                  backgroundColor: asistenciaColor[asistencia.asistencia],
-                }}
-                title={asistencia.asistencia}
-              >
-                {date.getDate()}
-              </div>
-            ) : (
-              <span>{date.getDate()}</span>
-            )}
+          {/* % */}
+          <div className="ranking-percent">
+            {r.porcentaje}%
           </div>
-        );
-      }
-      return <div>{date.getDate()}</div>;
-    }
-  };
+        </div>
+      );
+    })}
+  </div>
+</section>
 
-  return (
-    <Calendar
-      className="AsistenciasUsuarios-Calendario"
-      onChange={(value) => value instanceof Date && setSelectedDate(value)}
-      onActiveStartDateChange={({ activeStartDate }) =>
-        activeStartDate && setSelectedDate(activeStartDate)
-      }
-      value={selectedDate}
-      tileContent={tileContent}
-    />
+    </div>
   );
 }

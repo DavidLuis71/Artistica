@@ -1,232 +1,278 @@
-/* ======= CONTENEDOR PRINCIPAL ======= */
 .inicio-container {
-  width: 100%;
-  max-width: 700px;
-  margin: 20px auto;
-  overflow-y: auto;
-  padding: 10px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* ======= PANEL ======= */
-.inicio-panel {
-  background: #f9f9f9;
-  color: #333;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease;
-  width: 100%;
-}
-
-/* ======= HEADER DEL PANEL ======= */
-.inicio-panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 1.05rem;
-}
-
-.inicio-panel-header span {
-  font-size: 0.9rem;
-  color: #666;
-}
-
-/* ======= PANEL CONTENT ======= */
-.panel-content p {
-  margin: 8px 0;
-  font-weight: 500;
-}
-
-/* ======= BARRA DE ESTADÍSTICAS ======= */
-.stat-bar {
-  margin-bottom: 10px;
-}
-
-.stat-bar p {
-  margin: 0 0 4px 0;
-  font-size: 0.95rem;
-}
-
-.stat-bar-container {
-  width: 100%;
-  height: 14px;
-  background: #e0e0e0;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.stat-bar-fill {
-  height: 100%;
-  border-radius: 8px;
-  transition: width 0.5s ease, background 0.3s ease;
-}
-
-/* ======= LISTA DE COMPETICIONES ======= */
-.competicion-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0;
-  border-bottom: 1px solid #ddd;
-  font-size: 0.95rem;
-  text-transform: uppercase; /* Nombre en mayúsculas */
-}
-
-.competicion-item:last-child {
-  border-bottom: none;
-}
-
-/* ======= TEXTO DE COREOGRAFÍAS ======= */
-.coreografia-text {
-  margin-top: 10px;
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-
-/* ======= TRANSICIÓN PARA EXPANDIR Y COLAPSAR ======= */
-.panel-content {
-  animation: fadeIn 0.3s ease;
-}
-
-/* ======= CONTENEDOR DE COREOGRAFÍAS ======= */
-.coreografias-container {
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  width: 100%;
-}
-
-/* ======= TARJETA DE COREOGRAFÍA ======= */
-.coreografia-card {
-  /* background: #ffffff; */
-  border: solid 2px #13495e;
-  width: 100%;
-  border-radius: 10px;
-  padding: 12px 15px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* ======= HEADER DE CATEGORÍA Y TIPO ======= */
-.coreografia-header {
-  display: flex;
-  justify-content: flex-start;
   gap: 20px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  margin-bottom: 4px;
-  color: #555;
-}
-.coreografia-nombre {
-  margin-bottom: 15px;
 }
 
-.coreografia-categoria {
-  color: #144166;
-  font-size: 1.1rem;
-  font-weight: 600;
+/* ===== HEADER ===== */
+.inicio-header {
+  background: linear-gradient(135deg, #6db1ff, #4a90e2);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
 }
 
-.coreografia-tipo {
-  color: #144166;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-/* ======= Borde de competiciones ======= */
-/* Borde para competiciones en inicio según tipo */
-.competicion-item.rutinas {
-  border-left: 4px solid #6c5ce7;
-  border-right: 4px solid #6c5ce7;
-  padding: 8px;
-}
-
-.competicion-item.figuras {
-  border-left: 4px solid #00b894;
-  border-right: 4px solid #00b894;
-  padding: 8px;
-}
-
-.competicion-item.tiempos {
-  border-left: 4px solid #fd79a8;
-  border-right: 4px solid #fd79a8;
-  padding: 8px;
-}
-
-.competicion-item.niveles {
-  border-left: 4px solid #f1c40f;
-  border-right: 4px solid #f1c40f;
-  padding: 8px;
-}
-/* ======= LISTA DE NADADORAS ======= */
-/* Nadadoras en dos columnas */
-.nadadoras-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
-  gap: 6px 12px; /* Espacio entre filas y columnas */
-  list-style: none;
-  padding: 0;
+.inicio-header h2 {
   margin: 0;
 }
 
-/* Cada nadadora */
-.nadadora-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.95rem;
+.inicio-sub {
+  opacity: 0.9;
+  margin-top: 5px;
 }
 
-/* Chip del rol */
-.rol-chip {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: #fff;
-}
-
-/* Colores según rol */
-.rol-titular .rol-chip {
-  background-color: #4caf50; /* verde */
-}
-
-.rol-reserva .rol-chip {
-  background-color: #f39c12; /* naranja */
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.kpi-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+/* ===== GRID GENERAL ===== */
+.inicio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 15px;
 }
 
-.kpi-item {
+/* ===== CARDS ===== */
+.inicio-card {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: 0.2s;
+}
+
+.inicio-card:hover {
+  transform: translateY(-3px);
+}
+
+.inicio-card h3 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.inicio-card p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* ===== COLORES KPI ===== */
+.inicio-card.total {
+  border-left: 5px solid #4a90e2;
+}
+
+.inicio-card.ok {
+  border-left: 5px solid #2ecc71;
+}
+
+.inicio-card.warning {
+  border-left: 5px solid #f39c12;
+}
+
+.inicio-card.danger {
+  border-left: 5px solid #e74c3c;
+}
+
+/* ===== SECCIONES ===== */
+.inicio-section {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.inicio-section h2 {
+  margin-bottom: 10px;
+}
+
+/* ===== LISTA ===== */
+.inicio-list {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+}
+
+.inicio-list-item {
+  display: flex;
+  justify-content: space-between;
+  background: #f7f9fc;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* ===== PROGRESO ===== */
+.progress-bar {
+  height: 8px;
+  background: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #4a90e2;
+  transition: width 0.5s ease;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .inicio-header {
+    text-align: center;
+  }
+}
+
+/* ===== RANKING VISUAL ===== */
+.ranking {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ranking-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f7f9fc;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.left {
+  display: flex;
+  gap: 10px;
   align-items: center;
 }
 
-.inicio-selectorNadadora-Asistencias {
-  height: 400px;
+/* avatar */
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6db1ff, #4a90e2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+}
+
+/* nombre */
+.name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* porcentaje */
+.percent {
+  font-weight: bold;
+}
+
+/* mini bar */
+.mini-bar-bg {
+  width: 160px;
+  height: 6px;
+  background: #ddd;
+  border-radius: 5px;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+.mini-bar-fill {
+  height: 100%;
+  transition: width 0.4s ease;
+}
+
+/* barras días */
+.vertical {
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.day {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.bar-bg {
+  width: 100%;
+  height: 8px;
+  background: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.ranking-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f7f9fc;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* posición número */
+.ranking-pos {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.ranking-pos.top {
+  background: linear-gradient(135deg, #ffd700, #ffb300);
+  color: #000;
+}
+
+/* nombre + barra */
+.ranking-info {
+  flex: 1;
+}
+
+.ranking-name {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+/* barra progreso */
+.ranking-bar {
+  width: 100%;
+  height: 6px;
+  background: #e5e5e5;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.ranking-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4a90e2, #2ecc71);
+  transition: width 0.4s ease;
+}
+
+/* porcentaje */
+.ranking-percent {
+  font-weight: bold;
+  min-width: 45px;
+  text-align: right;
 }
