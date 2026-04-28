@@ -538,25 +538,6 @@ export default function AsistenciasUser({ userId }: Props) {
                 </label>
               </div>
             )}
-
-            {/* {tipoAusencia === "semanal" && (
-              <label className="modalAsisteciasJustificar-label">
-                Días de la semana:
-                <select
-                  id="diasSemana"
-                  multiple
-                  className="modalAsisteciasJustificar-select"
-                >
-                  <option value="0">Lunes</option>
-                  <option value="1">Martes</option>
-                  <option value="2">Miércoles</option>
-                  <option value="3">Jueves</option>
-                  <option value="4">Viernes</option>
-                  <option value="5">Sábado</option>
-                  <option value="6">Domingo</option>
-                </select>
-              </label>
-            )} */}
             {tipoAusencia === "semanal" && (
               <div className="modalAsisteciasJustificar-label">
                 Días de la semana:

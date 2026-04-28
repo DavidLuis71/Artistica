@@ -213,3 +213,28 @@ export function calcularAlertas14Dias(
 
   return alertas;
 }
+
+
+export const getDiaSemana = (fechaStr: string) => {
+  const dias = [
+    "Domingo",
+    "Lunes",
+    "Martes",
+    "Miercoles",
+    "Jueves",
+    "Viernes",
+    "Sabado",
+  ];
+
+  return dias[new Date(fechaStr).getDay()];
+};
+
+export const esEntrenamientoPasado = (fechaStr: string) => {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+
+  const fecha = new Date(fechaStr);
+  fecha.setHours(0, 0, 0, 0);
+
+  return fecha < hoy;
+};

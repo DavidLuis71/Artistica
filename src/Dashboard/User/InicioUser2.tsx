@@ -310,78 +310,93 @@ export default function InicioUser2({
     setFraseDiaria(FRASES[indice]);
   }, []);
 
-  // --- Próximo entrenamiento considerando vacaciones ---
-  useEffect(() => {
-    const cargarProximoEntrenamiento = async () => {
-      const { data: grupo } = await supabase
-        .from("nadadora_grupos")
-        .select("id, grupo_id")
-        .eq("nadadora_id", nadadoraId)
-        .order("fecha_asignacion", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      if (!grupo) return;
+// --- Próximo entrenamiento considerando vacaciones ---
+useEffect(() => {
+  const cargarProximoEntrenamiento = async () => {
+    const { data: grupo } = await supabase
+      .from("nadadora_grupos")
+      .select("grupo_id")
+      .eq("nadadora_id", nadadoraId)
+      .order("fecha_asignacion", { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
-      const hoy = new Date();
-      const hoyStr = hoy.toISOString().split("T")[0];
+    if (!grupo) return;
 
-      const { data: sesiones } = await supabase
-        .from("sesiones_entrenamiento")
-        .select("*")
-        .gte("fecha", hoyStr)
-        .order("fecha", { ascending: true });
-      if (!sesiones) return;
+    const hoyStr = new Date().toISOString().split("T")[0];
 
-      const { data: vacaciones } = await supabase
-        .from("vacaciones")
-        .select("*")
-        .gte("fecha_fin", hoyStr)
-        .order("fecha_inicio", { ascending: true });
-      const vacArray: Vacacion[] = vacaciones || [];
+    const { data: sesiones } = await supabase
+      .from("sesiones_entrenamiento")
+      .select("*")
+      .gte("fecha", hoyStr)
+      .order("fecha", { ascending: true });
 
-      const sesionesFiltradas = sesiones.filter((s: Entrenamiento) => {
-        const diaSemana = new Date(s.fecha).getDay(); // 0=Dom, 1=Lun,...
-        if (grupo.grupo_id === 2 && (diaSemana === 2 || diaSemana === 4))
-          return false;
-        return true;
-      });
+    const { data: vacaciones } = await supabase
+      .from("vacaciones")
+      .select("*")
+      .gte("fecha_fin", hoyStr)
+      .order("fecha_inicio", { ascending: true });
 
-      let proximo: typeof proximoEntrenamiento = null;
-      for (const s of sesionesFiltradas) {
-        const fechaSesion = new Date(s.fecha);
-        const vacDia = vacArray.find(
-          (v) =>
-            fechaSesion >= new Date(v.fecha_inicio) &&
-            fechaSesion <= new Date(v.fecha_fin),
-        );
+    if (!sesiones) return;
 
-        if (vacDia) {
-          // Próximo es vacaciones
-          const siguienteSesion = sesionesFiltradas.find(
-            (next) =>
-              new Date(next.fecha) > fechaSesion &&
-              !vacArray.some(
-                (v) =>
-                  new Date(next.fecha) >= new Date(v.fecha_inicio) &&
-                  new Date(next.fecha) <= new Date(v.fecha_fin),
-              ),
-          );
-          proximo = {
-            tipo: "vacaciones",
-            info: vacDia,
-            siguiente: siguienteSesion,
-          };
-          break;
-        } else {
-          proximo = { tipo: "sesion", info: s };
-          break;
-        }
+    const vacArray: Vacacion[] = vacaciones || [];
+
+    // Filtrar sesiones según grupo (ejemplo reglas existentes)
+    const sesionesFiltradas = sesiones.filter((s: Entrenamiento) => {
+      const diaSemana = new Date(s.fecha).getDay(); // 0 dom ... 6 sáb
+
+      // Ejemplo: grupo 2 no entrena martes y jueves
+      if (grupo.grupo_id === 2 && (diaSemana === 2 || diaSemana === 4)) {
+        return false;
       }
 
-      setProximoEntrenamiento(proximo);
-    };
-    cargarProximoEntrenamiento();
-  }, [nadadoraId]);
+      return true;
+    });
+
+    let proximo: typeof proximoEntrenamiento = null;
+
+    for (const sesion of sesionesFiltradas) {
+      const fechaSesion = new Date(sesion.fecha);
+
+      const estaEnVacaciones = vacArray.some(
+        (v) =>
+          fechaSesion >= new Date(v.fecha_inicio) &&
+          fechaSesion <= new Date(v.fecha_fin),
+      );
+
+      if (estaEnVacaciones) {
+        const siguienteSesion = sesionesFiltradas.find(
+          (next) =>
+            new Date(next.fecha) > fechaSesion &&
+            !vacArray.some(
+              (v) =>
+                new Date(next.fecha) >= new Date(v.fecha_inicio) &&
+                new Date(next.fecha) <= new Date(v.fecha_fin),
+            ),
+        );
+
+        proximo = {
+          tipo: "vacaciones",
+          info: vacArray.find(
+            (v) =>
+              fechaSesion >= new Date(v.fecha_inicio) &&
+              fechaSesion <= new Date(v.fecha_fin),
+          )!,
+          siguiente: siguienteSesion,
+        };
+
+        break;
+      }
+
+      proximo = { tipo: "sesion", info: sesion };
+      break;
+    }
+
+    setProximoEntrenamiento(proximo);
+  };
+
+  cargarProximoEntrenamiento();
+}, [nadadoraId]);
 
   // Próximas competiciones
   useEffect(() => {
@@ -602,9 +617,6 @@ export default function InicioUser2({
               </strong>
             </p>
 
-            <p style={{ marginTop: "6px" }}>
-              {proximoEntrenamiento.info.descripcion}
-            </p>
 
             <small>
               {proximoEntrenamiento.info.hora_inicio} •{" "}

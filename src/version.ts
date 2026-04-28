@@ -1,4 +1,4 @@
-export const APP_VERSION = "1.3.3"; // cambia cada vez que hagas un build
+export const APP_VERSION = "1.3.4"; // cambia cada vez que hagas un build
 
 //1.0.9 añadido el generar carta de nadadadora, modificacion en cartasuser el ver la carta de nadadora con un fondo
 // 1.0.9 mantener la sesion iniciada
@@ -39,4 +39,4 @@ export const APP_VERSION = "1.3.3"; // cambia cada vez que hagas un build
 //1.3.1 Añadido el ranking del club, en %. arreglo de logros mensuales y semanales. Arreglo del estado del equipo
 //1.3.1 Incorporación de Reestablecer contraseña mediante correo
 //1.3.2 Añadir notificaciones push
-//1.3.3 Modificar incio admin
+//1.3.3 Modificar incio admin Modificar creacion de entrenos. Modificacion vista entrenamientos user

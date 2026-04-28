@@ -2,621 +2,526 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
-import "./Entrenamientos.css";
 
-interface Semana {
-  id: number;
-  fecha_inicio: string;
-  fecha_fin: string;
-}
-interface Vacacion {
-  id: number;
+import {
+  Box,
+  Typography,
+  Button,
+  TextField,
+  Grid,
+  Card,
+  CardContent,
+  Chip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  IconButton,
+  Divider,
+  MenuItem,
+} from "@mui/material";
+
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { getDiaSemana } from "../../utils/Formatear";
+
+interface SerieBlock {
   titulo: string;
-  fecha_inicio: string;
-  fecha_fin: string;
-  descripcion?: string;
+  series: string[];
 }
 
 interface Sesion {
   id: number;
-  semana_id: number;
-  dia_semana: "Lunes" | "Martes" | "Miercoles" | "Jueves" | "Viernes";
-  descripcion: string;
+  fecha: string;
+  titulo: string;
+  descripcion: SerieBlock[];
+  estado: "borrador" | "publicado";
   hora_inicio: string;
   hora_fin: string;
-  tipo_sesion: "Agua" | "Sala" | "Agua+sala";
-  fecha: string;
+   dia_semana: string;
+   tipo_sesion: string;
+   plantilla_id?: number | null;
+}
+interface Plantilla {
+  id: number;
+  nombre: string;
+  tipo: string;
+  descripcion_base: SerieBlock[];
+  duracion_estimada: number;
 }
 
-const diasSemana = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"];
-const tiposSesion = ["Agua", "Sala", "Agua+Sala"];
-
 export default function Entrenamientos() {
-  const [semanas, setSemanas] = useState<Semana[]>([]);
-  const [selectedSemana, setSelectedSemana] = useState<number | null>(null);
   const [sesiones, setSesiones] = useState<Sesion[]>([]);
-  const [formSesion, setFormSesion] = useState<Partial<Sesion>>({});
-  const [fechaInicioTemporada, setFechaInicioTemporada] = useState<string>("");
-  const [fechaFinTemporada, setFechaFinTemporada] = useState<string>("");
-  const [dialogDescripcion, setDialogDescripcion] = useState<{
-    abierta: boolean;
-    texto: string;
-  }>({ abierta: false, texto: "" });
-  const [dialogEliminar, setDialogEliminar] = useState<{
-    abierta: boolean;
-    id: number | null;
-  }>({ abierta: false, id: null });
-
-  const [vacaciones, setVacaciones] = useState<Vacacion[]>([]);
-
-  const [nuevaVacacion, setNuevaVacacion] = useState({
-    titulo: "",
-    fecha_inicio: "",
-    fecha_fin: "",
-    descripcion: "",
+  const [open, setOpen] = useState(false);
+  const [form, setForm] = useState<Partial<Sesion>>({
+    descripcion: [],
   });
 
-  const handleVerDescripcion = (sesion: Sesion) => {
-    setDialogDescripcion({
-      abierta: true,
-      texto: sesion.descripcion || "Sin descripción",
+  const [plantillas, setPlantillas] = useState<Plantilla[]>([]);
+const [openPlantilla, setOpenPlantilla] = useState(false);
+const [formPlantilla, setFormPlantilla] = useState<Partial<Plantilla>>({
+  descripcion_base: [],
+});
+
+  const fetchPlantillas = async () => {
+  const { data } = await supabase
+    .from("plantillas_entrenamiento")
+    .select("*");
+
+  setPlantillas(data || []);
+};
+
+useEffect(() => {
+  fetchSesiones();
+  fetchPlantillas();
+}, []);
+
+const fetchSesiones = async () => {
+  const { data } = await supabase
+    .from("sesiones_entrenamiento")
+    .select("*")
+    .order("fecha", { ascending: false });
+
+  const normalizadas = (data || []).map((s) => ({
+    ...s,
+    descripcion: Array.isArray(s.descripcion)
+      ? s.descripcion
+      : typeof s.descripcion === "string"
+      ? JSON.parse(s.descripcion)
+      : [],
+  }));
+
+  setSesiones(normalizadas);
+};
+
+  // 🔥 AUTOHORAS
+  const autoHoras = (fecha: string) => {
+    const day = new Date(fecha).getDay();
+    if (day === 5) return { inicio: "17:30", fin: "20:30" };
+    return { inicio: "17:30", fin: "19:30" };
+  };
+
+  const handleChangeFecha = (fecha: string) => {
+    const horas = autoHoras(fecha);
+
+    setForm({
+      ...form,
+      fecha,
+      hora_inicio: horas.inicio,
+      hora_fin: horas.fin,
     });
   };
 
-  // 🔹 Cargar semanas y vacaciones
-  useEffect(() => {
-    fetchSemanas();
-    fetchVacaciones();
-  }, []);
+  // 🔥 BLOQUES
 
-  const fetchVacaciones = async () => {
-    const { data, error } = await supabase
-      .from("vacaciones")
-      .select("*")
-      .order("fecha_inicio", { ascending: true });
+  const addBlock = () => {
+    const newBlocks = [...(form.descripcion || [])];
+    newBlocks.push({ titulo: "", series: [] });
 
-    if (error) console.error(error);
-    else setVacaciones(data || []);
+    setForm({ ...form, descripcion: newBlocks });
   };
 
-  const fetchSemanas = async () => {
-    const { data, error } = await supabase
-      .from("semanas")
-      .select("*")
-      .order("fecha_inicio", { ascending: true });
-    if (error) console.error(error);
-    else setSemanas(data || []);
+  const updateBlockTitle = (index: number, value: string) => {
+    const newBlocks = [...(form.descripcion || [])];
+    newBlocks[index].titulo = value;
+
+    setForm({ ...form, descripcion: newBlocks });
   };
 
-  // 🔹 Crear semanas automáticamente desde temporada
-  const handleCrearSemanasTemporada = async () => {
-    if (!fechaInicioTemporada || !fechaFinTemporada)
-      return alert("Selecciona fechas de inicio y fin de temporada");
+  const removeBlock = (index: number) => {
+    const newBlocks = [...(form.descripcion || [])];
+    newBlocks.splice(index, 1);
 
-    const fechaInicio = new Date(fechaInicioTemporada);
-    const fechaFin = new Date(fechaFinTemporada);
-
-    // 🔹 Obtener todas las semanas existentes
-    const { data: semanasExistentesData, error: errorSemanas } = await supabase
-      .from("semanas")
-      .select("fecha_inicio");
-    if (errorSemanas) return alert("Error al cargar semanas existentes");
-
-    const semanasExistentes = (semanasExistentesData || []).map(
-      (s) => s.fecha_inicio,
-    );
-
-    const semanasAInsertar: { fecha_inicio: string; fecha_fin: string }[] = [];
-    const formatDate = (d: Date) => {
-      const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    };
-
-    const actual = new Date(fechaInicio);
-
-    // 🔹 Primero llevamos actual al primer lunes
-    const dia = actual.getDay();
-    const diff = dia === 0 ? 1 : (8 - dia) % 7;
-    actual.setDate(actual.getDate() + diff);
-
-    while (actual <= fechaFin) {
-      const lunes = new Date(actual);
-      const viernes = new Date(lunes);
-      viernes.setDate(lunes.getDate() + 4);
-
-      const fechaLunes = formatDate(lunes);
-
-      if (!semanasExistentes.includes(fechaLunes)) {
-        semanasAInsertar.push({
-          fecha_inicio: fechaLunes,
-          fecha_fin: formatDate(viernes),
-        });
-      }
-
-      // 🔥 Avanzamos SIEMPRE lunes → lunes
-      actual.setDate(actual.getDate() + 7);
-    }
-
-    if (semanasAInsertar.length === 0)
-      return alert("Ya existen todas las semanas de la temporada");
-
-    // Insertar semanas nuevas
-    const { data: dataNuevasSemanas, error } = await supabase
-      .from("semanas")
-      .insert(semanasAInsertar)
-      .select("*");
-
-    if (error) return alert("Error al crear semanas: " + error.message);
-
-    // Crear sesiones por defecto para las semanas nuevas
-    for (const semana of dataNuevasSemanas || []) {
-      const sesionesPorDefecto = diasSemana.map((dia) => {
-        const horaInicio = "17:30";
-        const horaFin = dia === "Viernes" ? "20:30" : "19:30";
-        const tipoSesion = dia === "Viernes" ? "Agua+Sala" : "Agua";
-        const descripcionPorDefecto: Record<string, string> = {
-          Lunes: "Entrenamiento de agua",
-          Martes: "Entrenamiento de agua",
-          Miercoles: "Entrenamiento de agua",
-          Jueves: "Entrenamiento de agua",
-          Viernes: "Entrenamiento doble: Agua + Sala",
-        };
-        return {
-          dia_semana: dia,
-          descripcion: descripcionPorDefecto[dia] || "",
-          hora_inicio: horaInicio,
-          hora_fin: horaFin,
-          tipo_sesion: tipoSesion,
-          fecha: getFechaPorDia(semana, dia),
-          semana_id: semana.id,
-        };
-      });
-      await supabase.from("sesiones_entrenamiento").insert(sesionesPorDefecto);
-    }
-
-    setFechaInicioTemporada("");
-    setFechaFinTemporada("");
-    fetchSemanas();
+    setForm({ ...form, descripcion: newBlocks });
   };
 
-  const crearVacacion = async () => {
-    if (
-      !nuevaVacacion.titulo ||
-      !nuevaVacacion.fecha_inicio ||
-      !nuevaVacacion.fecha_fin
-    ) {
-      alert("Completa todos los campos obligatorios");
-      return;
-    }
+  // 🔥 SERIES
 
-    const { error } = await supabase.from("vacaciones").insert([
-      {
-        titulo: nuevaVacacion.titulo,
-        fecha_inicio: nuevaVacacion.fecha_inicio,
-        fecha_fin: nuevaVacacion.fecha_fin,
-        descripcion: nuevaVacacion.descripcion,
-      },
-    ]);
+  const addSerie = (blockIndex: number) => {
+    const newBlocks = [...(form.descripcion || [])];
+    newBlocks[blockIndex].series.push("");
 
-    if (error) {
-      console.error(error);
-      alert("Error al crear vacaciones");
-    } else {
-      setNuevaVacacion({
-        titulo: "",
-        fecha_inicio: "",
-        fecha_fin: "",
-        descripcion: "",
-      });
-      fetchVacaciones();
-    }
+    setForm({ ...form, descripcion: newBlocks });
   };
 
-  // 🔹 Seleccionar semana y cargar sesiones
-  useEffect(() => {
-    if (!selectedSemana) return;
-    fetchSesiones(selectedSemana);
-  }, [selectedSemana]);
+  const updateSerie = (
+    blockIndex: number,
+    serieIndex: number,
+    value: string
+  ) => {
+    const newBlocks = [...(form.descripcion || [])];
+    newBlocks[blockIndex].series[serieIndex] = value;
 
-  const fetchSesiones = async (semanaId: number) => {
-    const { data, error } = await supabase
+    setForm({ ...form, descripcion: newBlocks });
+  };
+
+  const removeSerie = (blockIndex: number, serieIndex: number) => {
+    const newBlocks = [...(form.descripcion || [])];
+    newBlocks[blockIndex].series.splice(serieIndex, 1);
+
+    setForm({ ...form, descripcion: newBlocks });
+  };
+
+  // 🔥 SAVE
+const handleSave = async () => {
+  if (!form.fecha || !form.titulo) return;
+
+  const payload = {
+    ...form,
+    descripcion: form.descripcion || [],
+    estado: "borrador",
+     dia_semana: getDiaSemana(form.fecha), 
+      tipo_sesion: form.tipo_sesion || "Agua",
+  };
+
+  // si editas
+  if ((form as any).id) {
+    await supabase
       .from("sesiones_entrenamiento")
-      .select("*")
-      .eq("semana_id", semanaId)
-      .order("dia_semana", { ascending: true });
-    if (error) console.error(error);
-    else setSesiones(data || []);
+      .update(payload)
+      .eq("id", (form as any).id);
+  } else {
+    await supabase.from("sesiones_entrenamiento").insert([payload]);
+  }
+
+  setOpen(false);
+  setForm({ descripcion: [] });
+  fetchSesiones();
+};
+
+const handleSavePlantilla = async () => {
+  if (!formPlantilla.nombre) return;
+
+  const payload = {
+    nombre: formPlantilla.nombre,
+    tipo: formPlantilla.tipo || "general",
+    descripcion_base: formPlantilla.descripcion_base || [],
+    duracion_estimada: formPlantilla.duracion_estimada || 90,
   };
 
-  // 🔹 Guardar sesión (crear o actualizar)
-  const handleGuardarSesion = async () => {
-    if (
-      !selectedSemana ||
-      !formSesion.dia_semana ||
-      !formSesion.descripcion ||
-      !formSesion.hora_inicio ||
-      !formSesion.hora_fin ||
-      !formSesion.tipo_sesion ||
-      !formSesion.fecha
-    )
-      return alert("Rellena todos los campos de la sesión");
+  await supabase.from("plantillas_entrenamiento").insert([payload]);
 
-    if (formSesion.id) {
-      // Actualizar
-      const { error } = await supabase
-        .from("sesiones_entrenamiento")
-        .update(formSesion)
-        .eq("id", formSesion.id);
-      if (error) return alert("Error al actualizar sesión");
-    } else {
-      // Crear nueva
-      const { error } = await supabase
-        .from("sesiones_entrenamiento")
-        .insert([{ ...formSesion, semana_id: selectedSemana }]);
-      if (error) return alert("Error al crear sesión");
-    }
-
-    setFormSesion({});
-    fetchSesiones(selectedSemana);
-  };
-
-  const handleEditarSesion = (sesion: Sesion) => {
-    setFormSesion(sesion);
-  };
-
-  const handleEliminarSesion = async () => {
-    if (!dialogEliminar.id) return;
-
-    const { error } = await supabase
-      .from("sesiones_entrenamiento")
-      .delete()
-      .eq("id", dialogEliminar.id);
-
-    if (!error) {
-      fetchSesiones(selectedSemana!);
-    }
-
-    setDialogEliminar({ abierta: false, id: null });
-  };
-
-  // 🔹 Formatear fecha YYYY-MM-DD sin problemas de zona horaria
-  const formatDate = (d: Date) => {
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
-  // Función para calcular la fecha del día de la semana dentro de la semana seleccionada
-  const getFechaPorDia = (semana: Semana, dia: string) => {
-    const dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"];
-    const index = dias.indexOf(dia);
-    if (index === -1) return "";
-    const fecha = new Date(semana.fecha_inicio);
-    fecha.setDate(fecha.getDate() + index);
-    return formatDate(fecha);
-  };
-
-  const formatDateDMY = (isoDate: string) => {
-    const d = new Date(isoDate);
-    const day = String(d.getDate()).padStart(2, "0");
-    const month = String(d.getMonth() + 1).padStart(2, "0"); // meses 0-11
-    const year = d.getFullYear();
-    return `${day}-${month}-${year}`;
-  };
+  setOpenPlantilla(false);
+  setFormPlantilla({ descripcion_base: [] });
+  fetchPlantillas();
+};
+  const hoy = new Date().toISOString().split("T")[0];
 
   return (
-    <div className="entrenamientos-container">
-      <h2>Entrenamientos</h2>
+    <Box>
+      <Typography variant="h4" >
+        Entrenamientos
+      </Typography>
 
-      {/* 🔹 Crear semanas temporada */}
-      <div className="temporada-inputs">
-        <input
-          type="date"
-          value={fechaInicioTemporada}
-          onChange={(e) => setFechaInicioTemporada(e.target.value)}
-        />
-        <input
-          type="date"
-          value={fechaFinTemporada}
-          onChange={(e) => setFechaFinTemporada(e.target.value)}
-        />
-        <button
-          onClick={handleCrearSemanasTemporada}
-          className="entrenamientos-btn-primary"
-        >
-          Crear semanas temporada
-        </button>
-      </div>
+      {/* ACCIONES */}
+      <Box  >
+        <Button variant="contained" onClick={() => setOpen(true)}>
+          + Crear entrenamiento
+        </Button>
 
-      {/* Seleccionar semana */}
-      <div className="campo">
-        <label>Selecciona semana:</label>
-        <select
-          className="entrenamientos-input-select"
-          value={selectedSemana || ""}
-          onChange={(e) => setSelectedSemana(Number(e.target.value))}
-        >
-          <option value="">--</option>
-          {semanas.map((s) => (
-            <option key={s.id} value={s.id}>
-              📅 {formatDateDMY(s.fecha_inicio)} ➜ 📅{" "}
-              {formatDateDMY(s.fecha_fin)}
-            </option>
-          ))}
-        </select>
-      </div>
+       <Button variant="outlined" onClick={() => setOpenPlantilla(true)}>
+  + Crear plantilla
+</Button>
+      </Box>
 
-      {/* Formulario sesión */}
-      {selectedSemana && (
-        <div className="entrenamientos-sesion-form">
-          <h3>Nueva / Editar Sesión</h3>
+      {/* LISTADO */}
+      <Grid container spacing={2}>
+        {sesiones.map((s) => {
+          const esPasado = s.fecha < hoy;
 
-          <select
-            className="entrenamientos-input-select"
-            value={formSesion.dia_semana || ""}
-            onChange={(e) => {
-              const dia = e.target.value as any;
-              const semana = semanas.find((s) => s.id === selectedSemana)!;
-              const fechaCalculada = getFechaPorDia(semana, dia);
+          return (
+            <Grid  key={s.id}>
+              <Card sx={{ opacity: esPasado ? 0.5 : 1 }}>
+                <CardContent>
+                  <Typography >
+                    {new Date(s.fecha).toLocaleDateString()}
+                  </Typography>
 
-              // Autocompletar horas
-              const horaInicio = "17:30";
-              const horaFin = dia === "Viernes" ? "20:30" : "19:30";
+                  <Typography>{s.titulo}</Typography>
 
-              setFormSesion({
-                ...formSesion,
-                dia_semana: dia,
-                fecha: fechaCalculada,
-                hora_inicio: horaInicio,
-                hora_fin: horaFin,
-              });
-            }}
-          >
-            <option value="">Selecciona día</option>
-            {diasSemana.map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
-            ))}
-          </select>
+                  <Typography variant="body2">
+                    {s.hora_inicio} - {s.hora_fin}
+                  </Typography>
 
-          <input
-            className="entrenamientos-input-field"
-            type="time"
-            value={formSesion.hora_inicio || ""}
-            onChange={(e) =>
-              setFormSesion({ ...formSesion, hora_inicio: e.target.value })
-            }
-          />
-          <input
-            className="entrenamientos-input-field"
-            type="time"
-            value={formSesion.hora_fin || ""}
-            onChange={(e) =>
-              setFormSesion({ ...formSesion, hora_fin: e.target.value })
-            }
-          />
-          <input
-            className="entrenamientos-input-field"
-            type="text"
-            placeholder="Descripción"
-            value={formSesion.descripcion || ""}
-            onChange={(e) =>
-              setFormSesion({ ...formSesion, descripcion: e.target.value })
-            }
-          />
-          <select
-            className="entrenamientos-input-select"
-            value={formSesion.tipo_sesion || ""}
-            onChange={(e) =>
-              setFormSesion({
-                ...formSesion,
-                tipo_sesion: e.target.value as any,
-              })
-            }
-          >
-            <option value="">Tipo de sesión</option>
-            {tiposSesion.map((t) => (
-              <option key={t} value={t}>
-                {t}
-              </option>
-            ))}
-          </select>
-          <input
-            className="entrenamientos-input-field"
-            type="date"
-            value={formSesion.fecha || ""}
-            onChange={(e) =>
-              setFormSesion({ ...formSesion, fecha: e.target.value })
-            }
-          />
-
-          <button
-            onClick={handleGuardarSesion}
-            className="entrenamientos-btn-success"
-          >
-            Guardar Sesión
-          </button>
-        </div>
-      )}
-
-      {/* Listado de sesiones */}
-      {sesiones.length > 0 && (
-        <div className="entrenamientos-tabla-wrapper">
-          <table className="entrenamientos-tabla">
-            <thead>
-              <tr>
-                <th>Día</th>
-                <th>Inicio</th>
-                <th>Fin</th>
-                <th>Tipo</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sesiones.map((s) => (
-                <tr key={s.id}>
-                  {/* ✅ Hacemos que el día sea clicable */}
-                  <td
-                    style={{ cursor: "pointer", color: "#2175ff" }}
-                    onClick={() => handleEditarSesion(s)}
-                    title="Editar sesión"
-                  >
-                    {s.dia_semana}
-                  </td>
-                  <td>{s.hora_inicio.slice(0, 5)}</td>
-                  <td>{s.hora_fin.slice(0, 5)}</td>
-                  <td>{s.tipo_sesion}</td>
-                  <td className="acciones-columna">
-                    {/* Ver descripción */}
-                    <button
-                      onClick={() => handleVerDescripcion(s)}
-                      title="Ver descripción"
-                      className="entrenamientos-btn-icon"
-                    >
-                      📄
-                    </button>
-
-                    {/* Editar */}
-                    <button
-                      onClick={() => handleEditarSesion(s)}
-                      title="Editar sesión"
-                      className="entrenamientos-btn-icon"
-                    >
-                      ✏️
-                    </button>
-
-                    {/* Eliminar */}
-                    <button
-                      onClick={() =>
-                        setDialogEliminar({ abierta: true, id: s.id })
+                  <Box >
+                    <Chip
+                      label={s.estado}
+                      color={
+                        s.estado === "publicado" ? "success" : "default"
                       }
-                      title="Eliminar sesión"
-                      className="entrenamientos-btn-icon"
-                    >
-                      🗑️
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {dialogDescripcion.abierta && (
-            <div className="mini-dialog-overlay">
-              <div className="mini-dialog">
-                <h3>Descripción</h3>
-                <p>{dialogDescripcion.texto}</p>
+                    />
+                  </Box>
 
-                <button
-                  className="mini-dialog-close"
-                  onClick={() =>
-                    setDialogDescripcion({ abierta: false, texto: "" })
+                  {!esPasado && (
+                    <Box >
+                      <Button
+                        size="small"
+                        onClick={() => {
+                          setForm(s);
+                          setOpen(true);
+                        }}
+                      >
+                        Editar
+                      </Button>
+
+                      {s.estado === "borrador" && (
+                        <Button
+                          size="small"
+                          variant="contained"
+                          onClick={async () => {
+                            await supabase
+                              .from("sesiones_entrenamiento")
+                              .update({ estado: "publicado" })
+                              .eq("id", s.id);
+
+                            fetchSesiones();
+                          }}
+                        >
+                          Publicar
+                        </Button>
+                      )}
+                    </Box>
+                  )}
+                </CardContent>
+              </Card>
+            </Grid>
+          );
+        })}
+      </Grid>
+
+      {/* MODAL */}
+      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md">
+        <DialogTitle>Crear entrenamiento</DialogTitle>
+
+        <DialogContent>
+          <TextField
+            fullWidth
+            type="date"
+            margin="normal"
+            onChange={(e) => handleChangeFecha(e.target.value)}
+          />
+<TextField
+  select
+  fullWidth
+  label="Tipo de sesión"
+  margin="normal"
+  value={form.tipo_sesion || ""}
+  onChange={(e) =>
+    setForm({ ...form, tipo_sesion: e.target.value })
+  }
+>
+  <MenuItem value="Agua">Agua</MenuItem>
+  <MenuItem value="Sala">Sala</MenuItem>
+  <MenuItem value="Agua+Sala">Agua+Sala</MenuItem>
+</TextField>
+
+<TextField
+  select
+  fullWidth
+  label="Plantilla"
+  margin="normal"
+  value={form.plantilla_id || ""}
+  onChange={(e) => {
+    const id = Number(e.target.value);
+
+    const plantilla = plantillas.find((p) => p.id === id);
+
+    setForm({
+      ...form,
+      plantilla_id: id,
+      descripcion: plantilla?.descripcion_base || [],
+    });
+  }}
+>
+  {plantillas.map((p) => (
+    <MenuItem key={p.id} value={p.id}>
+      {p.nombre}
+    </MenuItem>
+  ))}
+</TextField>
+
+          <TextField
+            fullWidth
+            label="Título"
+            margin="normal"
+            value={form.titulo || ""}
+            onChange={(e) =>
+              setForm({ ...form, titulo: e.target.value })
+            }
+          />
+
+          <Divider sx={{ my: 2 }} />
+
+          <Typography variant="h6">Bloques</Typography>
+
+          {(form.descripcion || []).map((block, bIndex) => (
+            <Box key={bIndex}>
+              <Box  >
+                <TextField
+                  fullWidth
+                    label="Bloque (ej: Calentamiento, Parte principal)"
+  placeholder="Ej: Calentamiento"
+                  value={block.titulo}
+                  onChange={(e) =>
+                    updateBlockTitle(bIndex, e.target.value)
                   }
-                >
-                  Cerrar
-                </button>
-              </div>
-            </div>
-          )}
-          {dialogEliminar.abierta && (
-            <div className="mini-dialog-overlay">
-              <div className="mini-dialog">
-                <h3>Confirmar eliminación</h3>
-                <p>¿Seguro que quieres eliminar esta sesión?</p>
+                />
 
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "10px",
-                    justifyContent: "center",
-                  }}
-                >
-                  <button
-                    className="mini-dialog-close"
-                    onClick={() =>
-                      setDialogEliminar({ abierta: false, id: null })
+                <IconButton onClick={() => removeBlock(bIndex)}>
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
+
+              {block.series.map((serie, sIndex) => (
+                <Box key={sIndex} >
+                  <TextField
+                    fullWidth
+                    label="Serie"
+                    value={serie}
+                    onChange={(e) =>
+                      updateSerie(bIndex, sIndex, e.target.value)
                     }
+                  />
+
+                  <IconButton
+                    onClick={() => removeSerie(bIndex, sIndex)}
                   >
-                    Cancelar
-                  </button>
+                    <DeleteIcon />
+                  </IconButton>
+                </Box>
+              ))}
 
-                  <button
-                    className="mini-dialog-delete"
-                    onClick={handleEliminarSesion}
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-      <h2 className="vacaciones-titulo">Vacaciones</h2>
+              <Button
+                startIcon={<AddIcon />}
+                onClick={() => addSerie(bIndex)}
+                sx={{ mt: 1 }}
+              >
+                Añadir serie
+              </Button>
+            </Box>
+          ))}
 
-      <div className="vacaciones-form">
-        <input
-          type="text"
-          placeholder="Título"
-          value={nuevaVacacion.titulo}
-          onChange={(e) =>
-            setNuevaVacacion({ ...nuevaVacacion, titulo: e.target.value })
-          }
+          <Button
+            startIcon={<AddIcon />}
+            onClick={addBlock}
+            sx={{ mt: 2 }}
+          >
+            Añadir bloque
+          </Button>
+
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3 }}
+            onClick={handleSave}
+          >
+            Guardar entrenamiento
+          </Button>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={openPlantilla} onClose={() => setOpenPlantilla(false)} fullWidth maxWidth="md">
+  <DialogTitle>Crear plantilla</DialogTitle>
+
+  <DialogContent>
+    <TextField
+      fullWidth
+      label="Nombre"
+      margin="normal"
+      value={formPlantilla.nombre || ""}
+      onChange={(e) =>
+        setFormPlantilla({ ...formPlantilla, nombre: e.target.value })
+      }
+    />
+
+    <TextField
+      fullWidth
+      label="Tipo"
+      margin="normal"
+      value={formPlantilla.tipo || ""}
+      onChange={(e) =>
+        setFormPlantilla({ ...formPlantilla, tipo: e.target.value })
+      }
+    />
+
+    <Divider sx={{ my: 2 }} />
+
+    <Typography variant="h6">Bloques</Typography>
+
+{(formPlantilla.descripcion_base || []).map((block, bIndex) => (
+  <Box key={bIndex} sx={{ mb: 2 }}>
+    
+    {/* BLOQUE */}
+    <TextField
+      fullWidth
+      label="Bloque"
+      value={block.titulo}
+      onChange={(e) => {
+        const copy = [...(formPlantilla.descripcion_base || [])];
+        copy[bIndex].titulo = e.target.value;
+        setFormPlantilla({ ...formPlantilla, descripcion_base: copy });
+      }}
+    />
+
+    {/* SERIES */}
+    {block.series.map((serie, sIndex) => (
+      <Box key={sIndex} sx={{ display: "flex", gap: 1, mt: 1 }}>
+        <TextField
+          fullWidth
+          label="Serie"
+          value={serie}
+          onChange={(e) => {
+            const copy = [...(formPlantilla.descripcion_base || [])];
+            copy[bIndex].series[sIndex] = e.target.value;
+            setFormPlantilla({ ...formPlantilla, descripcion_base: copy });
+          }}
         />
 
-        <input
-          type="date"
-          value={nuevaVacacion.fecha_inicio}
-          onChange={(e) =>
-            setNuevaVacacion({ ...nuevaVacacion, fecha_inicio: e.target.value })
-          }
-        />
+        <IconButton
+          onClick={() => {
+            const copy = [...(formPlantilla.descripcion_base || [])];
+            copy[bIndex].series.splice(sIndex, 1);
+            setFormPlantilla({ ...formPlantilla, descripcion_base: copy });
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </Box>
+    ))}
 
-        <input
-          type="date"
-          value={nuevaVacacion.fecha_fin}
-          onChange={(e) =>
-            setNuevaVacacion({ ...nuevaVacacion, fecha_fin: e.target.value })
-          }
-        />
+    {/* añadir serie */}
+    <Button
+      size="small"
+      onClick={() => {
+        const copy = [...(formPlantilla.descripcion_base || [])];
+        copy[bIndex].series.push("");
+        setFormPlantilla({ ...formPlantilla, descripcion_base: copy });
+      }}
+    >
+      + Añadir serie
+    </Button>
+  </Box>
+))}
 
-        <input
-          type="text"
-          placeholder="Descripción"
-          value={nuevaVacacion.descripcion}
-          onChange={(e) =>
-            setNuevaVacacion({ ...nuevaVacacion, descripcion: e.target.value })
-          }
-        />
+    <Button
+      startIcon={<AddIcon />}
+      onClick={() => {
+        const copy = [...(formPlantilla.descripcion_base || [])];
+        copy.push({ titulo: "", series: [] });
+        setFormPlantilla({ ...formPlantilla, descripcion_base: copy });
+      }}
+    >
+      Añadir bloque
+    </Button>
 
-        <button onClick={crearVacacion}>Crear vacaciones</button>
-      </div>
-
-      <div className="vacaciones-tabla-wrapper">
-        <table className="vacaciones-tabla">
-          <thead>
-            <tr>
-              <th>Título</th>
-              <th>Inicio</th>
-              <th>Fin</th>
-              <th>Descripción</th>
-            </tr>
-          </thead>
-          <tbody>
-            {vacaciones.map((v) => (
-              <tr key={v.id}>
-                <td>{v.titulo}</td>
-                <td>{v.fecha_inicio}</td>
-                <td>{v.fecha_fin}</td>
-                <td>{v.descripcion}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <Button
+      fullWidth
+      variant="contained"
+      sx={{ mt: 3 }}
+      onClick={handleSavePlantilla}
+    >
+      Guardar plantilla
+    </Button>
+  </DialogContent>
+</Dialog>
+    </Box>
   );
 }

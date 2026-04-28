@@ -287,6 +287,31 @@ const CHANGELOG: Record<string, Cambio[]> = {
     },
     
   ],
+   "1.3.3": [
+    {
+      descripcion:
+        "Modificar vista entrenamientos",
+      tipo: "usuario",
+    },
+    {
+      descripcion:
+        "Modificar creacion entrenamientos",
+      tipo: "admin",
+    },
+     {
+      descripcion:
+        "Modificar inicio",
+      tipo: "admin",
+    },
+  ],
+   "1.3.4": [
+    {
+      descripcion:
+        "Arreglo actualización",
+      tipo: "general",
+    },
+    
+  ],
 };
 
 export default function VersionInfo() {
