@@ -8,7 +8,6 @@ import {
   Typography,
   Button,
   TextField,
-  Grid,
   Card,
   CardContent,
   Chip,
@@ -19,6 +18,7 @@ import {
   Divider,
   MenuItem,
 } from "@mui/material";
+import { Grid } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -121,8 +121,11 @@ const fetchSesiones = async () => {
   };
 
   const updateBlockTitle = (index: number, value: string) => {
-    const newBlocks = [...(form.descripcion || [])];
-    newBlocks[index].titulo = value;
+const newBlocks = [...(form.descripcion || [])];
+newBlocks[index] = {
+  ...newBlocks[index],
+  titulo: value,
+};
 
     setForm({ ...form, descripcion: newBlocks });
   };
@@ -198,92 +201,258 @@ const handleSavePlantilla = async () => {
     duracion_estimada: formPlantilla.duracion_estimada || 90,
   };
 
-  await supabase.from("plantillas_entrenamiento").insert([payload]);
+  if ((formPlantilla as any).id) {
+    await supabase
+      .from("plantillas_entrenamiento")
+      .update(payload)
+      .eq("id", (formPlantilla as any).id);
+  } else {
+    await supabase.from("plantillas_entrenamiento").insert([payload]);
+  }
 
   setOpenPlantilla(false);
   setFormPlantilla({ descripcion_base: [] });
   fetchPlantillas();
 };
+
+const handleDeleteSesion = async (id: number) => {
+  const confirm = window.confirm("¿Seguro que quieres eliminar este entrenamiento?");
+  if (!confirm) return;
+
+  await supabase
+    .from("sesiones_entrenamiento")
+    .delete()
+    .eq("id", id);
+
+  fetchSesiones();
+};
+
+const handleDeletePlantilla = async (id: number) => {
+  const confirm = window.confirm("¿Eliminar plantilla?");
+  if (!confirm) return;
+
+  await supabase
+    .from("plantillas_entrenamiento")
+    .delete()
+    .eq("id", id);
+
+  fetchPlantillas();
+};
+
+const handleEditPlantilla = (p: Plantilla) => {
+  setFormPlantilla(p);
+  setOpenPlantilla(true);
+};
+
+
   const hoy = new Date().toISOString().split("T")[0];
 
   return (
-    <Box>
-      <Typography variant="h4" >
-        Entrenamientos
-      </Typography>
+   <Box sx={{
+  p: { xs: 2, md: 4 },
+  maxWidth: 1200,
+  mx: "auto",
+  display: "flex",
+  flexDirection: "column",
+  gap: 4,
+}}>
+   <Box
+  sx={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: 2,
+  }}
+>
+  <Box>
+    <Typography variant="h4">
+      Entrenamientos
+    </Typography>
+  </Box>
 
-      {/* ACCIONES */}
-      <Box  >
-        <Button variant="contained" onClick={() => setOpen(true)}>
-          + Crear entrenamiento
-        </Button>
+  <Box sx={{ display: "flex", gap: 1 }}>
+    <Button
+      variant="contained"
+      startIcon={<AddIcon />}
+      sx={{
+    borderRadius: 2,
+    textTransform: "none",
+    fontWeight: 600,
+  }}
+      onClick={() => setOpen(true)}
+    >
+      Entrenamiento
+    </Button>
 
-       <Button variant="outlined" onClick={() => setOpenPlantilla(true)}>
-  + Crear plantilla
-</Button>
-      </Box>
+    <Button
+      variant="outlined"
+      startIcon={<AddIcon />}
+      onClick={() => setOpenPlantilla(true)}
+    >
+      Plantilla
+    </Button>
+  </Box>
+</Box>
+
+
+
+      <Typography variant="h5" sx={{ mt: 4 }}>
+  Plantillas
+</Typography>
+
+<Grid container spacing={3}>
+  {plantillas.map((p) => (
+        <Grid sx={{ xs:"12" , sm:"6" , md:"4"}}  key={p.id}>
+      <Card
+  sx={{
+    height: "100%",
+    borderRadius: 3,
+    p: 2,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    background: "linear-gradient(145deg, #ffffff, #f8fafc)",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+    transition: "all 0.25s ease",
+    border: "1px solid rgba(0,0,0,0.05)",
+    "&:hover": {
+      transform: "translateY(-6px)",
+      boxShadow: "0 12px 30px rgba(0,0,0,0.12)",
+    },
+  }}
+>
+        <CardContent sx={{ p: 0, mb: 2 }}>
+         <Typography
+  variant="h6"
+  sx={{ fontWeight: 700, mb: 0.5 }}
+>
+  {p.nombre}
+</Typography>
+         <Chip
+  label={p.tipo}
+  size="small"
+  sx={{
+    fontWeight: 600,
+    background: "#e0f2fe",
+    color: "#075985",
+  }}
+/>
+
+         <Box
+  sx={{
+    mt: 2,
+    display: "flex",
+    gap: 1,
+    justifyContent: "space-between",
+  }}
+>
+            <Button size="small" sx={{
+    textTransform: "none",
+    fontWeight: 600,
+  }} onClick={() => handleEditPlantilla(p)}>
+              Editar
+            </Button>
+
+            <Button
+               size="small"
+  color="error"
+  sx={{
+    textTransform: "none",
+    fontWeight: 600,
+  }}
+              onClick={() => handleDeletePlantilla(p.id)}
+            >
+              Eliminar
+            </Button>
+          </Box>
+        </CardContent>
+      </Card>
+    </Grid>
+  ))}
+</Grid>
 
       {/* LISTADO */}
       <Grid container spacing={2}>
         {sesiones.map((s) => {
+          
           const esPasado = s.fecha < hoy;
 
           return (
-            <Grid  key={s.id}>
-              <Card sx={{ opacity: esPasado ? 0.5 : 1 }}>
+              <Card
+  sx={{
+    borderRadius: 3,
+    p: 1,
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    boxShadow: 2,
+    transition: "0.2s",
+    "&:hover": {
+      transform: "translateY(-4px)",
+      boxShadow: 6,
+    },
+    opacity: esPasado ? 0.5 : 1,
+  }}
+>
                 <CardContent>
-                  <Typography >
-                    {new Date(s.fecha).toLocaleDateString()}
-                  </Typography>
+                   <Typography variant="caption" color="text.secondary">
+    {new Date(s.fecha).toLocaleDateString()}
+  </Typography>
 
-                  <Typography>{s.titulo}</Typography>
+  <Typography variant="h6">
+    {s.titulo}
+  </Typography>
 
-                  <Typography variant="body2">
-                    {s.hora_inicio} - {s.hora_fin}
-                  </Typography>
+  <Typography variant="body2" color="text.secondary">
+    {s.hora_inicio} - {s.hora_fin}
+  </Typography>
 
-                  <Box >
-                    <Chip
-                      label={s.estado}
-                      color={
-                        s.estado === "publicado" ? "success" : "default"
-                      }
-                    />
-                  </Box>
-
-                  {!esPasado && (
-                    <Box >
-                      <Button
-                        size="small"
-                        onClick={() => {
-                          setForm(s);
-                          setOpen(true);
-                        }}
-                      >
-                        Editar
-                      </Button>
-
-                      {s.estado === "borrador" && (
-                        <Button
-                          size="small"
-                          variant="contained"
-                          onClick={async () => {
-                            await supabase
-                              .from("sesiones_entrenamiento")
-                              .update({ estado: "publicado" })
-                              .eq("id", s.id);
-
-                            fetchSesiones();
-                          }}
-                        >
-                          Publicar
-                        </Button>
-                      )}
-                    </Box>
-                  )}
+  <Box sx={{ mt: 1 }}>
+   <Chip
+  label={s.estado}
+  size="small"
+  sx={{
+    fontWeight: 600,
+    background:
+      s.estado === "publicado"
+        ? "#dcfce7"
+        : "#fef9c3",
+    color:
+      s.estado === "publicado"
+        ? "#166534"
+        : "#92400e",
+  }}
+/>
+  </Box>
                 </CardContent>
+                <Box
+  sx={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    px: 1,
+    pb: 1,
+  }}
+>
+  <Box sx={{ display: "flex", gap: 1 }}>
+    <Button size="small" onClick={() => { setForm(s); setOpen(true); }}>
+      Editar
+    </Button>
+
+    {s.estado === "borrador" && (
+      <Button size="small" variant="contained">
+        Publicar
+      </Button>
+    )}
+  </Box>
+
+  <IconButton color="error" onClick={() => handleDeleteSesion(s.id)}>
+    <DeleteIcon />
+  </IconButton>
+</Box>
               </Card>
-            </Grid>
           );
         })}
       </Grid>
@@ -292,7 +461,13 @@ const handleSavePlantilla = async () => {
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md">
         <DialogTitle>Crear entrenamiento</DialogTitle>
 
-        <DialogContent>
+       <DialogContent
+  sx={{
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
+  }}
+>
           <TextField
             fullWidth
             type="date"
@@ -333,9 +508,17 @@ const handleSavePlantilla = async () => {
   }}
 >
   {plantillas.map((p) => (
-    <MenuItem key={p.id} value={p.id}>
-      {p.nombre}
-    </MenuItem>
+   <CardContent sx={{ p: 0 }}>
+  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+    {p.nombre}
+  </Typography>
+
+  <Chip
+    label={p.tipo}
+    size="small"
+    sx={{ mt: 1 }}
+  />
+</CardContent>
   ))}
 </TextField>
 
@@ -354,13 +537,31 @@ const handleSavePlantilla = async () => {
           <Typography variant="h6">Bloques</Typography>
 
           {(form.descripcion || []).map((block, bIndex) => (
-            <Box key={bIndex}>
+            <Box
+  key={bIndex}
+  sx={{
+    border: "1px solid",
+    borderColor: "divider",
+    borderRadius: 2,
+    p: 2,
+    background: "#f8fafc",
+    display: "flex",
+    flexDirection: "column",
+    gap: 1.5,
+  }}
+>
               <Box  >
                 <TextField
                   fullWidth
                     label="Bloque (ej: Calentamiento, Parte principal)"
   placeholder="Ej: Calentamiento"
                   value={block.titulo}
+                   sx={{
+    "& .MuiOutlinedInput-root": {
+      borderRadius: 2,
+      backgroundColor: "#fff",
+    },
+  }}
                   onChange={(e) =>
                     updateBlockTitle(bIndex, e.target.value)
                   }
@@ -372,7 +573,7 @@ const handleSavePlantilla = async () => {
               </Box>
 
               {block.series.map((serie, sIndex) => (
-                <Box key={sIndex} >
+                <Box key={sIndex} sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
                   <TextField
                     fullWidth
                     label="Serie"
@@ -393,7 +594,12 @@ const handleSavePlantilla = async () => {
               <Button
                 startIcon={<AddIcon />}
                 onClick={() => addSerie(bIndex)}
-                sx={{ mt: 1 }}
+                 sx={{
+    alignSelf: "flex-start",
+    textTransform: "none",
+    fontWeight: 600,
+    color: "primary.main",
+  }}
               >
                 Añadir serie
               </Button>
@@ -403,7 +609,15 @@ const handleSavePlantilla = async () => {
           <Button
             startIcon={<AddIcon />}
             onClick={addBlock}
-            sx={{ mt: 2 }}
+            sx={{
+    mt: 2,
+    py: 1,
+    borderRadius: 2,
+    textTransform: "none",
+    fontWeight: 700,
+    border: "1px dashed",
+    borderColor: "primary.main",
+  }}
           >
             Añadir bloque
           </Button>
@@ -473,6 +687,11 @@ const handleSavePlantilla = async () => {
             copy[bIndex].series[sIndex] = e.target.value;
             setFormPlantilla({ ...formPlantilla, descripcion_base: copy });
           }}
+            sx={{
+    "& .MuiOutlinedInput-root": {
+      borderRadius: 2,
+    },
+  }}
         />
 
         <IconButton
