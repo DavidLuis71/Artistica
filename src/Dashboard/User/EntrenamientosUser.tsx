@@ -53,13 +53,7 @@ interface Props {
   userId: string;
 }
 
-function normalizarTexto(s: string) {
-  return s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .trim();
-}
+
 function capitalizarPrimera(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
@@ -67,9 +61,20 @@ function normalizarFecha(d: Date) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate());
 }
 
-function getDiaSemana(date: Date) {
-  return date.toLocaleDateString("es-ES", { weekday: "long" });
+
+
+function getLunes(fecha: Date) {
+  const d = new Date(fecha);
+  const day = d.getDay(); // 0 domingo, 1 lunes...
+
+  const diff = day === 0 ? -6 : 1 - day; // ir a lunes
+  d.setDate(d.getDate() + diff);
+  d.setHours(0, 0, 0, 0);
+
+  return d;
 }
+
+
 
 export default function EntrenamientosUser({ userId }: Props) {
   const [sesiones, setSesiones] = useState<Sesion[]>([]);
@@ -116,17 +121,17 @@ setVacaciones(vac || []);
     fetchData();
   }, [userId]);
 
+  
 const hoySesion = useMemo(() => {
-  const hoy = new Date();
+
+  const hoy = normalizarFecha(new Date());
 
   // 🚨 PRIORIDAD VACACIONES
   if (esVacacion(hoy, vacaciones)) return null;
 
-  const dia = normalizarTexto(getDiaSemana(hoy));
-
   return sesiones.find(
     (s) =>
-      normalizarTexto(s.dia_semana) === dia &&
+      normalizarFecha(new Date(s.fecha)).getTime() === hoy.getTime() &&
       (grupoId === null || s.grupo_id === null || s.grupo_id === grupoId)
   );
 }, [sesiones, grupoId, vacaciones]);
@@ -136,7 +141,7 @@ const hoySesion = useMemo(() => {
 }, [vacaciones]);
 
 const proximoSesion = useMemo(() => {
-  // si hoy hay entrenamiento → no mostramos "próximo"
+
   if (hoySesion) return null;
 
   const hoy = normalizarFecha(new Date());
@@ -153,24 +158,50 @@ const proximoSesion = useMemo(() => {
     .sort((a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime())[0];
 }, [sesiones, grupoId, hoySesion]);
 
-  const calendario = useMemo(() => {
-    const base = new Date();
+const calendario = useMemo(() => {
+  const hoy = new Date();
+  const lunesActual = getLunes(hoy);
+  const esViernes = hoy.getDay() === 5;
 
-    return Array.from({ length: 7 }).map((_, i) => {
-      const d = new Date(base);
-      d.setDate(base.getDate() + i);
+const generarSemana = (inicio: Date) => {
+  return Array.from({ length: 5 }).map((_, i) => {
+    const d = new Date(inicio);
+    d.setDate(inicio.getDate() + i);
 
-      const dia = normalizarTexto(getDiaSemana(d));
+    const fechaNormalizada = normalizarFecha(d).getTime();
 
-   const sesion = sesiones.find((s) =>
-  normalizarTexto(s.dia_semana) === dia &&
-  !esVacacion(d, vacaciones) &&  
-  (grupoId === null || s.grupo_id === null || s.grupo_id === grupoId)
-);
+  const sesion = sesiones.find((s) => {
+  const fechaSesion = normalizarFecha(new Date(s.fecha)).getTime();
+  const fechaCalendario = fechaNormalizada;
 
-      return { fecha: d, sesion };
-    });
-  }, [sesiones, grupoId]);
+  return (
+    fechaSesion === fechaCalendario &&
+    !esVacacion(d, vacaciones) &&
+    (grupoId === null ||
+      s.grupo_id === null ||
+      s.grupo_id === grupoId)
+  );
+});
+
+    return {
+      fecha: d,
+      sesion,
+      esHoy:
+        normalizarFecha(d).getTime() === normalizarFecha(new Date()).getTime(),
+      esPasado: d < normalizarFecha(new Date()),
+    };
+  });
+};
+
+  const semanaActual = generarSemana(lunesActual);
+
+  if (!esViernes) return semanaActual;
+
+  const siguiente = new Date(lunesActual);
+  siguiente.setDate(lunesActual.getDate() + 7);
+
+  return [...semanaActual, ...generarSemana(siguiente)];
+}, [sesiones, grupoId, vacaciones]);
 
 const renderBloques = (sesion?: Sesion) => (
   <Stack spacing={1.5} sx={{ mt: 1 }}>
@@ -239,6 +270,20 @@ const renderBloques = (sesion?: Sesion) => (
   </Stack>
 );
 
+const estadoHoy = useMemo(() => {
+  if (!hoySesion) return null;
+
+  const ahora = new Date();
+  const fin = new Date(`${hoySesion.fecha}T${hoySesion.hora_fin}`);
+
+  if (ahora > fin) return "finalizado";
+
+  const inicio = new Date(`${hoySesion.fecha}T${hoySesion.hora_inicio}`);
+  if (ahora >= inicio && ahora <= fin) return "en_curso";
+
+  return "pendiente";
+}, [hoySesion]);
+
   return (
     <Box sx={{ p: 2, maxWidth: 900, mx: "auto" }}>
 
@@ -280,20 +325,27 @@ const renderBloques = (sesion?: Sesion) => (
       </Typography>
     </Box>
 
-    {hoySesion && (
-      <Box
-        sx={{
-          px: 1.5,
-          py: 0.5,
-          borderRadius: 999,
-          backgroundColor: "rgba(34,197,94,0.2)",
-          fontWeight: 900,
-          fontSize: 12,
-        }}
-      >
-        EN CURSO 💪
-      </Box>
-    )}
+{hoySesion && (
+  <Box
+    sx={{
+      px: 1.5,
+      py: 0.5,
+      borderRadius: 999,
+      fontWeight: 900,
+      fontSize: 12,
+      backgroundColor:
+        estadoHoy === "en_curso"
+          ? "rgba(34,197,94,0.2)"
+          : estadoHoy === "finalizado"
+          ? "rgba(100,100,100,0.2)"
+          : "rgba(59,130,246,0.2)",
+    }}
+  >
+    {estadoHoy === "en_curso" && "EN CURSO 💪"}
+    {estadoHoy === "finalizado" && "FINALIZADO ✅"}
+    {estadoHoy === "pendiente" && "HOY ⏳"}
+  </Box>
+)}
   </Box>
 
   <CardContent sx={{ bgcolor: "white", color: "#0f172a" }}>
@@ -443,9 +495,9 @@ const renderBloques = (sesion?: Sesion) => (
           </Typography>
 
           <Stack spacing={1}>
-            {calendario.map((d, i) => (
+            {calendario.map((d) => (
             <Box
-  key={i}
+  key={d.fecha.toDateString()}
   onClick={() => abrirSesion(d.sesion)}
   sx={{
     p: 1.5,

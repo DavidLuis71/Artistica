@@ -16,15 +16,19 @@ interface InicioUser2Props {
   rol: "padre" | "nadadora";
 }
 
-// Tipos rápidos para datos
+
+interface BloqueEntreno {
+  titulo: string;
+  series: string[];
+}
+
 interface Entrenamiento {
   id: number;
-  descripcion: string;
+  descripcion: BloqueEntreno[];
   hora_inicio: string;
   tipo_sesion: string;
   fecha: string;
 }
-
 interface Vacacion {
   id: number;
   titulo: string;
@@ -675,14 +679,12 @@ useEffect(() => {
                   </strong>
                 </small>
 
-                <p style={{ marginTop: "6px" }}>
-                  {proximoEntrenamiento.siguiente.descripcion}
-                </p>
 
-                <small>
-                  {proximoEntrenamiento.siguiente.hora_inicio} •{" "}
-                  {proximoEntrenamiento.siguiente.tipo_sesion}
-                </small>
+
+                <small style={{ display: "block", marginTop: "4px" }}>
+  {proximoEntrenamiento.siguiente.hora_inicio.slice(0, 5)} •{" "}
+  {proximoEntrenamiento.siguiente.tipo_sesion}
+</small>
               </div>
             )}
           </>
