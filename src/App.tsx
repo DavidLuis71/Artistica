@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "./lib/supabaseClient";
 import Splash from "./Login/splash";
 import ResetPassword from "./Login/ResetPassword";
-// import PadreDashboard from "./Dashboard/Padres/PadreDashboard";
+ import PadreDashboard from "./Dashboard/Padres/PadreDashboard";
 // import PushPrompt from "./PushPrompt";
 
 // if ("serviceWorker" in navigator) {
@@ -67,8 +67,8 @@ export default function App() {
             path="/padre-dashboard"
             element={
               <ProtectedRoute role={3}>
-                {/* <PadreDashboard /> */}
-                <UserDashboard />
+                <PadreDashboard />
+                {/* <UserDashboard /> */}
               </ProtectedRoute>
             }
           />

@@ -14,6 +14,7 @@ import {
 import { supabase } from "../../lib/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
+import Resumen from "./Resumen"
 
 interface Seccion {
   key: string;
@@ -42,12 +43,17 @@ export default function DashboardBase() {
     {
       key: "inicio",
       label: "Inicio",
-      component: () => <div>Inicio</div>,
+      component: () => <Resumen />,
     },
     {
       key: "asistencias",
       label: "Asistencias",
       component: () => <div>Asistencias</div>,
+    },
+     {
+      key: "competiciones",
+      label: "Competiciones",
+      component: () => <div>Competiciones</div>,
     },
     {
       key: "perfil",
@@ -128,8 +134,8 @@ export default function DashboardBase() {
   <IconButton
     onClick={handleDrawerToggle}
     sx={{
-      ml: "auto", // empuja a la derecha
-      mr: -1, // 👈 lo pega más al borde
+      ml: "auto", 
+      mr: -1, 
       border: "1px solid",
       borderColor: "rgba(255,255,255,0.3)",
       borderRadius: 2,
@@ -138,7 +144,7 @@ export default function DashboardBase() {
       "&:hover": {
         bgcolor: "rgba(255,255,255,0.2)",
       },
-      display: { sm: "none" }, // quítalo si lo quieres siempre visible
+      display: { sm: "none" }, 
     }}
   >
     <MenuIcon />
@@ -190,6 +196,9 @@ export default function DashboardBase() {
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
+          height: "100vh",
+    overflow: "auto",
+    backgroundColor: "#fff",
         }}
       >
         {/* Spacer para el AppBar */}
