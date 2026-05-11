@@ -15,11 +15,16 @@ import { supabase } from "../../lib/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import Resumen from "./Resumen"
+import Asistencias from "./PadreAsistencias";
+import CompeticionesPadre from "./PadreCompeticiones";
+import { HomeIcon, LogOutIcon } from "lucide-react";
+import { EmojiEvents, EventAvailable, Person } from "@mui/icons-material";
 
 interface Seccion {
   key: string;
   label: string;
   component: React.ComponentType<any>;
+   icon: React.ReactNode;
 }
 
 const drawerWidth = 240;
@@ -39,28 +44,32 @@ export default function DashboardBase() {
     };
 
   // 🔥 Define aquí tus secciones
-  const secciones: Seccion[] = [
-    {
-      key: "inicio",
-      label: "Inicio",
-      component: () => <Resumen />,
-    },
-    {
-      key: "asistencias",
-      label: "Asistencias",
-      component: () => <div>Asistencias</div>,
-    },
-     {
-      key: "competiciones",
-      label: "Competiciones",
-      component: () => <div>Competiciones</div>,
-    },
-    {
-      key: "perfil",
-      label: "Perfil",
-      component: () => <div>Perfil</div>,
-    },
-  ];
+const secciones: Seccion[] = [
+  {
+    key: "inicio",
+    label: "Inicio",
+    icon: <HomeIcon />,
+    component: () => <Resumen />,
+  },
+  {
+    key: "asistencias",
+    label: "Asistencias",
+    icon: <EventAvailable />,
+    component: () => <Asistencias />,
+  },
+  {
+    key: "competiciones",
+    label: "Competiciones",
+    icon: <EmojiEvents />,
+    component: () => <CompeticionesPadre />,
+  },
+  {
+    key: "perfil",
+    label: "Perfil",
+    icon: <Person />,
+    component: () => <div>Perfil</div>,
+  },
+];
 
   const seccionActual = secciones.find((s) => s.key === section);
 
@@ -77,18 +86,29 @@ export default function DashboardBase() {
               setMobileOpen(false);
             }}
             sx={{
-              mx: 1,
-              borderRadius: 2,
-              "&.Mui-selected": {
-                backgroundColor: "primary.main",
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "primary.dark",
-                },
-              },
-            }}
+  mx: 1,
+  borderRadius: 2,
+  display: "flex",
+  alignItems: "center",
+  gap: 1,
+
+  "&.Mui-selected": {
+    backgroundColor: "rgba(25,118,210,0.15)",
+    color: "primary.main",
+    borderLeft: "4px solid #1976d2",
+  },
+
+  "&:hover": {
+    backgroundColor: "rgba(25,118,210,0.08)",
+    transform: "translateX(4px)",
+    transition: "0.2s",
+  },
+}}
           >
-            <ListItemText primary={s.label} />
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+  {s.icon}
+  <ListItemText primary={s.label} />
+</Box>
             
           </ListItemButton>
           
@@ -106,6 +126,7 @@ export default function DashboardBase() {
       },
     }}
   >
+      <LogOutIcon />
     <ListItemText primary="Cerrar sesión" />
   </ListItemButton>
 </Box>
@@ -126,9 +147,26 @@ export default function DashboardBase() {
       >
 <Toolbar sx={{ px: 2 , width:"100%" }}>
   {/* TÍTULO */}
-  <Typography variant="h6" noWrap>
+ <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+  <Box
+  component="img"
+  src="/logo192.png"
+  alt="Logo"
+  sx={{
+  width: 50,
+  height: 50,
+  borderRadius: "50%",
+  objectFit: "cover",
+  padding: "2px",
+  background: "rgba(255,255,255,0.25)",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+}}
+/>
+
+  <Typography variant="h6" noWrap sx={{ fontWeight: 700 }}>
     {seccionActual?.label || "Dashboard"}
   </Typography>
+</Box>
 
   {/* BOTÓN HAMBURGUESA */}
   <IconButton
@@ -198,7 +236,8 @@ export default function DashboardBase() {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           height: "100vh",
     overflow: "auto",
-    backgroundColor: "#fff",
+    // backgroundColor: "#fff",
+        background: "linear-gradient(135deg, #a2d2ff, #8ba3ff)",
         }}
       >
         {/* Spacer para el AppBar */}

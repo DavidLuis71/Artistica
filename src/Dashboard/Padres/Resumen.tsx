@@ -10,6 +10,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  CircularProgress,
 } from "@mui/material";
 import { supabase } from "../../lib/supabaseClient";
 import { AsistenciasCalendario } from "../Admin/AsistenciaCalendario";
@@ -50,6 +51,7 @@ export default function ResumenPadre() {
   const [proximaSesion, setProximaSesion] = useState<any>(null);
   const [valoraciones, setValoraciones] = useState<any[]>([]);
   const [proximaCompeticion, setProximaCompeticion] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   const nadadoraSeleccionada = nadadoras.find(
     (n) => n.id === nadadoraSeleccionadaId
@@ -64,7 +66,10 @@ export default function ResumenPadre() {
     cargarDatosNadadora();
   }, [nadadoraSeleccionadaId]);
 
-  const cargarNadadoras = async () => {
+ const cargarNadadoras = async () => {
+  setLoading(true);
+
+  try {
     const { data: userData } = await supabase.auth.getUser();
     const userId = userData.user?.id;
 
@@ -83,8 +88,6 @@ export default function ResumenPadre() {
 
     const ids = relaciones?.map((r) => r.nadadora_id) || [];
 
-    if (ids.length === 0) return;
-
     const { data: nadadorasData } = await supabase
       .from("nadadoras")
       .select("*")
@@ -92,23 +95,28 @@ export default function ResumenPadre() {
 
     const lista = nadadorasData || [];
 
-    // 🔹 Próxima competición
-const hoy = new Date().toISOString().split("T")[0];
+    const hoy = new Date().toISOString().split("T")[0];
 
-const { data: competiciones } = await supabase
-  .from("competiciones")
-  .select("*")
-  .gte("fecha", hoy)
-  .order("fecha", { ascending: true })
-  .limit(1);
+    const { data: competiciones } = await supabase
+      .from("competiciones")
+      .select("*")
+      .gte("fecha", hoy)
+      .order("fecha", { ascending: true })
+      .limit(1);
 
-setProximaCompeticion(competiciones?.[0] || null);
+    setProximaCompeticion(competiciones?.[0] || null);
 
     setNadadoras(lista);
     setNadadoraSeleccionadaId(lista[0]?.id || "");
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   const cargarDatosNadadora = async () => {
+   setLoading(true);
+
+  try {
     const nadadoraId = nadadoraSeleccionadaId;
 
     setAsistencias([]);
@@ -157,12 +165,28 @@ setProximaCompeticion(competiciones?.[0] || null);
       .limit(3);
 
     setValoraciones(valoracionesData || []);
-  };
-
-  if (nadadoras.length === 0) {
-    return <Typography>No hay nadadoras asociadas</Typography>;
+    } finally {
+    setLoading(false);
   }
-
+  };
+const ultimaValoracion = valoraciones?.[0];
+  if (loading || !nadadoraSeleccionadaId) {
+  return (
+    <Box sx={{
+      height: "60vh",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 2
+    }}>
+      <CircularProgress />
+      <Typography sx={{ opacity: 0.7 }}>
+        Cargando información...
+      </Typography>
+    </Box>
+  );
+}
   return (
     <Box >
 
@@ -170,13 +194,38 @@ setProximaCompeticion(competiciones?.[0] || null);
       {nadadoras.length > 1 && (
         <Box sx={{ marginTop: "10px" }}>
           <FormControl fullWidth>
-            <InputLabel>Selecciona una hija</InputLabel>
+            <InputLabel sx={{color:"black"}}>Selecciona una hija</InputLabel>
             <Select
               value={nadadoraSeleccionadaId}
               label="Selecciona una hija"
               onChange={(e) =>
                 setNadadoraSeleccionadaId(e.target.value as number)
               }
+                  sx={{
+      borderRadius: 3,
+      color: "black",
+      fontWeight: 600,
+
+      background: "rgba(255, 255, 255, 0.62)",
+      backdropFilter: "blur(12px)",
+
+      border: "1px solid rgba(255, 255, 255, 0)",
+
+      transition: "0.3s",
+
+      "&:hover": {
+        background: "rgba(255,255,255,0.18)",
+        transform: "translateY(-1px)",
+      },
+
+      "& .MuiOutlinedInput-notchedOutline": {
+        border: "none",
+      },
+
+      "& .MuiSelect-icon": {
+        color: "black",
+      },
+    }}
             >
               {nadadoras.map((n) => (
                 <MenuItem key={n.id} value={n.id}>
@@ -303,8 +352,9 @@ setProximaCompeticion(competiciones?.[0] || null);
       </Typography>
 
       {/* ⚠️ ALERTA */}
-      {valoraciones.length > 0 &&
-        diasSinValoracion(valoraciones[0].fecha) > 5 && (
+     {ultimaValoracion &&
+  diasSinValoracion(ultimaValoracion.fecha) !== null &&
+  diasSinValoracion(ultimaValoracion.fecha)! > 5 && (
           <Box
             sx={{
               mt: 2,

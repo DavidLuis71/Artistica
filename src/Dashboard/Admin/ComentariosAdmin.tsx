@@ -24,7 +24,7 @@ export default function ComentariosAdmin() {
   const [mensaje, setMensaje] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [confirmacion, setConfirmacion] = useState("");
-  console.log("🚀 ~ confirmacion:", confirmacion);
+  console.log("🚀 ~ ComentariosAdmin ~ confirmacion:", confirmacion)
   const [comentarios, setComentarios] = useState<Comentario[]>([]);
   const [comentariosGlobales, setComentariosGlobales] = useState<Comentario[]>(
     [],
@@ -47,6 +47,7 @@ export default function ComentariosAdmin() {
       const { data, error } = await supabase
         .from("comentarios_nadadoras")
         .select("*")
+        .eq("entrenador_id", entrenadorId)
         .order("fecha", { ascending: true });
 
       if (!error && data) setComentariosGlobales(data as Comentario[]);
@@ -66,14 +67,13 @@ export default function ComentariosAdmin() {
     );
   };
 
-  useEffect(() => {
-    // Limpiamos los comentarios cada vez que se selecciona una nadadora nueva
-    setComentarios([]);
+useEffect(() => {
+  setComentarios([]);
 
-    if (selected) {
-      cargarComentarios();
-    }
-  }, [selected]);
+  if (selected && entrenadorId) {
+    cargarComentarios();
+  }
+}, [selected, entrenadorId]);
 
   const cargarNadadoras = async () => {
     const { data, error } = await supabase
@@ -91,6 +91,7 @@ export default function ComentariosAdmin() {
       .from("comentarios_nadadoras")
       .select("*")
       .eq("nadadora_id", selected)
+       .eq("entrenador_id", entrenadorId)
       .order("fecha", { ascending: true });
 
     if (!error && data) setComentarios(data as Comentario[]);

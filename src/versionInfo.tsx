@@ -310,6 +310,21 @@ const CHANGELOG: Record<string, Cambio[]> = {
         "Arreglo actualización",
       tipo: "general",
     },
+     {
+      descripcion:
+        "Cambio visualización de las valoraciones",
+      tipo: "admin",
+    },
+     {
+      descripcion:
+        "Creación panel nuevo para padres",
+      tipo: "usuario",
+    },
+     {
+      descripcion:
+        "Arreglo creación entrenamientos, utilización de plantillas",
+      tipo: "admin",
+    },
     
   ],
 };

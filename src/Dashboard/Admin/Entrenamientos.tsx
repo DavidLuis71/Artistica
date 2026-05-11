@@ -508,17 +508,23 @@ const handleEditPlantilla = (p: Plantilla) => {
   }}
 >
   {plantillas.map((p) => (
-   <CardContent sx={{ p: 0 }}>
-  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-    {p.nombre}
-  </Typography>
+    <MenuItem key={p.id} value={p.id}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+        <Typography>{p.nombre}</Typography>
 
-  <Chip
-    label={p.tipo}
-    size="small"
-    sx={{ mt: 1 }}
-  />
-</CardContent>
+        <Chip
+          label={p.tipo}
+          size="small"
+        />
+      </Box>
+    </MenuItem>
   ))}
 </TextField>
 

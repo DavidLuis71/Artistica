@@ -1,9 +1,22 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-import "./ValoracionEntrenamientoAdmin.css";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Dialog,
+} from "@mui/material";
 
 interface Valoracion {
   nadadora_id: number;
@@ -25,22 +38,11 @@ interface Resumen {
     motivacion: number;
     productividad: number;
   };
-  extremos: {
-    cansancio_entrenamiento: Valoracion;
-    cansancio_general: Valoracion;
-    motivacion: Valoracion;
-    productividad: Valoracion;
-  };
+  extremos: Record<string, Valoracion>;
   alertas: string[];
-  desviaciones?: {
-    [nadadora_id: number]: {
-      cansancio_entrenamiento?: number;
-      cansancio_general?: number;
-      motivacion?: number;
-      productividad?: number;
-    };
-  };
+  evolucion?: any[];
 }
+
 
 export default function ResumenEntrenamientoAdmin() {
   const [valoraciones, setValoraciones] = useState<Valoracion[]>([]);
@@ -48,332 +50,400 @@ export default function ResumenEntrenamientoAdmin() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [mostrarSemana, setMostrarSemana] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [openCalendar, setOpenCalendar] = useState(false);
   const [nombres, setNombres] = useState<Record<number, string>>({});
 
-  const dialogRef = useRef<HTMLDialogElement>(null);
-
-  const formatLocalDate = (date: Date) => {
-    const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, "0");
-    const d = String(date.getDate()).padStart(2, "0");
-    return `${y}-${m}-${d}`;
-  };
+  const formatDate = (d: Date) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+      d.getDate()
+    ).padStart(2, "0")}`;
 
   useEffect(() => {
-    cargarValoraciones();
+    cargar();
   }, []);
 
-  const cargarValoraciones = async () => {
+  const cargar = async () => {
     const { data } = await supabase
       .from("valoracion_entrenamiento")
-      .select(
-        `
-    *,
-    nadadora:nadadora_id ( nombre, apellido )
-  `,
-      )
+      .select("* , nadadora:nadadora_id(nombre, apellido)")
       .order("fecha", { ascending: true });
-    if (data) {
-      setValoraciones(data as Valoracion[]);
 
-      // Crear diccionario ID → Nombre Completo
-      const map: Record<number, string> = {};
-      data.forEach((v: any) => {
-        map[v.nadadora_id] = `${v.nadadora?.nombre} ${v.nadadora?.apellido}`;
-      });
-      setNombres(map);
-    }
+    if (!data) return;
+
+    setValoraciones(data);
+
+    const map: Record<number, string> = {};
+    data.forEach((v: any) => {
+      map[v.nadadora_id] = `${v.nadadora?.nombre} ${v.nadadora?.apellido}`;
+    });
+    setNombres(map);
+
     setLoading(false);
   };
 
+  const nombre = (id: number) => nombres[id] ?? `Nadadora ${id}`;
+
   useEffect(() => {
     if (!valoraciones.length) return;
-    calcularResumen();
+    calcular();
   }, [valoraciones, selectedDate, mostrarSemana]);
 
-  const calcularResumen = () => {
-    let datosFiltrados = valoraciones;
+  const calcular = () => {
+    let data = valoraciones;
 
     if (!mostrarSemana && selectedDate) {
-      const dia = formatLocalDate(selectedDate);
-      datosFiltrados = valoraciones.filter((v) => v.fecha === dia);
+      const d = formatDate(selectedDate);
+      data = data.filter((v) => v.fecha === d);
     }
 
-    if (!datosFiltrados.length) return setResumen(null);
+    if (!data.length) return setResumen(null);
 
-    // Separamos cada propiedad en su propio array
-    const cansancioEntreno = datosFiltrados.map(
-      (v) => v.cansancio_entrenamiento,
-    );
-    const cansancioGeneral = datosFiltrados.map((v) => v.cansancio_general);
-    const motivacion = datosFiltrados.map((v) => v.motivacion);
-    const productividad = datosFiltrados.map((v) => v.productividad);
-
-    // Calculamos medias
     const media = {
       cansancio_entrenamiento:
-        cansancioEntreno.reduce((a, b) => a + b, 0) / cansancioEntreno.length,
+        data.reduce((a, b) => a + b.cansancio_entrenamiento, 0) / data.length,
       cansancio_general:
-        cansancioGeneral.reduce((a, b) => a + b, 0) / cansancioGeneral.length,
-      motivacion: motivacion.reduce((a, b) => a + b, 0) / motivacion.length,
-      productividad:
-        productividad.reduce((a, b) => a + b, 0) / productividad.length,
+        data.reduce((a, b) => a + b.cansancio_general, 0) / data.length,
+      motivacion: data.reduce((a, b) => a + b.motivacion, 0) / data.length,
+      productividad: data.reduce((a, b) => a + b.productividad, 0) / data.length,
     };
 
-    // Encontramos valores extremos solo sobre los datos filtrados (día o semana)
-    const extremos = {
-      cansancio_entrenamiento: datosFiltrados.reduce((prev, curr) =>
-        curr.cansancio_entrenamiento > prev.cansancio_entrenamiento
-          ? curr
-          : prev,
+    const extremos: any = {
+      cansancio_entrenamiento: data.reduce((a, b) =>
+        b.cansancio_entrenamiento > a.cansancio_entrenamiento ? b : a
       ),
-      cansancio_general: datosFiltrados.reduce((prev, curr) =>
-        curr.cansancio_general > prev.cansancio_general ? curr : prev,
+      cansancio_general: data.reduce((a, b) =>
+        b.cansancio_general > a.cansancio_general ? b : a
       ),
-      motivacion: datosFiltrados.reduce((prev, curr) =>
-        curr.motivacion < prev.motivacion ? curr : prev,
+      motivacion: data.reduce((a, b) =>
+        b.motivacion < a.motivacion ? b : a
       ),
-      productividad: datosFiltrados.reduce((prev, curr) =>
-        curr.productividad < prev.productividad ? curr : prev,
+      productividad: data.reduce((a, b) =>
+        b.productividad < a.productividad ? b : a
       ),
     };
 
-    // Calculamos desviaciones
-    const desviaciones: Resumen["desviaciones"] = {};
-    datosFiltrados.forEach((v) => {
-      desviaciones[v.nadadora_id] = {
-        cansancio_entrenamiento:
-          v.cansancio_entrenamiento - media.cansancio_entrenamiento,
-        cansancio_general: v.cansancio_general - media.cansancio_general,
-        motivacion: v.motivacion - media.motivacion,
-        productividad: v.productividad - media.productividad,
-      };
+ const evolucion: any = {};
+
+data.forEach((v) => {
+  if (!evolucion[v.nadadora_id]) evolucion[v.nadadora_id] = [];
+
+  evolucion[v.nadadora_id].push({
+    fecha: v.fecha,
+    cansancio_entrenamiento: v.cansancio_entrenamiento,
+    cansancio_general: v.cansancio_general,
+    motivacion: v.motivacion,
+    productividad: v.productividad,
+  });
+});
+
+const evolucionFinal = Object.entries(evolucion).map(([id, vals]: any) => {
+  const serie = vals.sort(
+    (a: any, b: any) =>
+      new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
+  );
+
+  return {
+    id,
+    nombre: nombre(Number(id)),
+    serie,
+  };
+});
+ 
+
+    setResumen({
+      media,
+      extremos,
+      alertas: [],
+      evolucion: evolucionFinal,
     });
-
-    // Alertas
-    const alertas: string[] = [];
-    if (media.cansancio_entrenamiento > 7 || media.cansancio_general > 7)
-      alertas.push("⚠️ Cansancio elevado en este período");
-    if (media.motivacion < 4)
-      alertas.push("⚠️ Motivación baja en este período");
-    if (media.productividad < 4)
-      alertas.push("⚠️ Productividad baja en este período");
-
-    Object.entries(desviaciones).forEach(([id, d]) => {
-      if (Math.abs(d.cansancio_entrenamiento!) > 3)
-        alertas.push(
-          `⚠️ ${nombreNadadora(id)} tiene cansancio de entreno fuera de rango`,
-        );
-      if (Math.abs(d.cansancio_general!) > 3)
-        alertas.push(
-          `⚠️ ${nombreNadadora(id)}  tiene cansancio general fuera de rango`,
-        );
-      if (Math.abs(d.motivacion!) > 3)
-        alertas.push(
-          `⚠️ ${nombreNadadora(id)}  tiene motivación fuera de rango`,
-        );
-      if (Math.abs(d.productividad!) > 3)
-        alertas.push(
-          `⚠️ ${nombreNadadora(id)}  tiene productividad fuera de rango`,
-        );
-    });
-
-    setResumen({ media, alertas, desviaciones, extremos });
   };
 
-  useEffect(() => {
-    if (isCalendarOpen) dialogRef.current?.showModal();
-    else dialogRef.current?.close();
-  }, [isCalendarOpen]);
+  const datosDia =
+    !mostrarSemana && selectedDate
+      ? valoraciones.filter((v) => v.fecha === formatDate(selectedDate))
+      : []
 
-  if (loading)
-    return <p className="Valoracion-Admin-loading">Cargando resumen...</p>;
 
-  const nombreNadadora = (id: number | string) =>
-    nombres[Number(id)] ?? `Nadadora ${id}`;
 
-  const tileContent = ({ date, view }: { date: Date; view: string }) => {
-    if (view !== "month") return null;
-
-    const formatted = formatLocalDate(date);
-    const count = valoraciones.filter((v) => v.fecha === formatted).length;
-
-    return (
-      <div className="Valoracion-Admin-tile-container">
-        <span className="Valoracion-Admin-tile-number">{date.getDate()}</span>
-        {count > 0 && (
-          <span className="Valoracion-Admin-tile-count">{count}</span>
-        )}
-      </div>
-    );
-  };
-  const mostrarValor = (v: Valoracion, key: keyof Valoracion) => {
-    if (key === "nadadora")
-      return v.nadadora ? `${v.nadadora.nombre} ${v.nadadora.apellido}` : "N/A";
-    const val = v[key];
-    return typeof val === "number" ? val.toFixed(1) : (val ?? "N/A");
-  };
+  if (loading) return <Typography>Cargando...</Typography>;
 
   return (
-    <div className="Valoracion-Admin-container">
-      <h2 className="Valoracion-Admin-title">Resumen Entrenamientos</h2>
+    <Box sx={{ p: 3 }}>
 
-      <div className="Valoracion-Admin-buttons">
-        <button onClick={() => setMostrarSemana(true)}>Resumen semanal</button>
-        <button onClick={() => setIsCalendarOpen(true)}>Escoger día</button>
-      </div>
+      <Typography variant="h4" sx={{ mb: 2 }}>
+        Resumen Entrenamientos
+      </Typography>
 
-      {/* Modal calendario */}
-      <dialog ref={dialogRef} className="Valoracion-Admin-modal">
-        <h3>Selecciona un día</h3>
-        <Calendar
-          className="Valoracion-Admin-Calendar"
-          onClickDay={(date) => {
-            setSelectedDate(date);
-            setMostrarSemana(false);
-            setIsCalendarOpen(false);
+      <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
+        <Button variant="contained" onClick={() => setMostrarSemana(true)}>
+          Resumen
+        </Button>
+
+        <Button variant="outlined" onClick={() => setOpenCalendar(true)}>
+          Día
+        </Button>
+      </Box>
+
+      {/* CALENDARIO */}
+  <Dialog open={openCalendar} onClose={() => setOpenCalendar(false)}>
+  <Box
+    sx={{
+      p: 2,
+      "& .react-calendar": {
+        border: "none",
+        width: "100%",
+        fontFamily: "Inter",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+        borderRadius: 2,
+      },
+
+      "& .react-calendar__tile": {
+        position: "relative",
+        color: "#1e293b",
+        fontSize: "0.9rem",
+        borderRadius: "6px",
+      },
+
+      "& .react-calendar__tile abbr": {
+        color: "#1e293b",
+        textDecoration: "none",
+        fontWeight: 500,
+        position: "relative",
+        zIndex: 1,
+      },
+
+      // hoy
+      "& .react-calendar__tile--now": {
+        backgroundColor: "#3b82f6",
+        color: "white",
+      },
+
+      // seleccionado
+      "& .react-calendar__tile--active": {
+        backgroundColor: "#2563eb",
+        color: "white",
+      },
+
+      // días con datos
+      "& .dia-con-datos": {
+        backgroundColor: "#dbeafe !important",
+        fontWeight: 600,
+      },
+    }}
+  >
+   <Calendar
+  onClickDay={(d) => {
+    setSelectedDate(d);
+    setMostrarSemana(false);
+    setOpenCalendar(false);
+  }}
+  tileContent={({ date }) => {
+    const fecha = formatDate(date);
+
+    const count = valoraciones.filter((v) => v.fecha === fecha).length;
+
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "0.75rem",
+          lineHeight: 1.1,
+          color: "#1e293b",
+        }}
+      >
+        {/* número del día SIEMPRE visible */}
+        <Box sx={{ fontWeight: 600 }}>{date.getDate()}</Box>
+
+        {/* contador */}
+        {count > 0 && (
+          <Box
+            sx={{
+              fontSize: "0.65rem",
+              fontWeight: 700,
+              color: "#2563eb",
+            }}
+          >
+            {count}
+          </Box>
+        )}
+      </Box>
+    );
+  }}
+  tileClassName={({ date }) => {
+    const fecha = formatDate(date);
+    return valoraciones.some((v) => v.fecha === fecha)
+      ? "dia-con-datos"
+      : undefined;
+  }}
+/>
+  </Box>
+</Dialog>
+
+{/* VALORACIONES DEL DÍA */}
+{!mostrarSemana && selectedDate && (
+  <Card
+    sx={{
+      mb: 3,
+      borderRadius: 3,
+      maxHeight: "70vh",
+      display: "flex",
+      flexDirection: "column",
+    }}
+  >
+    <CardContent sx={{ flex: 1, overflow: "hidden" }}>
+      <Typography variant="h6" sx={{ mb: 2 }}>
+        Valoraciones del día
+      </Typography>
+
+      {/* 🔥 contenedor scroll horizontal + vertical */}
+      <Box
+        sx={{
+          width: "100%",
+          overflowX: "auto",
+          overflowY: "auto",
+          maxHeight: "55vh",
+          borderRadius: 2,
+        }}
+      >
+        <Table
+          size="small"
+          sx={{
+            minWidth: 650,
+            "& th": {
+              fontWeight: 600,
+              whiteSpace: "nowrap",
+            },
+            "& td": {
+              whiteSpace: "nowrap",
+            },
           }}
-          value={selectedDate ?? undefined}
-          maxDate={new Date()}
-          tileClassName={({ date, view }) => {
-            if (view === "month") {
-              const formatted = formatLocalDate(date);
-              const tieneDatos = valoraciones.some(
-                (v) => v.fecha === formatted,
-              );
-              return tieneDatos ? "dia-con-datos" : null;
-            }
-          }}
-          tileContent={tileContent}
-        />
-        <button
-          className="Valoracion-Admin-btn"
-          onClick={() => setIsCalendarOpen(false)}
         >
-          Cerrar
-        </button>
-      </dialog>
+          <TableHead>
+            <TableRow>
+              <TableCell>Nadadora</TableCell>
+              <TableCell>Entreno</TableCell>
+              <TableCell>General</TableCell>
+              <TableCell>Motivación</TableCell>
+              <TableCell>Prod</TableCell>
+            </TableRow>
+          </TableHead>
 
-      {/* Resumen */}
-      {/* Resumen */}
-      {resumen ? (
-        <div>
-          <h3 className="Valoracion-Admin-card-title">
-            {mostrarSemana
-              ? "Resumen Semanal"
-              : `Día ${selectedDate ? formatLocalDate(selectedDate) : ""}`}
-          </h3>
-
-          {/* NUEVO GRID DE TARJETAS KPI */}
-          <div className="Valoracion-Admin-summary-grid">
-            {[
-              {
-                key: "cansancio_entrenamiento",
-                label: "Cansancio Entreno",
-                icon: "💪",
-                tipo: "max",
-              },
-              {
-                key: "cansancio_general",
-                label: "Cansancio General",
-                icon: "🛌",
-                tipo: "max",
-              },
-              {
-                key: "motivacion",
-                label: "Motivación",
-                icon: "🔥",
-                tipo: "min",
-              },
-              {
-                key: "productividad",
-                label: "Productividad",
-                icon: "⚡",
-                tipo: "min",
-              },
-            ].map(({ key, label, icon, tipo }) => {
-              const valor = resumen.media[key as keyof Resumen["media"]];
-              const extremo =
-                resumen.extremos[key as keyof Resumen["extremos"]];
-              let colorClass = "Valoracion-Admin-card-green";
-              let interpretacion = "Normal";
-
-              if (
-                (tipo === "max" && valor > 7) ||
-                (tipo === "min" && valor < 4)
-              ) {
-                colorClass = "Valoracion-Admin-card-red";
-                interpretacion = tipo === "max" ? "Alto" : "Bajo";
-              } else if (
-                (tipo === "max" && valor > 5) ||
-                (tipo === "min" && valor < 6)
-              ) {
-                colorClass = "Valoracion-Admin-card-yellow";
-                interpretacion = tipo === "max" ? "Medio" : "Medio";
-              }
-
-              // Nadadoras con desviación significativa
-              const desviacionesSignificativas = Object.entries(
-                resumen.desviaciones ?? {},
-              )
-                .filter(([idStr, desviacion]) => {
-                  const _ = idStr;
-                  console.log("🚀 ~ _:", _);
-                  return (
-                    Math.abs(desviacion[key as keyof typeof desviacion] ?? 0) >
-                    2
-                  );
-                })
-
-                .map(([idStr, desviacion]) => {
-                  const val = desviacion[key as keyof typeof desviacion]!;
-                  const arrow =
-                    (tipo === "max" && val > 0) || (tipo === "min" && val < 0)
-                      ? "↑"
-                      : "↓";
-                  return `${nombreNadadora(idStr)} ${arrow} (${val.toFixed(1)})`;
-                });
-
-              const k = key as keyof Valoracion;
-              return (
-                <div
-                  key={key}
-                  className={`Valoracion-Admin-card ${colorClass}`}
-                >
-                  <div className="Valoracion-Admin-card-icon">{icon}</div>
-                  <h4 className="Valoracion-Admin-card-title">{label}</h4>
-                  <div className="Valoracion-Admin-card-value">
-                    {valor.toFixed(1)}
-                  </div>
-                  <div className="Valoracion-Admin-card-interpretation">
-                    {interpretacion}
-                  </div>
-                  <div className="Valoracion-Admin-card-extremo">
-                    {tipo === "max" ? "Máx: " : "Mín: "}{" "}
-                    {nombreNadadora(extremo.nadadora_id)} (
-                    {mostrarValor(extremo, k)})
-                  </div>
-                  {desviacionesSignificativas.length > 0 && (
-                    <div className="Valoracion-Admin-card-desviaciones">
-                      <strong>Desviaciones:</strong>
-                      <ul>
-                        {desviacionesSignificativas.map((d, i) => (
-                          <li key={i}>{d}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      ) : (
-        <p className="Valoracion-Admin-no-data">
-          No hay datos para este período
-        </p>
+          <TableBody>
+            {datosDia.map((v, i) => (
+              <TableRow key={i}>
+                <TableCell>{nombre(v.nadadora_id)}</TableCell>
+                <TableCell>{v.cansancio_entrenamiento}</TableCell>
+                <TableCell>{v.cansancio_general}</TableCell>
+                <TableCell>{v.motivacion}</TableCell>
+                <TableCell>{v.productividad}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
+    </CardContent>
+  </Card>
+)}
+      {/* RESUMEN */}
+      {resumen && (
+        <Grid container spacing={2}>
+          {[
+            ["Cansancio entreno", resumen.media.cansancio_entrenamiento],
+            ["Cansancio general", resumen.media.cansancio_general],
+            ["Motivación", resumen.media.motivacion],
+            ["Productividad", resumen.media.productividad],
+          ].map(([label, value]: any) => (
+            <Grid  key={label}>
+              <Card>
+                <CardContent>
+                  <Typography>{label}</Typography>
+                  <Typography variant="h5">{value.toFixed(1)}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       )}
-    </div>
+
+      {/* EVOLUCIÓN */}
+      {mostrarSemana && resumen?.evolucion && (
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h5">Evolución por nadadora</Typography>
+
+          {resumen.evolucion.map((n: any) => (
+            <Card key={n.id} sx={{ mt: 2 }}>
+              <CardContent>
+                <Typography variant="h6">{n.nombre}</Typography>
+
+{[
+  { label: "Cansancio entrenamiento", key: "cansancio_entrenamiento" },
+  { label: "Cansancio general", key: "cansancio_general" },
+  { label: "Motivación", key: "motivacion" },
+  { label: "Productividad", key: "productividad" },
+].map((m) => (
+  <Box key={m.key} sx={{ mb: 2 }}>
+
+    <Typography
+      sx={{
+        fontSize: 13,
+        fontWeight: 600,
+        color: "#334155",
+        mb: 0.5,
+      }}
+    >
+      {m.label}
+    </Typography>
+
+ <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+  {n.serie.map((s: any, i: number) => {
+    const value = s[m.key];
+
+    const getColor = () => {
+      if (m.key.includes("cansancio")) {
+        if (value >= 8) return "#ef4444";
+        if (value >= 6) return "#f59e0b";
+        return "#22c55e";
+      }
+
+      // motivación/productividad
+      if (value >= 8) return "#22c55e";
+      if (value >= 6) return "#f59e0b";
+      return "#ef4444";
+    };
+
+    return (
+      <Box
+        key={i}
+        sx={{
+          minWidth: 42,
+          height: 42,
+          borderRadius: "50%",
+          background: getColor(),
+          color: "white",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontWeight: 700,
+          fontSize: 14,
+          boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+        }}
+      >
+        {value}
+      </Box>
+    );
+  })}
+</Box>
+
+  </Box>
+))}
+              </CardContent>
+            </Card>
+          ))}
+        </Box>
+      )}
+    </Box>
   );
 }

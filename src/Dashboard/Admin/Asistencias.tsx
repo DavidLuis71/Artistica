@@ -62,8 +62,7 @@ export default function Asistencias() {
   const [modalAusenciaOpen, setModalAusenciaOpen] = useState(false);
   const [ausenciaSeleccionada, setAusenciaSeleccionada] = useState<any>(null);
 
-  const [loadingAusencias, setLoadingAusencias] = useState(false);
-  console.log("🚀 ~ loadingAusencias:", loadingAusencias);
+  // const [loadingAusencias, setLoadingAusencias] = useState(false);
   const [asistenciasOriginales, setAsistenciasOriginales] = useState<{
     [key: number]: string;
   }>({});
@@ -226,7 +225,7 @@ export default function Asistencias() {
     if (!selectedTemporada) return;
 
     const fetchAusencias = async () => {
-      setLoadingAusencias(true);
+      // setLoadingAusencias(true);
 
       try {
         const nadadoraIds = nadadoraGrupos.map((ng) => ng.nadadora.id);
@@ -241,7 +240,7 @@ export default function Asistencias() {
         console.error(error);
         showToast("Error cargando ausencias recurrentes", "error");
       } finally {
-        setLoadingAusencias(false);
+        // setLoadingAusencias(false);
       }
     };
 
