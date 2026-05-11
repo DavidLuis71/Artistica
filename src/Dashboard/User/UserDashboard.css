@@ -347,8 +347,8 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background-color: #ff4d4f; /* rojo para resaltar */
 }
@@ -356,8 +356,8 @@
   position: absolute;
   top: -5px;
   right: -5px;
-  min-width: 18px;
-  height: 18px;
+  min-width: 12px;
+  height: 12px;
   padding: 0 5px;
   background-color: #ff4d4f;
   color: white;
@@ -377,8 +377,8 @@
   position: absolute;
   top: 10px; /* ajustar según tamaño del botón */
   right: 10px; /* ajustar según tamaño del botón */
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   background-color: #ff4d4f;
   border-radius: 50%;
   border: 1px solid white; /* opcional, para que resalte */

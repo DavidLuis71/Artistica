@@ -1,4 +1,4 @@
-export const APP_VERSION = "1.3.4"; // cambia cada vez que hagas un build
+export const APP_VERSION = "1.3.5"; // cambia cada vez que hagas un build
 
 //1.0.9 añadido el generar carta de nadadadora, modificacion en cartasuser el ver la carta de nadadora con un fondo
 // 1.0.9 mantener la sesion iniciada

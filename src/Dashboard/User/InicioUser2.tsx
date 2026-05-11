@@ -136,9 +136,9 @@ export default function InicioUser2({
           dias_enferma: asistencia?.dias_enferma || 0,
         };
       });
-      console.log("🚀 ~ datosCombinados:", datosCombinados);
+      // console.log("🚀 ~ datosCombinados:", datosCombinados);
       const ranking = calcularRanking(datosCombinados, nadadoraId);
-      console.log(ranking);
+      // console.log(ranking);
 
       // Guardamos el % en estado
       setRankingPctPuro(ranking.pctRanking);
@@ -201,7 +201,7 @@ export default function InicioUser2({
 
     // Ordenar descendente por score
     nadadorasConScore.sort((a, b) => b.scoreFinal - a.scoreFinal);
-    console.log("🚀 ~ nadadorasConScore:", nadadorasConScore);
+    // console.log("🚀 ~ nadadorasConScore:", nadadorasConScore);
 
     // Encontrar posición y percentil de la nadadora
     const total = nadadorasConScore.length;

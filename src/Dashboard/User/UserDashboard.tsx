@@ -79,7 +79,7 @@ export default function UserDashboard() {
   const [hayEventoHoy, setHayEventoHoy] = useState(false);
   const [hayMensajesNuevos, setHayMensajesNuevos] = useState(false);
   const [numeroMensajes, setNumeroMensajes] = useState(0);
-
+const [hayPostsNuevos, setHayPostsNuevos] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [section, setSection] = useState("inicio");
@@ -149,6 +149,48 @@ useEffect(() => {
     perfil: "Perfil",
     ajustesTema: "Ajustes",
   };
+
+
+  useEffect(() => {
+  if (!selectedHija) return;
+
+  async function verificarPostsNuevos() {
+    // Último post global
+    const { data: ultimoPost } = await supabase
+      .from("posts_nadadoras")
+      .select("creado_en, nadadora_id")
+      .order("creado_en", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (!ultimoPost) {
+      setHayPostsNuevos(false);
+      return;
+    }
+
+    // Última vista de esta nadadora
+    const { data: lectura } = await supabase
+      .from("posts_nadadoras_leidos")
+      .select("ultimo_post_visto")
+      .eq("nadadora_id", selectedHija?.id)
+      .maybeSingle();
+
+    // Si nunca ha abierto el muro
+    if (!lectura?.ultimo_post_visto) {
+      setHayPostsNuevos(true);
+      return;
+    }
+
+    const fechaPost = new Date(ultimoPost.creado_en).getTime();
+    const fechaVista = new Date(
+      lectura.ultimo_post_visto,
+    ).getTime();
+
+    setHayPostsNuevos(fechaPost > fechaVista);
+  }
+
+  verificarPostsNuevos();
+}, [selectedHija, section]);
 
   useEffect(() => {
     if (!selectedHija) return;
@@ -727,9 +769,13 @@ useEffect(() => {
           style={{ position: "relative" }}
         >
           ☰
-          {hayMensajesNuevos && (
+          {(hayMensajesNuevos || hayPostsNuevos || hayComentariosNuevos) && (
             <span className="hamburguerNotificacion">
-              {numeroMensajes > 99 ? "99+" : numeroMensajes}
+              {hayMensajesNuevos
+                ? numeroMensajes > 99
+                  ? "99+"
+                  : numeroMensajes
+                : "•"}
             </span>
           )}
         </button>
@@ -825,9 +871,14 @@ useEffect(() => {
                         {s.key === "calendario" && hayEventoHoy && (
                           <span className="navNotificacionPunto eventoHoy"></span>
                         )}
-                        {s.key === "comunidadGrupo" && hayMensajesNuevos && (
-                          <span className="navNotificacionPunto mensajesNuevosComunidad"></span>
-                        )}
+                          {s.key === "comunidadGrupo" &&
+                            (
+                              hayMensajesNuevos ||
+                              hayComentariosNuevos ||
+                              hayPostsNuevos
+                            ) && (
+                              <span className="navNotificacionPunto mensajesNuevosComunidad"></span>
+                          )}
                       </span>
                       {s.label}
                       {tieneSub && (
@@ -860,10 +911,11 @@ useEffect(() => {
                                   {/* {sub.key === "cartas" && hayJuegoHoy && (
                                     <span className="navNotificacionPunto juegoHoy"></span>
                                   )} */}
-                                  {sub.key === "chat" && hayMensajesNuevos && (
-                                    <span className="navNotificacionPunto mensajesNuevos">
-                                      {numeroMensajes}
-                                    </span>
+                                 {sub.key === "chat" &&
+                                    (hayMensajesNuevos || hayPostsNuevos) && (
+                                      <span className="navNotificacionPunto mensajesNuevos">
+                                        {hayMensajesNuevos ? numeroMensajes : ""}
+                                      </span>
                                   )}
                                 </span>
                               )}

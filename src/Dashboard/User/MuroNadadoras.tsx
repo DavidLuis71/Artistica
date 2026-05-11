@@ -75,7 +75,7 @@ export default function MuroNadadoras({ nadadoraId }: Props) {
   const [unreadByChatId, setUnreadByChatId] = useState<{
     [chatId: number]: number;
   }>({});
-
+const [hayPostsSinLeer, setHayPostsSinLeer] = useState(false);
   const mensajesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -97,14 +97,46 @@ export default function MuroNadadoras({ nadadoraId }: Props) {
     return () => clearTimeout(timeout);
   }, [chatActual, mensajes.length]);
 
-  useEffect(() => {
-    fetchNadadoras();
-    fetchConversaciones();
-    if (chatAbierto) {
-      fetchPosts();
-    }
-  }, [chatAbierto]);
+useEffect(() => {
+  fetchNadadoras();
+  fetchConversaciones();
+  comprobarPostsSinLeer();
 
+  if (chatAbierto) {
+    fetchPosts();
+  }
+}, [chatAbierto]);
+
+
+  const comprobarPostsSinLeer = async () => {
+  // Último post del muro
+  const { data: ultimoPost } = await supabase
+    .from("posts_nadadoras")
+    .select("creado_en, nadadora_id")
+    .neq("nadadora_id", nadadoraId)
+    .order("creado_en", { ascending: false })
+    .limit(1)
+    .single();
+
+  if (!ultimoPost) return;
+
+  // Última vez que abrió el chat grupal
+  const { data: leido } = await supabase
+    .from("posts_nadadoras_leidos")
+    .select("ultimo_post_visto")
+    .eq("nadadora_id", nadadoraId)
+    .single();
+
+  if (!leido) {
+    setHayPostsSinLeer(true);
+    return;
+  }
+
+  const ultimoVisto = new Date(leido.ultimo_post_visto).getTime();
+  const ultimoMensaje = new Date(ultimoPost.creado_en).getTime();
+
+  setHayPostsSinLeer(ultimoMensaje > ultimoVisto);
+};
   const fetchNadadoras = async () => {
     const { data } = await supabase
       .from("nadadoras")
@@ -295,6 +327,31 @@ export default function MuroNadadoras({ nadadoraId }: Props) {
     setLoading(false);
   };
 
+
+  const marcarChatGrupalLeido = async () => {
+  const now = new Date().toISOString();
+
+  // 1. Intentar actualizar primero
+  const { data, error } = await supabase
+    .from("posts_nadadoras_leidos")
+    .update({ ultimo_post_visto: now })
+    .eq("nadadora_id", nadadoraId)
+    .select();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  // 2. Si no existe fila → insert
+  if (!data || data.length === 0) {
+    await supabase.from("posts_nadadoras_leidos").insert({
+      nadadora_id: nadadoraId,
+      ultimo_post_visto: now,
+    });
+  }
+};
+
   useEffect(() => {
     if (chatAbierto) fetchPosts();
   }, [chatAbierto]);
@@ -454,9 +511,15 @@ export default function MuroNadadoras({ nadadoraId }: Props) {
           </div>
           <button
             className="btnEntrarChat"
-            onClick={() => setChatAbierto(true)}
+              onClick={async () => {
+              setChatAbierto(true);
+              await marcarChatGrupalLeido();
+            }}
           >
             Entrar al chat grupal
+             {hayPostsSinLeer && (
+    <span className="notifDot">!</span>
+  )}
           </button>
 
           {/* Botones para conversaciones existentes */}
