@@ -16,23 +16,17 @@ sw.addEventListener("install", () => {
   sw.skipWaiting();
 });
 
-// sw.addEventListener("activate", () => {
-//   sw.clients.claim();
-// });
-
-sw.addEventListener("activate", (event) => {
-  event.waitUntil(
-    (async () => {
-      await sw.clients.claim();
-
-      const keys = await caches.keys();
-
-      await Promise.all(
-        keys.map((key) => caches.delete(key)) // 🔥 limpia todo
-      );
-    })()
-  );
+sw.addEventListener("activate", () => {
+  sw.clients.claim();
 });
+
+// sw.addEventListener("activate", (event) => {
+//   event.waitUntil(
+//     (async () => {
+//       await sw.clients.claim();
+//     })()
+//   );
+// });
 
 sw.addEventListener("message", (event) => {
   if (event.data?.type === "SKIP_WAITING") {

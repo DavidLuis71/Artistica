@@ -319,14 +319,14 @@ const CHANGELOG: Record<string, Cambio[]> = {
       descripcion:
         "Creación panel nuevo para padres",
       tipo: "usuario",
-    },
-     {
+    },    
+  ],
+  "1.3.5":[ {
       descripcion:
         "Arreglo creación entrenamientos, utilización de plantillas",
       tipo: "admin",
     },
-    
-  ],
+  ]
 };
 
 export default function VersionInfo() {

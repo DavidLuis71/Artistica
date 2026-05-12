@@ -4,8 +4,18 @@ import App from "./App.tsx";
 
 import { registerSW } from "virtual:pwa-register";
 
-registerSW({
+const updateSW = registerSW({
   immediate: true,
+
+  onNeedRefresh() {
+    // hay nueva versión disponible
+    updateSW(true); // activa nueva versión
+     window.location.reload();
+  },
+
+  onOfflineReady() {
+    console.log("App lista offline");
+  },
 });
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

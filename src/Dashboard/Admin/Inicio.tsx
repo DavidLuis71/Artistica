@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Card,
+  CardContent,
+  Chip,
+  Typography,
+  Stack,
+  Box
+} from "@mui/material";
+
 import "./Inicio.css";
+import { ExpandMore } from "@mui/icons-material";
 
 interface DiaResumen {
   fecha: string;
@@ -20,6 +33,8 @@ export default function Inicio() {
   const [ultimosDias, setUltimosDias] = useState<DiaResumen[]>([]);
   const [ranking, setRanking] = useState<Ranking[]>([]);
   const [rankingMesCompleto, setRankingMesCompleto] = useState<Ranking[]>([]);
+  const [entrenamientoHoy, setEntrenamientoHoy] = useState<any[]>([]);
+
 
   useEffect(() => {
     loadData();
@@ -29,6 +44,22 @@ export default function Inicio() {
 
   const loadData = async () => {
     const today = getToday();
+    const { data: entrenosHoy } = await supabase
+  .from("sesiones_entrenamiento")
+  .select(`
+    id,
+    titulo,
+    descripcion,
+    hora_inicio,
+    hora_fin,
+    tipo_sesion
+  `)
+  .eq("fecha", today)
+  .order("hora_inicio", { ascending: true });
+
+if (entrenosHoy) {
+  setEntrenamientoHoy(entrenosHoy);
+}
 
     const { data: nadadoras } = await supabase
       .from("nadadoras")
@@ -210,6 +241,120 @@ export default function Inicio() {
           </div>
         </div>
       </section>
+{/* ENTRENAMIENTO HOY */}
+<section className="inicio-section">
+  {entrenamientoHoy.length === 0 ? (
+    <div className="inicio-empty">
+      No hay entrenamientos programados hoy
+    </div>
+  ) : (
+    <div className="entrenos-hoy">
+      {entrenamientoHoy.map((e) => (
+        <Card
+  elevation={2}
+ sx={{
+  borderRadius: 6,
+  mb: 3,
+  overflow: "hidden",
+  background:
+    "linear-gradient(135deg, #ffffff 0%, #f7fbff 100%)",
+  border: "1px solid rgba(100,180,255,0.15)",
+  boxShadow:
+    "0 10px 30px rgba(0,0,0,0.06)",
+  transition: "0.25s",
+  "&:hover": {
+    transform: "translateY(-2px)",
+    boxShadow:
+      "0 16px 40px rgba(0,0,0,0.10)"
+  }
+}}
+>
+  <CardContent>
+
+    <Stack
+  
+>
+  <Box>
+    <Typography
+      variant="h5"
+      
+      sx={{
+        color: "#1b4965"
+      }}
+    >
+      {e.titulo || "Entrenamiento"}
+    </Typography>
+  </Box>
+
+  <Chip
+    label={e.tipo_sesion}
+    sx={{
+      background:
+        "linear-gradient(135deg,#42a5f5,#1e88e5)",
+      color: "white",
+      fontWeight: 700,
+      px: 1
+    }}
+  />
+</Stack>
+
+    <Typography variant="body2" color="text.secondary">
+      🕒 {e.hora_inicio?.slice(0, 5)} - {e.hora_fin?.slice(0, 5)}
+    </Typography>
+
+    {e.grupos?.nombre && (
+      <Typography
+        variant="body2"
+        color="text.secondary"
+       
+      >
+        👥 {e.grupos.nombre}
+      </Typography>
+    )}
+
+    <Box >
+      {Array.isArray(e.descripcion) &&
+        e.descripcion.map((bloque: any, i: number) => (
+          <Accordion
+            key={i}
+            disableGutters
+            sx={{
+              borderRadius: 3,
+              mb: 1,
+              overflow: "hidden",
+              "&:before": { display: "none" }
+            }}
+          >
+            <AccordionSummary expandIcon={<ExpandMore />}>
+              <Typography >
+                {bloque.titulo}
+              </Typography>
+            </AccordionSummary>
+
+            <AccordionDetails>
+              <Stack spacing={1}>
+                {bloque.series.map(
+                  (serie: string, j: number) => (
+                    <Typography
+                      key={j}
+                      variant="body2"
+                    >
+                      • {serie}
+                    </Typography>
+                  )
+                )}
+              </Stack>
+            </AccordionDetails>
+          </Accordion>
+        ))}
+    </Box>
+
+  </CardContent>
+</Card>
+      ))}
+    </div>
+  )}
+</section>
 
       {/* ÚLTIMOS 7 DÍAS */}
       <section className="inicio-section">

@@ -42,4 +42,4 @@ export const APP_VERSION = "1.3.5"; // cambia cada vez que hagas un build
 //1.3.3 Modificar incio admin Modificar creacion de entrenos. Modificacion vista entrenamientos user
 //1.3.4 Cambio de visualizacion de valoraciones en la parte admin
 //1.3.4 Creacion vista padres ( dashboard, asistencias, competiciones)
-//1.3.4 Arreglo creacion de entrenamientos plantilla, mensajes de nadadoras en ambos entrenadores
+//1.3.5 Arreglo creacion de entrenamientos plantilla, mensajes de nadadoras en ambos entrenadores

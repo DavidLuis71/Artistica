@@ -23,6 +23,7 @@ import { Grid } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { getDiaSemana } from "../../utils/Formatear";
+import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
 
 interface SerieBlock {
   titulo: string;
@@ -247,6 +248,20 @@ const handleEditPlantilla = (p: Plantilla) => {
 
   const hoy = new Date().toISOString().split("T")[0];
 
+  const moveBlock = (index: number, direction: "up" | "down") => {
+  const newBlocks = [...(form.descripcion || [])];
+
+  const targetIndex = direction === "up" ? index - 1 : index + 1;
+
+  if (targetIndex < 0 || targetIndex >= newBlocks.length) return;
+
+  const temp = newBlocks[index];
+  newBlocks[index] = newBlocks[targetIndex];
+  newBlocks[targetIndex] = temp;
+
+  setForm({ ...form, descripcion: newBlocks });
+};
+
   return (
    <Box sx={{
   p: { xs: 2, md: 4 },
@@ -410,7 +425,7 @@ const handleEditPlantilla = (p: Plantilla) => {
   </Typography>
 
   <Box sx={{ mt: 1 }}>
-   <Chip
+   {/* <Chip
   label={s.estado}
   size="small"
   sx={{
@@ -424,7 +439,7 @@ const handleEditPlantilla = (p: Plantilla) => {
         ? "#166534"
         : "#92400e",
   }}
-/>
+/> */}
   </Box>
                 </CardContent>
                 <Box
@@ -437,15 +452,9 @@ const handleEditPlantilla = (p: Plantilla) => {
   }}
 >
   <Box sx={{ display: "flex", gap: 1 }}>
-    <Button size="small" onClick={() => { setForm(s); setOpen(true); }}>
+    <Button size="medium" onClick={() => { setForm(s); setOpen(true); }}>
       Editar
     </Button>
-
-    {s.estado === "borrador" && (
-      <Button size="small" variant="contained">
-        Publicar
-      </Button>
-    )}
   </Box>
 
   <IconButton color="error" onClick={() => handleDeleteSesion(s.id)}>
@@ -572,10 +581,43 @@ const handleEditPlantilla = (p: Plantilla) => {
                     updateBlockTitle(bIndex, e.target.value)
                   }
                 />
+ <Box
+  sx={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    mt: 1,
+    background: "#fff",
+    borderRadius: 2,
+    px: 1,
+    py: 0.5,
+    border: "1px solid #eee",
+  }}
+>
+  {/* LEFT: mover bloque */}
+  <Box sx={{ display: "flex", flexDirection: "column" }}>
+     <IconButton
+      size="small"
+      disabled={bIndex === 0}
+      onClick={() => moveBlock(bIndex, "up")}
+    >
+      <ArrowUpward fontSize="medium" />
+    </IconButton>
 
-                <IconButton onClick={() => removeBlock(bIndex)}>
-                  <DeleteIcon />
-                </IconButton>
+    <IconButton
+      size="small"
+      disabled={bIndex === (form.descripcion?.length || 0) - 1}
+      onClick={() => moveBlock(bIndex, "down")}
+    >
+       <ArrowDownward fontSize="medium" />
+    </IconButton>
+  </Box>
+
+  {/* RIGHT: eliminar */}
+  <IconButton color="error" onClick={() => removeBlock(bIndex)}>
+    <DeleteIcon />
+  </IconButton>
+</Box>
               </Box>
 
               {block.series.map((serie, sIndex) => (
